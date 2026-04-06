@@ -214,7 +214,7 @@ export default function DevsSection() {
           <div><span className="devs-terminal-prompt">$ </span>echo $STATUS</div>
           <div><span className="devs-terminal-value">🟢 Live — Serving {new Date().getFullYear()}</span></div>
           <div><span className="devs-terminal-prompt">$ </span>echo $MADE_WITH</div>
-          <div><span className="devs-terminal-value">☕ Coffee + 💜 Passion + 🎓 AUS</span></div>
+          <div><span className="devs-terminal-value">🥤 Coke + 💜 Passion + 🎓 AUS</span></div>
         </div>
 
         <div className="devs-decoration">
