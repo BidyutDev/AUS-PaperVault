@@ -1,5 +1,8 @@
-import { Code2, Mail, Globe, Palette, Server, Database, Layout, Box, Terminal } from 'lucide-react';
+import { Code2, Database, Globe, Layout, Mail, Palette } from 'lucide-react';
 import './DevsSection.css';
+import Niigadyut from './Niigadyut.jpeg';
+import Adih from './adih.jpeg';
+import Mehehe from './mehehe.jpeg';
 
 // Custom SVG icons for brands
 const GithubIcon = () => (
@@ -60,6 +63,7 @@ const developers = [
   {
     name: 'Developer One',
     initials: 'D1',
+    image: Niigadyut,
     role: 'Full Stack Developer',
     bio: 'Passionate about building tools that help students succeed. Architecting the backend and frontend integration.',
     skills: ['React', 'Node.js', 'MongoDB', 'REST APIs'],
@@ -73,6 +77,7 @@ const developers = [
   {
     name: 'Developer Two',
     initials: 'D2',
+    image: Mehehe,
     role: 'Frontend Developer & UI Designer',
     bio: 'Crafting pixel-perfect interfaces with a love for design systems, animations, and cyberpunk aesthetics.',
     skills: ['React', 'CSS/Tailwind', 'Figma', 'Motion'],
@@ -86,6 +91,7 @@ const developers = [
   {
     name: 'Developer Three',
     initials: 'D3',
+    image: Adih,
     role: 'Backend Developer',
     bio: 'Database wizard and API architect. Making sure every paper is stored safely and served lightning fast.',
     skills: ['Python', 'Express', 'PostgreSQL', 'Docker'],
@@ -138,7 +144,11 @@ export default function DevsSection() {
                   <div className="dev-avatar-ring-outer" />
                   <div className="dev-avatar-ring" />
                   <div className="dev-status" />
-                  {dev.initials}
+                  {dev.image ? (
+                    <img src={dev.image} alt={dev.name} className="dev-avatar-image" />
+                  ) : (
+                    dev.initials
+                  )}
                 </div>
                 <h3 className="dev-name">{dev.name}</h3>
                 <span className="dev-role">{dev.role}</span>
