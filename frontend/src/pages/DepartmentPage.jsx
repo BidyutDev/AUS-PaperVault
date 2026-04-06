@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import departments from '../data/departments';
+import departments, { getSubjectsForSemester } from '../data/departments';
 import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
-import SubjectSelector from '../components/SubjectSelector/SubjectSelector';
 import SemesterSelector from '../components/SemesterSelector/SemesterSelector';
+import SubjectSelector from '../components/SubjectSelector/SubjectSelector';
 import PaperList from '../components/PaperList/PaperList';
 import './DepartmentPage.css';
 
 export default function DepartmentPage() {
   const { deptId } = useParams();
-  const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
   const department = departments.find((d) => d.id === deptId);
 
@@ -30,19 +30,20 @@ export default function DepartmentPage() {
   }
 
   const Icon = department.icon;
+  const semesterSubjects = selectedSemester ? getSubjectsForSemester(department, selectedSemester) : [];
 
   // Build breadcrumb items
   const breadcrumbItems = [
-    { label: department.name, to: selectedSubject ? `/department/${deptId}` : null },
+    { label: department.name, to: (selectedSemester) ? `/department/${deptId}` : null },
   ];
-  if (selectedSubject) {
+  if (selectedSemester) {
     breadcrumbItems.push({
-      label: selectedSubject,
-      to: selectedSemester ? `/department/${deptId}` : null,
+      label: `Semester ${selectedSemester}`,
+      to: selectedSubject ? `/department/${deptId}` : null,
     });
   }
-  if (selectedSemester) {
-    breadcrumbItems.push({ label: `Semester ${selectedSemester}` });
+  if (selectedSubject) {
+    breadcrumbItems.push({ label: selectedSubject });
   }
 
   return (
@@ -61,31 +62,31 @@ export default function DepartmentPage() {
           </div>
         </div>
 
-        {/* Step 1: Subject Selection */}
-        <SubjectSelector
-          subjects={department.subjects}
+        {/* Step 1: Semester Selection (always visible) */}
+        <SemesterSelector
           departmentId={department.id}
-          selectedSubject={selectedSubject}
-          onSelect={(sub) => {
-            setSelectedSubject(sub);
-            setSelectedSemester(null);
+          selectedSemester={selectedSemester}
+          onSelect={(sem) => {
+            setSelectedSemester(sem);
+            setSelectedSubject(null); // reset subject when semester changes
           }}
         />
 
-        {/* Step 2: Semester Selection (after subject) */}
-        {selectedSubject && (
+        {/* Step 2: Subject Selection (after semester is selected) */}
+        {selectedSemester && (
           <div className="animate-slideUp">
-            <SemesterSelector
+            <SubjectSelector
+              subjects={semesterSubjects}
               departmentId={department.id}
-              subject={selectedSubject}
-              selectedSemester={selectedSemester}
-              onSelect={setSelectedSemester}
+              semester={selectedSemester}
+              selectedSubject={selectedSubject}
+              onSelect={setSelectedSubject}
             />
           </div>
         )}
 
-        {/* Step 3: Paper List (after subject + semester) */}
-        {selectedSubject && selectedSemester && (
+        {/* Step 3: Paper List with Year filter (after subject is selected) */}
+        {selectedSemester && selectedSubject && (
           <div className="animate-slideUp">
             <PaperList
               departmentId={department.id}

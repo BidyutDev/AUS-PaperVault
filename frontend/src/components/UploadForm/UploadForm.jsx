@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Upload, FileText, X, AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import departments, { YEARS, SEMESTERS } from '../../data/departments';
+import departments, { YEARS, SEMESTERS, getSubjectsForSemester } from '../../data/departments';
 import { addPendingUpload } from '../../data/mockPapers';
 import './UploadForm.css';
 
@@ -16,7 +16,7 @@ export default function UploadForm() {
   const fileRef = useRef();
 
   const selectedDept = departments.find((d) => d.id === department);
-  const subjects = selectedDept ? selectedDept.subjects : [];
+  const subjects = (selectedDept && semester) ? getSubjectsForSemester(selectedDept, parseInt(semester)) : [];
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -104,6 +104,7 @@ export default function UploadForm() {
             value={department}
             onChange={(e) => {
               setDepartment(e.target.value);
+              setSemester('');
               setSubject('');
             }}
             required
@@ -117,39 +118,43 @@ export default function UploadForm() {
           </select>
         </div>
 
-        {/* Subject */}
+        {/* Semester */}
         <div className="form-group">
-          <label className="form-label">Subject</label>
+          <label className="form-label">Semester</label>
           <select
             className="select-cyber"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
+            value={semester}
+            onChange={(e) => {
+              setSemester(e.target.value);
+              setSubject('');
+            }}
             required
             disabled={!department}
           >
-            <option value="">Select Subject</option>
-            {subjects.map((sub) => (
-              <option key={sub} value={sub}>
-                {sub}
+            <option value="">Select Semester</option>
+            {SEMESTERS.map((sem) => (
+              <option key={sem} value={sem}>
+                Semester {sem}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Semester & Year */}
+        {/* Subject & Year */}
         <div className="form-row">
           <div className="form-group">
-            <label className="form-label">Semester</label>
+            <label className="form-label">Subject</label>
             <select
               className="select-cyber"
-              value={semester}
-              onChange={(e) => setSemester(e.target.value)}
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
               required
+              disabled={!semester}
             >
-              <option value="">Select Semester</option>
-              {SEMESTERS.map((sem) => (
-                <option key={sem} value={sem}>
-                  Semester {sem}
+              <option value="">Select Subject</option>
+              {subjects.map((sub) => (
+                <option key={sub} value={sub}>
+                  {sub}
                 </option>
               ))}
             </select>

@@ -3,6 +3,14 @@ import { Search, ArrowRight } from 'lucide-react';
 import './Hero.css';
 
 export default function Hero() {
+  const scrollToDepartments = (e) => {
+    e.preventDefault();
+    const el = document.getElementById('departments');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <section className="hero-section">
       {/* Background Effects */}
@@ -37,10 +45,10 @@ export default function Hero() {
             </p>
 
             <div className="hero-actions">
-              <Link to="/#departments" className="btn-cyber-solid">
+              <button onClick={scrollToDepartments} className="btn-cyber-solid">
                 <Search size={16} />
                 Browse Departments
-              </Link>
+              </button>
               <Link to="/upload" className="btn-cyber">
                 <ArrowRight size={16} />
                 Upload Paper
