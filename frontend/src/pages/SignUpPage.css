@@ -13,25 +13,50 @@
   overflow: hidden;
 }
 
+/* Premium Cursor Glow Effect */
+.signup-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(175, 179, 247, 0.12),
+    transparent 40%
+  );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.signup-page:hover::before {
+  opacity: 1;
+}
+
 .signup-container {
   width: 100%;
-  max-width: 520px;
+  max-width: 440px;
   position: relative;
   z-index: 10;
+  padding-top: 5rem; /* For fixed navbar */
+  padding-bottom: 2.5rem;
 }
 
 /* ───── Signup Card ───── */
 .signup-card {
-  background: rgba(13, 15, 20, 0.8);
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  border: 1px solid rgba(175, 179, 247, 0.15);
-  border-radius: 0.75rem;
-  padding: 2.5rem 2rem;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  animation: slideUp 0.4s ease-out;
+  background: rgba(255, 255, 255, 0.03); /* Lighter transparent fill for pure glass */
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background-clip: padding-box;
+  padding: 2rem 1.75rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05); /* Inner gleam only */
+  animation: slideUp 0.6s ease-out;
 }
 
 @keyframes slideUp {
@@ -221,57 +246,7 @@
   text-align: right;
 }
 
-/* ───── File Upload ───── */
-.file-upload-wrapper {
-  cursor: pointer;
-}
-
-.file-input {
-  display: none;
-}
-
-.file-upload-box {
-  padding: 1.5rem;
-  background: rgba(175, 179, 247, 0.05);
-  border: 2px dashed rgba(175, 179, 247, 0.25);
-  border-radius: 0.5rem;
-  text-align: center;
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.file-upload-wrapper:hover .file-upload-box {
-  background: rgba(175, 179, 247, 0.08);
-  border-color: rgba(175, 179, 247, 0.4);
-}
-
-.file-upload-box.has-file {
-  background: rgba(74, 222, 128, 0.05);
-  border-color: rgba(74, 222, 128, 0.25);
-}
-
-.upload-icon {
-  color: var(--color-vault-lavender);
-}
-
-.file-upload-box.has-file .upload-icon {
-  color: var(--color-vault-success);
-}
-
-.upload-text {
-  font-size: 0.9rem;
-  color: #fff;
-  margin: 0;
-  font-weight: 500;
-}
-
-.upload-hint {
-  font-size: 0.75rem;
-  color: rgba(175, 179, 247, 0.5);
-}
+/* Removed File Upload CSS */
 
 /* ───── Checkbox ───── */
 .checkbox-group {
@@ -436,44 +411,58 @@
 
 /* ───── Decorations ───── */
 .signup-decorations {
+  display: none;
+}
+
+.parallax-wrap {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .decoration {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.05;
-  filter: blur(40px);
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: organicFloat 12s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
 }
 
 .circle-1 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(175, 179, 247, 0.2), transparent);
-  top: -100px;
-  right: -100px;
-  animation: float 20s ease-in-out infinite;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+  top: -10%;
+  right: -10%;
+  animation-delay: 0s;
 }
 
 .circle-2 {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(146, 188, 234, 0.2), transparent);
-  bottom: -50px;
-  left: -50px;
-  animation: float 25s ease-in-out infinite 2s;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
+  bottom: -20%;
+  left: -20%;
+  animation-delay: -4s;
 }
 
 .circle-3 {
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(129, 140, 248, 0.2), transparent);
-  top: 50%;
-  left: 50%;
-  animation: float 30s ease-in-out infinite 4s;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #c026d3 0%, transparent 70%);
+  top: 40%;
+  left: 30%;
+  animation-delay: -8s;
+}
+
+@keyframes organicFloat {
+  0% { transform: scale(1) translate(0, 0) rotate(0deg); }
+  33% { transform: scale(1.1) translate(30px, -50px) rotate(10deg); }
+  66% { transform: scale(0.9) translate(-40px, 40px) rotate(-5deg); }
+  100% { transform: scale(1.05) translate(20px, 20px) rotate(5deg); }
 }
 
 @keyframes float {

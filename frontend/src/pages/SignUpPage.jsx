@@ -6,14 +6,13 @@ import {
   User,
   Lock,
   Phone,
-  FileUp,
   ArrowRight,
   Eye,
   EyeOff,
   AlertTriangle,
   CheckCircle2,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import "./SignUpPage.css";
 
 const pageVariants = {
@@ -31,7 +30,6 @@ export default function SignUpPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
-    universityId: null,
     agreeTerms: false,
   });
 
@@ -39,7 +37,6 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [idFileName, setIdFileName] = useState("");
   const [passwordStrength, setPasswordStrength] = useState(0);
 
   const { signup } = useAuth();
@@ -72,34 +69,6 @@ export default function SignUpPage() {
     // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Validate file type
-      const validTypes = ["image/jpeg", "image/png", "application/pdf"];
-      if (!validTypes.includes(file.type)) {
-        setErrors((prev) => ({
-          ...prev,
-          universityId: "Only JPG, PNG, or PDF files are allowed",
-        }));
-        return;
-      }
-
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors((prev) => ({
-          ...prev,
-          universityId: "File size must be less than 5MB",
-        }));
-        return;
-      }
-
-      setFormData((prev) => ({ ...prev, universityId: file }));
-      setIdFileName(file.name);
-      setErrors((prev) => ({ ...prev, universityId: "" }));
     }
   };
 
@@ -141,10 +110,6 @@ export default function SignUpPage() {
 
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    if (!formData.universityId) {
-      newErrors.universityId = "University ID card is required";
     }
 
     if (!formData.agreeTerms) {
@@ -196,6 +161,35 @@ export default function SignUpPage() {
     return colors[passwordStrength] || colors[0];
   };
 
+  // High-Energy Interactive parallax background hooks
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 40, stiffness: 120 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const animateX1 = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 1500], [180, -180]);
+  const animateY1 = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [180, -180]);
+
+  const animateX2 = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 1500], [-250, 250]);
+  const animateY2 = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [-250, 250]);
+
+  const animateX3 = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 1500], [120, -120]);
+  const animateY3 = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [-120, 120]);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top } = currentTarget.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+    currentTarget.style.setProperty("--mouse-x", `${x}px`);
+    currentTarget.style.setProperty("--mouse-y", `${y}px`);
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
   return (
     <motion.div
       className="signup-page"
@@ -204,6 +198,7 @@ export default function SignUpPage() {
       exit="exit"
       variants={pageVariants}
       transition={{ duration: 0.3, ease: "easeInOut" }}
+      onMouseMove={handleMouseMove}
     >
       <div className="signup-container">
         <div className="signup-card">
@@ -402,44 +397,6 @@ export default function SignUpPage() {
               )}
             </div>
 
-            {/* University ID Upload */}
-            <div className="form-group">
-              <label className="form-label">University ID Card *</label>
-              <label className="file-upload-wrapper">
-                <input
-                  type="file"
-                  name="universityId"
-                  accept=".jpg,.jpeg,.png,.pdf"
-                  onChange={handleFileChange}
-                  disabled={isLoading}
-                  className="file-input"
-                />
-                <div
-                  className={`file-upload-box ${formData.universityId ? "has-file" : ""}`}
-                >
-                  <FileUp size={24} className="upload-icon" />
-                  {idFileName ? (
-                    <>
-                      <p className="upload-text">✓ {idFileName}</p>
-                      <span className="upload-hint">Click to change</span>
-                    </>
-                  ) : (
-                    <>
-                      <p className="upload-text">
-                        Click to upload or drag and drop
-                      </p>
-                      <span className="upload-hint">
-                        JPG, PNG, or PDF (Max. 5MB)
-                      </span>
-                    </>
-                  )}
-                </div>
-              </label>
-              {errors.universityId && (
-                <span className="error-text">{errors.universityId}</span>
-              )}
-            </div>
-
             {/* Terms and Conditions */}
             <div className="form-group checkbox-group">
               <div className="checkbox-wrapper">
@@ -516,11 +473,17 @@ export default function SignUpPage() {
           </form>
         </div>
 
-        {/* Decorative Elements */}
+        {/* Decorative Elements (Interactive Parallax) */}
         <div className="signup-decorations">
-          <div className="decoration circle-1"></div>
-          <div className="decoration circle-2"></div>
-          <div className="decoration circle-3"></div>
+          <motion.div className="parallax-wrap" style={{ x: animateX1, y: animateY1 }}>
+            <div className="decoration circle-1"></div>
+          </motion.div>
+          <motion.div className="parallax-wrap" style={{ x: animateX2, y: animateY2 }}>
+            <div className="decoration circle-2"></div>
+          </motion.div>
+          <motion.div className="parallax-wrap" style={{ x: animateX3, y: animateY3 }}>
+            <div className="decoration circle-3"></div>
+          </motion.div>
         </div>
       </div>
     </motion.div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Mail, ArrowRight, Lock } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import "./LoginPage.css";
 
 const pageVariants = {
@@ -26,6 +26,35 @@ export default function LoginPage() {
     navigate(from);
     return null;
   }
+
+  // Interactive parallax background hooks
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 50, stiffness: 200 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const animateX1 = useTransform(smoothX, [0, 1500], [60, -60]);
+  const animateY1 = useTransform(smoothY, [0, 1000], [60, -60]);
+
+  const animateX2 = useTransform(smoothX, [0, 1500], [-80, 80]);
+  const animateY2 = useTransform(smoothY, [0, 1000], [-80, 80]);
+
+  const animateX3 = useTransform(smoothX, [0, 1500], [40, -40]);
+  const animateY3 = useTransform(smoothY, [0, 1000], [-40, 40]);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top } = currentTarget.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+    currentTarget.style.setProperty("--mouse-x", `${x}px`);
+    currentTarget.style.setProperty("--mouse-y", `${y}px`);
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,6 +107,7 @@ export default function LoginPage() {
       exit="exit"
       variants={pageVariants}
       transition={{ duration: 0.3, ease: "easeInOut" }}
+      onMouseMove={handleMouseMove}
     >
       <div className="login-container">
         <div className="login-card">
@@ -165,11 +195,17 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Side Decoration */}
+        {/* Side Decoration (Interactive Parallax) */}
         <div className="login-decoration">
-          <div className="decoration-circle decoration-1"></div>
-          <div className="decoration-circle decoration-2"></div>
-          <div className="decoration-circle decoration-3"></div>
+          <motion.div className="parallax-wrap" style={{ x: animateX1, y: animateY1 }}>
+            <div className="decoration-circle decoration-1"></div>
+          </motion.div>
+          <motion.div className="parallax-wrap" style={{ x: animateX2, y: animateY2 }}>
+            <div className="decoration-circle decoration-2"></div>
+          </motion.div>
+          <motion.div className="parallax-wrap" style={{ x: animateX3, y: animateY3 }}>
+            <div className="decoration-circle decoration-3"></div>
+          </motion.div>
         </div>
       </div>
     </motion.div>

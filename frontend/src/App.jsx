@@ -33,8 +33,8 @@ function AppLayout() {
   return (
     <>
       <ScrollToTop />
-      {!isAuthPage && <Header />}
-      <main style={{ minHeight: isAuthPage ? "100vh" : "60vh" }}>
+      <Header />
+      <main style={{ minHeight: isAuthPage ? "100vh" : "calc(100vh - 160px)" }}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<HomePage />} />
@@ -47,7 +47,7 @@ function AppLayout() {
           </Routes>
         </AnimatePresence>
       </main>
-      {!isAuthPage && <Footer />}
+      <Footer />
     </>
   );
 }
