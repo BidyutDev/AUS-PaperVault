@@ -143,4 +143,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-data/
+uploads/
+admins.js
