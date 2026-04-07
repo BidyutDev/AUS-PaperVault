@@ -1,13 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, FileText, Search, X, Command } from 'lucide-react';
-import departments from '../../data/departments';
-import { getPaperCountByDept } from '../../data/mockPapers';
-import Tilt from 'react-parallax-tilt';
-import './DepartmentGrid.css';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, FileText, Search, X, Command } from "lucide-react";
+import { useDepartments } from "../../hooks/useDepartments";
+import { getPaperCountByDept } from "../../data/mockPapers";
+import Tilt from "react-parallax-tilt";
+import "./DepartmentGrid.css";
 
 export default function DepartmentGrid() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const departments = useDepartments();
+  const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const searchRef = useRef(null);
@@ -30,43 +31,43 @@ export default function DepartmentGrid() {
   // Keyboard shortcut: Ctrl+K to focus search
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
         inputRef.current?.focus();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   // Handle arrow keys + enter in dropdown
   const handleSearchKeyDown = useCallback(
     (e) => {
       if (!showDropdown) return;
-      if (e.key === 'ArrowDown') {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
         setHighlightedIndex((prev) =>
-          prev < filteredDepartments.length - 1 ? prev + 1 : 0
+          prev < filteredDepartments.length - 1 ? prev + 1 : 0,
         );
-      } else if (e.key === 'ArrowUp') {
+      } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setHighlightedIndex((prev) =>
-          prev > 0 ? prev - 1 : filteredDepartments.length - 1
+          prev > 0 ? prev - 1 : filteredDepartments.length - 1,
         );
-      } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+      } else if (e.key === "Enter" && highlightedIndex >= 0) {
         e.preventDefault();
         const dept = filteredDepartments[highlightedIndex];
         if (dept) {
           navigate(`/department/${dept.id}`);
-          setSearchQuery('');
+          setSearchQuery("");
           inputRef.current?.blur();
         }
-      } else if (e.key === 'Escape') {
+      } else if (e.key === "Escape") {
         inputRef.current?.blur();
-        setSearchQuery('');
+        setSearchQuery("");
       }
     },
-    [showDropdown, filteredDepartments, highlightedIndex, navigate]
+    [showDropdown, filteredDepartments, highlightedIndex, navigate],
   );
 
   // Close dropdown on outside click
@@ -76,8 +77,8 @@ export default function DepartmentGrid() {
         setIsFocused(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Reset highlight when query changes
@@ -86,7 +87,7 @@ export default function DepartmentGrid() {
   }, [searchQuery]);
 
   const clearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     inputRef.current?.focus();
   };
 
@@ -95,9 +96,7 @@ export default function DepartmentGrid() {
       <div className="container-vault">
         {/* Section Header */}
         <div className="dept-grid-header">
-          <div className="dept-grid-label">
-            Select Department
-          </div>
+          <div className="dept-grid-label">Select Department</div>
           <h2 className="dept-grid-title">Browse By Department</h2>
           <p className="dept-grid-subtitle">
             Choose your department to find question papers organized by subject,
@@ -107,7 +106,7 @@ export default function DepartmentGrid() {
 
         {/* ═══════ SEARCH BAR ═══════ */}
         <div className="dept-search-wrapper" ref={searchRef}>
-          <div className={`dept-search-bar ${isFocused ? 'focused' : ''}`}>
+          <div className={`dept-search-bar ${isFocused ? "focused" : ""}`}>
             <Search size={16} className="dept-search-icon" />
             <input
               ref={inputRef}
@@ -122,11 +121,18 @@ export default function DepartmentGrid() {
               autoComplete="off"
             />
             {searchQuery && (
-              <button className="dept-search-clear" onClick={clearSearch} title="Clear search">
+              <button
+                className="dept-search-clear"
+                onClick={clearSearch}
+                title="Clear search"
+              >
                 <X size={14} />
               </button>
             )}
-            <div className="dept-search-shortcut" title="Press Ctrl+K to search">
+            <div
+              className="dept-search-shortcut"
+              title="Press Ctrl+K to search"
+            >
               <Command size={10} />
               <span>K</span>
             </div>
@@ -138,7 +144,8 @@ export default function DepartmentGrid() {
               {filteredDepartments.length > 0 ? (
                 <>
                   <div className="dept-search-dropdown-label">
-                    {filteredDepartments.length} department{filteredDepartments.length !== 1 ? 's' : ''} found
+                    {filteredDepartments.length} department
+                    {filteredDepartments.length !== 1 ? "s" : ""} found
                   </div>
                   {filteredDepartments.map((dept, index) => {
                     const Icon = dept.icon;
@@ -147,25 +154,35 @@ export default function DepartmentGrid() {
                       <Link
                         to={`/department/${dept.id}`}
                         key={dept.id}
-                        className={`dept-search-result ${highlightedIndex === index ? 'highlighted' : ''}`}
+                        className={`dept-search-result ${highlightedIndex === index ? "highlighted" : ""}`}
                         onClick={() => {
-                          setSearchQuery('');
+                          setSearchQuery("");
                           setIsFocused(false);
                         }}
                         onMouseEnter={() => setHighlightedIndex(index)}
                       >
-                        <div className="dept-search-result-icon" style={{ color: dept.color }}>
+                        <div
+                          className="dept-search-result-icon"
+                          style={{ color: dept.color }}
+                        >
                           <Icon size={18} />
                         </div>
                         <div className="dept-search-result-info">
-                          <span className="dept-search-result-code">{dept.shortName}</span>
-                          <span className="dept-search-result-name">{dept.name}</span>
+                          <span className="dept-search-result-code">
+                            {dept.shortName}
+                          </span>
+                          <span className="dept-search-result-name">
+                            {dept.name}
+                          </span>
                         </div>
                         <div className="dept-search-result-count">
                           <FileText size={11} />
                           <span>{paperCount}</span>
                         </div>
-                        <ArrowRight size={13} className="dept-search-result-arrow" />
+                        <ArrowRight
+                          size={13}
+                          className="dept-search-result-arrow"
+                        />
                       </Link>
                     );
                   })}
@@ -201,15 +218,15 @@ export default function DepartmentGrid() {
                 transitionSpeed={400}
                 tiltMaxAngleX={5}
                 tiltMaxAngleY={5}
-                style={{ height: '100%' }} // Ensures the tilt container takes full height
+                style={{ height: "100%" }} // Ensures the tilt container takes full height
               >
                 <Link
                   to={`/department/${dept.id}`}
                   className="dept-card animate-slideUp"
                   style={{
-                    '--card-accent': dept.color,
+                    "--card-accent": dept.color,
                     animationDelay: `${index * 0.05}s`,
-                    height: '100%', // Ensure link inside tilt takes full height
+                    height: "100%", // Ensure link inside tilt takes full height
                   }}
                 >
                   <div className="dept-card-icon" style={{ color: dept.color }}>
@@ -219,7 +236,14 @@ export default function DepartmentGrid() {
                   <div className="dept-card-name">{dept.name}</div>
                   <div className="dept-card-meta">
                     <div className="dept-card-papers">
-                      <FileText size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
+                      <FileText
+                        size={12}
+                        style={{
+                          display: "inline",
+                          marginRight: "4px",
+                          verticalAlign: "middle",
+                        }}
+                      />
                       <span>{paperCount}</span> papers
                     </div>
                     <ArrowRight size={14} className="dept-card-arrow" />

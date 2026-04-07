@@ -34,7 +34,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(175, 179, 247, 0.15), rgba(146, 188, 234, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(175, 179, 247, 0.15),
+    rgba(146, 188, 234, 0.1)
+  );
   border: 1px solid rgba(175, 179, 247, 0.3);
 }
 
@@ -150,7 +154,7 @@
 }
 
 .nav-link.active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -217,5 +221,211 @@
 @media (min-width: 768px) {
   .mobile-stats {
     display: none;
+  }
+}
+
+/* ───── User Menu ───── */
+.user-menu-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(175, 179, 247, 0.06);
+  border: 1px solid rgba(175, 179, 247, 0.15);
+  border-radius: 0.375rem;
+  color: var(--color-vault-lavender);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.user-menu-btn:hover {
+  background: rgba(175, 179, 247, 0.12);
+  border-color: rgba(175, 179, 247, 0.25);
+}
+
+.user-menu-btn:active {
+  background: rgba(175, 179, 247, 0.15);
+}
+
+.user-name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: rgba(13, 15, 20, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(175, 179, 247, 0.15);
+  border-radius: 0.5rem;
+  min-width: 240px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out;
+}
+
+.user-info {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  color: rgba(175, 179, 247, 0.8);
+}
+
+.user-info svg {
+  flex-shrink: 0;
+  color: var(--color-vault-lavender);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: var(--color-vault-lavender);
+  margin: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-name-small {
+  font-size: 0.75rem;
+  color: rgba(175, 179, 247, 0.6);
+  margin: 0;
+}
+
+.dropdown-divider {
+  border: none;
+  border-top: 1px solid rgba(175, 179, 247, 0.1);
+  margin: 0;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  color: rgba(240, 100, 100, 0.8);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  text-align: left;
+}
+
+.logout-btn:hover {
+  background: rgba(240, 100, 100, 0.1);
+  color: rgba(240, 100, 100, 1);
+}
+
+.logout-btn svg {
+  flex-shrink: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ───── Auth Buttons ───── */
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.login-btn {
+  background: rgba(175, 179, 247, 0.08);
+  border: 1px solid rgba(175, 179, 247, 0.25);
+  color: var(--color-vault-lavender);
+}
+
+.login-btn:hover {
+  background: rgba(175, 179, 247, 0.15);
+  border-color: rgba(175, 179, 247, 0.4);
+  box-shadow: 0 0 12px rgba(175, 179, 247, 0.2);
+}
+
+.signup-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(175, 179, 247, 0.2),
+    rgba(146, 188, 234, 0.15)
+  );
+  border: 1px solid rgba(175, 179, 247, 0.3);
+  color: #fff;
+  font-weight: 700;
+}
+
+.signup-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(175, 179, 247, 0.3),
+    rgba(146, 188, 234, 0.25)
+  );
+  border-color: rgba(175, 179, 247, 0.5);
+  box-shadow: 0 0 16px rgba(175, 179, 247, 0.3);
+}
+
+@media (max-width: 768px) {
+  .auth-buttons {
+    gap: 0.35rem;
+  }
+
+  .auth-btn {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .user-menu-btn .user-name {
+    display: none;
+  }
+
+  .user-menu-btn {
+    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
   }
 }

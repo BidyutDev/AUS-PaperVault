@@ -1,0 +1,121 @@
+.year-selector {
+  margin-bottom: 2rem;
+  animation: slideIn 0.4s ease-out;
+}
+
+.year-selector-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-vault-steel);
+  margin-bottom: 1rem;
+}
+
+.year-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.year-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  background: rgba(22, 26, 34, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-vault-steel);
+  z-index: 1;
+  overflow: hidden;
+}
+
+.year-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(175, 179, 247, 0.5) 0%,
+    transparent 60%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.year-item:hover {
+  transform: translateY(-3px);
+  background: rgba(28, 32, 41, 0.6);
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.5),
+    0 0 15px -3px rgba(175, 179, 247, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.year-item:hover::before {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    var(--color-vault-lavender) 0%,
+    var(--color-vault-blue) 100%
+  );
+}
+
+.year-item.active {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(175, 179, 247, 0.15);
+  color: var(--color-vault-lavender);
+  box-shadow:
+    0 0 20px rgba(175, 179, 247, 0.3),
+    inset 0 0 10px rgba(175, 179, 247, 0.1);
+}
+
+.year-item.active::before {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    var(--color-vault-lavender),
+    var(--color-vault-blue)
+  );
+}
+
+.year-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.year-item-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
+.year-item-name {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 0.4rem;
+}

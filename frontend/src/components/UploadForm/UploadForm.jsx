@@ -1,43 +1,67 @@
-import { useState, useRef } from 'react';
-import { Upload, FileText, X, AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useDropzone } from 'react-dropzone';
-import { motion, AnimatePresence } from 'framer-motion';
-import departments, { YEARS, SEMESTERS, getSubjectsForSemester } from '../../data/departments';
-import { addPendingUpload } from '../../data/mockPapers';
-import './UploadForm.css';
+import { useState, useRef } from "react";
+import {
+  Upload,
+  FileText,
+  X,
+  AlertTriangle,
+  CheckCircle2,
+  ArrowRight,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDropzone } from "react-dropzone";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../../context/AuthContext";
+import { useDepartments } from "../../hooks/useDepartments";
+import { SEMESTERS, getSubjectsForSemester } from "../../data/departments";
+import { addPendingUpload } from "../../data/mockPapers";
+import "./UploadForm.css";
 
 export default function UploadForm() {
-  const [department, setDepartment] = useState('');
-  const [subject, setSubject] = useState('');
-  const [semester, setSemester] = useState('');
-  const [year, setYear] = useState('');
+  const departments = useDepartments();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const [department, setDepartment] = useState("");
+  const [subject, setSubject] = useState("");
+  const [semester, setSemester] = useState("");
+  const [year, setYear] = useState("");
   const [file, setFile] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showLoginWarning, setShowLoginWarning] = useState(false);
   const fileRef = useRef();
 
   const selectedDept = departments.find((d) => d.id === department);
-  const subjects = (selectedDept && semester) ? getSubjectsForSemester(selectedDept, parseInt(semester)) : [];
+  const subjects =
+    selectedDept && semester
+      ? getSubjectsForSemester(selectedDept, parseInt(semester))
+      : [];
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles[0]) setFile(acceptedFiles[0]);
   };
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    onDrop,
-    accept: {
-      'application/pdf': ['.pdf'],
-      'image/jpeg': ['.jpeg', '.jpg'],
-      'image/png': ['.png'],
-      'image/webp': ['.webp']
-    },
-    maxSize: 10485760, // 10MB
-    multiple: false
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragReject } =
+    useDropzone({
+      onDrop,
+      accept: {
+        "application/pdf": [".pdf"],
+        "image/jpeg": [".jpeg", ".jpg"],
+        "image/png": [".png"],
+        "image/webp": [".webp"],
+      },
+      maxSize: 10485760, // 10MB
+      multiple: false,
+    });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check if user is logged in
+    if (!isLoggedIn) {
+      setShowLoginWarning(true);
+      return;
+    }
+
     if (!department || !subject || !semester || !year || !file) return;
 
     addPendingUpload({
@@ -47,17 +71,17 @@ export default function UploadForm() {
       year: parseInt(year),
       fileName: file.name,
       fileSize: file.size,
-      uploaderName: 'Anonymous',
+      uploaderName: "Anonymous",
     });
 
     setSubmitted(true);
   };
 
   const resetForm = () => {
-    setDepartment('');
-    setSubject('');
-    setSemester('');
-    setYear('');
+    setDepartment("");
+    setSubject("");
+    setSemester("");
+    setYear("");
     setFile(null);
     setSubmitted(false);
   };
@@ -65,16 +89,23 @@ export default function UploadForm() {
   if (submitted) {
     return (
       <div className="upload-form-wrapper">
-        <div className="upload-success glass-card" style={{ padding: '2rem' }}>
+        <div className="upload-success glass-card" style={{ padding: "2rem" }}>
           <div className="upload-success-icon">
             <CheckCircle2 />
           </div>
           <h2 className="upload-success-title">Upload Submitted!</h2>
           <p className="upload-success-text">
-            Your question paper has been submitted for review. An admin will verify
-            and approve it before it appears on the main page.
+            Your question paper has been submitted for review. An admin will
+            verify and approve it before it appears on the main page.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <button className="btn-cyber-solid" onClick={resetForm}>
               Upload Another
             </button>
@@ -88,6 +119,66 @@ export default function UploadForm() {
     );
   }
 
+  // Login Warning Modal
+  if (showLoginWarning) {
+    return (
+      <div className="upload-form-wrapper">
+        <motion.div
+          className="login-warning-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="login-warning-modal glass-card"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+          >
+            <button
+              className="warning-close-btn"
+              onClick={() => setShowLoginWarning(false)}
+              aria-label="Close warning"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="warning-icon">
+              <AlertTriangle size={48} />
+            </div>
+
+            <h2 className="warning-title">Login Required</h2>
+            <p className="warning-text">
+              You need to log in or create an account before you can upload
+              question papers. This helps us maintain quality and track
+              contributions.
+            </p>
+
+            <div className="warning-actions">
+              <button
+                className="btn-cyber-solid"
+                onClick={() =>
+                  navigate("/login", {
+                    state: { from: { pathname: "/upload" } },
+                  })
+                }
+              >
+                <ArrowRight size={16} />
+                Go to Login
+              </button>
+              <button
+                className="btn-cyber"
+                onClick={() => setShowLoginWarning(false)}
+              >
+                Continue Browsing
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="upload-form-wrapper">
       <div className="upload-title-section">
@@ -97,12 +188,16 @@ export default function UploadForm() {
         </div>
         <h1 className="upload-title">Upload Question Paper</h1>
         <p className="upload-subtitle">
-          Share question papers with fellow students. All uploads are reviewed by
-          an admin before publishing.
+          Share question papers with fellow students. All uploads are reviewed
+          by an admin before publishing.
         </p>
       </div>
 
-      <form className="upload-form glass-card" style={{ padding: '2rem' }} onSubmit={handleSubmit}>
+      <form
+        className="upload-form glass-card"
+        style={{ padding: "2rem" }}
+        onSubmit={handleSubmit}
+      >
         {/* Department */}
         <div className="form-group">
           <label className="form-label">Department</label>
@@ -111,8 +206,8 @@ export default function UploadForm() {
             value={department}
             onChange={(e) => {
               setDepartment(e.target.value);
-              setSemester('');
-              setSubject('');
+              setSemester("");
+              setSubject("");
             }}
             required
           >
@@ -133,7 +228,7 @@ export default function UploadForm() {
             value={semester}
             onChange={(e) => {
               setSemester(e.target.value);
-              setSubject('');
+              setSubject("");
             }}
             required
             disabled={!department}
@@ -168,19 +263,16 @@ export default function UploadForm() {
           </div>
           <div className="form-group">
             <label className="form-label">Year</label>
-            <select
-              className="select-cyber"
+            <input
+              type="number"
+              className="input-cyber"
               value={year}
               onChange={(e) => setYear(e.target.value)}
+              placeholder="Enter year (e.g., 2024)"
+              min="1900"
+              max="2100"
               required
-            >
-              <option value="">Select Year</option>
-              {YEARS.map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         </div>
 
@@ -201,7 +293,7 @@ export default function UploadForm() {
                 className="file-preview-remove"
                 onClick={() => {
                   setFile(null);
-                  if (fileRef.current) fileRef.current.value = '';
+                  if (fileRef.current) fileRef.current.value = "";
                 }}
               >
                 <X size={14} />
@@ -210,27 +302,42 @@ export default function UploadForm() {
           ) : (
             <motion.div
               {...getRootProps()}
-              className={`dropzone ${isDragActive ? 'dragover' : ''} ${isDragReject ? 'reject' : ''}`}
+              className={`dropzone ${isDragActive ? "dragover" : ""} ${isDragReject ? "reject" : ""}`}
               animate={{
-                borderColor: isDragActive ? '#afb3f7' : isDragReject ? '#ff8080' : 'rgba(122, 147, 172, 0.2)',
-                backgroundColor: isDragActive ? 'rgba(175, 179, 247, 0.08)' : isDragReject ? 'rgba(255, 128, 128, 0.08)' : 'transparent',
-                scale: isDragActive ? 1.02 : 1
+                borderColor: isDragActive
+                  ? "#afb3f7"
+                  : isDragReject
+                    ? "#ff8080"
+                    : "rgba(122, 147, 172, 0.2)",
+                backgroundColor: isDragActive
+                  ? "rgba(175, 179, 247, 0.08)"
+                  : isDragReject
+                    ? "rgba(255, 128, 128, 0.08)"
+                    : "transparent",
+                scale: isDragActive ? 1.02 : 1,
               }}
-              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-              style={{ cursor: 'pointer' }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              style={{ cursor: "pointer" }}
             >
               <input {...getInputProps()} />
-              <motion.div 
+              <motion.div
                 className="dropzone-icon"
                 animate={{ y: isDragActive ? -5 : 0 }}
               >
                 <Upload />
               </motion.div>
               <p className="dropzone-text">
-                {isDragActive 
-                  ? isDragReject ? 'Invalid file type!' : 'Drop paper here...'
-                  : <>Drag & drop or <strong>browse</strong></>
-                }
+                {isDragActive ? (
+                  isDragReject ? (
+                    "Invalid file type!"
+                  ) : (
+                    "Drop paper here..."
+                  )
+                ) : (
+                  <>
+                    Drag & drop or <strong>browse</strong>
+                  </>
+                )}
               </p>
               <p className="dropzone-hint">PDF, JPG, PNG — Max 10MB</p>
             </motion.div>
@@ -247,7 +354,12 @@ export default function UploadForm() {
             type="submit"
             className="btn-cyber-solid"
             disabled={!department || !subject || !semester || !year || !file}
-            style={{ opacity: (!department || !subject || !semester || !year || !file) ? 0.5 : 1 }}
+            style={{
+              opacity:
+                !department || !subject || !semester || !year || !file
+                  ? 0.5
+                  : 1,
+            }}
           >
             <Upload size={14} />
             Submit Paper

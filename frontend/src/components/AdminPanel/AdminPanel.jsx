@@ -18,17 +18,31 @@ import {
   Settings,
   BarChart3,
   Activity,
-  DownloadCloud
+  DownloadCloud,
 } from "lucide-react";
 import {
-  AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer
-} from 'recharts';
-import { getDepartments, addDepartment } from "../../data/departments";
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+} from "recharts";
+import {
+  getDepartments,
+  addDepartment,
+  getSubjectsForSemester,
+  SEMESTERS,
+} from "../../data/departments";
 import {
   getPendingUploads,
   approveUpload,
   rejectUpload,
   getAllPapers,
+  updatePendingUpload,
 } from "../../data/mockPapers";
 import "./AdminPanel.css";
 import { apiFetch } from "../../api/api";
@@ -73,10 +87,28 @@ export default function AdminPanel() {
   const [deptError, setDeptError] = useState("");
   const [deptSuccess, setDeptSuccess] = useState("");
   const [allDepartments, setAllDepartments] = useState(() => getDepartments());
+  const [editingUploadId, setEditingUploadId] = useState(null);
+  const [editUploadData, setEditUploadData] = useState({
+    department: "",
+    subject: "",
+    year: "",
+    semester: "",
+  });
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 60_000);
     return () => clearInterval(id);
+  }, []);
+
+  // Listen for upload changes and trigger re-render
+  useEffect(() => {
+    const handleUploadsUpdated = () => {
+      // Trigger a re-render by updating the current time (dummy state update)
+      setNow(Date.now());
+    };
+    window.addEventListener("uploadsUpdated", handleUploadsUpdated);
+    return () =>
+      window.removeEventListener("uploadsUpdated", handleUploadsUpdated);
   }, []);
 
   // Lockout countdown timer
@@ -103,11 +135,11 @@ export default function AdminPanel() {
     e.preventDefault();
     if (isLocked) return;
 
-    const data = await apiFetch("/admin/auth" , "POST", {
-      body : {
+    const data = await apiFetch("/admin/auth", "POST", {
+      body: {
         username,
-        password
-      }
+        password,
+      },
     });
 
     if (data.success) {
@@ -174,6 +206,9 @@ export default function AdminPanel() {
 
       // Update local state
       setAllDepartments(getDepartments());
+
+      // Dispatch custom event so other components know to update
+      window.dispatchEvent(new Event("departmentsUpdated"));
 
       // Reset form
       setNewDeptForm({
@@ -250,6 +285,10 @@ export default function AdminPanel() {
 
       // Update local state
       setAllDepartments(updatedDepts);
+
+      // Dispatch custom event so other components know to update
+      window.dispatchEvent(new Event("departmentsUpdated"));
+
       setEditingDeptId(null);
       setShowEditForm(false);
       setDeptSuccess("Department updated successfully! ✓");
@@ -274,7 +313,29 @@ export default function AdminPanel() {
     setDeptError("");
   };
 
+  const saveEditChanges = (uploadId) => {
+    if (editingUploadId === uploadId) {
+      updatePendingUpload(uploadId, {
+        department: editUploadData.department || selected.department,
+        subject: editUploadData.subject || selected.subject,
+        year: parseInt(editUploadData.year) || selected.year,
+        semester: parseInt(editUploadData.semester) || selected.semester,
+      });
+      // Dispatch event so other components know about the update
+      window.dispatchEvent(new Event("uploadsUpdated"));
+      setEditingUploadId(null);
+      setEditUploadData({
+        department: "",
+        subject: "",
+        year: "",
+        semester: "",
+      });
+    }
+  };
+
   const handleApprove = (id) => {
+    // If editing, save changes first
+    saveEditChanges(id);
     approveUpload(id);
     setActionFeedback({
       type: "approved",
@@ -425,18 +486,18 @@ export default function AdminPanel() {
 
   // Mock Analytics Data
   const trafficData = [
-    { name: 'Mon', downloads: 120, uploads: 15 },
-    { name: 'Tue', downloads: 180, uploads: 22 },
-    { name: 'Wed', downloads: 250, uploads: 40 },
-    { name: 'Thu', downloads: 210, uploads: 35 },
-    { name: 'Fri', downloads: 190, uploads: 28 },
-    { name: 'Sat', downloads: 90, uploads: 10 },
-    { name: 'Sun', downloads: 110, uploads: 12 },
+    { name: "Mon", downloads: 120, uploads: 15 },
+    { name: "Tue", downloads: 180, uploads: 22 },
+    { name: "Wed", downloads: 250, uploads: 40 },
+    { name: "Thu", downloads: 210, uploads: 35 },
+    { name: "Fri", downloads: 190, uploads: 28 },
+    { name: "Sat", downloads: 90, uploads: 10 },
+    { name: "Sun", downloads: 110, uploads: 12 },
   ];
 
-  const deptStats = allDepartments.map(dept => ({
+  const deptStats = allDepartments.map((dept) => ({
     name: dept.shortName,
-    papers: Math.floor(Math.random() * 200) + 50
+    papers: Math.floor(Math.random() * 200) + 50,
   }));
 
   // ───── MAIN REVIEW INTERFACE ─────
@@ -546,7 +607,13 @@ export default function AdminPanel() {
                       <button
                         key={item.id}
                         className={`admin-queue-item ${selectedIndex === index ? "active" : ""}`}
-                        onClick={() => setSelectedIndex(index)}
+                        onClick={() => {
+                          // Auto-save edits if switching items while editing
+                          if (editingUploadId && editingUploadId !== item.id) {
+                            saveEditChanges(editingUploadId);
+                          }
+                          setSelectedIndex(index);
+                        }}
                       >
                         <div className="admin-queue-item-top">
                           <span className="admin-queue-item-id">
@@ -583,19 +650,202 @@ export default function AdminPanel() {
                             {selected.subject}
                           </h2>
                           <div className="admin-review-tags">
-                            <span className="admin-review-tag primary">
-                              {getDeptShort(selected.department)}-
-                              {selected.semester}0{selected.semester}
-                            </span>
-                            <span className="admin-review-tag">
-                              {getDeptName(selected.department)}
-                            </span>
-                            <span className="admin-review-tag">
-                              Semester_{selected.semester}
-                            </span>
-                            <span className="admin-review-tag">
-                              {selected.year}
-                            </span>
+                            {editingUploadId === selected.id ? (
+                              <>
+                                <select
+                                  value={
+                                    editUploadData.department ||
+                                    selected.department
+                                  }
+                                  onChange={(e) =>
+                                    setEditUploadData({
+                                      ...editUploadData,
+                                      department: e.target.value,
+                                      subject: "",
+                                    })
+                                  }
+                                  style={{
+                                    padding: "0.3rem 0.6rem",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "0.75rem",
+                                    border:
+                                      "1px solid rgba(175, 179, 247, 0.5)",
+                                    borderRadius: "0.25rem",
+                                    background: "rgba(0, 20, 40, 0.8)",
+                                    color: "var(--color-vault-light)",
+                                    minWidth: "120px",
+                                  }}
+                                >
+                                  {allDepartments.map((dept) => (
+                                    <option key={dept.id} value={dept.id}>
+                                      {dept.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <select
+                                  value={
+                                    editUploadData.semester || selected.semester
+                                  }
+                                  onChange={(e) =>
+                                    setEditUploadData({
+                                      ...editUploadData,
+                                      semester: e.target.value,
+                                      subject: "",
+                                    })
+                                  }
+                                  style={{
+                                    padding: "0.3rem 0.6rem",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "0.75rem",
+                                    border:
+                                      "1px solid rgba(175, 179, 247, 0.5)",
+                                    borderRadius: "0.25rem",
+                                    background: "rgba(0, 20, 40, 0.8)",
+                                    color: "var(--color-vault-light)",
+                                    width: "100px",
+                                  }}
+                                >
+                                  {SEMESTERS.map((sem) => (
+                                    <option key={sem} value={sem}>
+                                      Sem {sem}
+                                    </option>
+                                  ))}
+                                </select>
+                                <select
+                                  value={
+                                    editUploadData.subject || selected.subject
+                                  }
+                                  onChange={(e) =>
+                                    setEditUploadData({
+                                      ...editUploadData,
+                                      subject: e.target.value,
+                                    })
+                                  }
+                                  style={{
+                                    padding: "0.3rem 0.6rem",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "0.75rem",
+                                    border:
+                                      "1px solid rgba(175, 179, 247, 0.5)",
+                                    borderRadius: "0.25rem",
+                                    background: "rgba(0, 20, 40, 0.8)",
+                                    color: "var(--color-vault-light)",
+                                    flex: 1,
+                                    minWidth: "150px",
+                                  }}
+                                >
+                                  <option value="">Select Subject</option>
+                                  {getSubjectsForSemester(
+                                    allDepartments.find(
+                                      (d) =>
+                                        d.id ===
+                                        (editUploadData.department ||
+                                          selected.department),
+                                    ),
+                                    parseInt(
+                                      editUploadData.semester ||
+                                        selected.semester,
+                                    ),
+                                  ).map((subj) => (
+                                    <option key={subj} value={subj}>
+                                      {subj}
+                                    </option>
+                                  ))}
+                                </select>
+                                <input
+                                  type="number"
+                                  value={editUploadData.year || selected.year}
+                                  onChange={(e) =>
+                                    setEditUploadData({
+                                      ...editUploadData,
+                                      year: e.target.value,
+                                    })
+                                  }
+                                  placeholder="Year"
+                                  min="1900"
+                                  max="2100"
+                                  style={{
+                                    padding: "0.3rem 0.6rem",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "0.75rem",
+                                    border:
+                                      "1px solid rgba(175, 179, 247, 0.5)",
+                                    borderRadius: "0.25rem",
+                                    background: "rgba(0, 20, 40, 0.8)",
+                                    color: "var(--color-vault-light)",
+                                    width: "80px",
+                                  }}
+                                />
+                                <button
+                                  onClick={() => {
+                                    saveEditChanges(selected.id);
+                                  }}
+                                  style={{
+                                    padding: "0.3rem 0.6rem",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "0.7rem",
+                                    background: "rgba(248, 113, 113, 0.2)",
+                                    border:
+                                      "1px solid rgba(248, 113, 113, 0.5)",
+                                    color: "var(--color-vault-danger)",
+                                    borderRadius: "0.25rem",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  Close_Edit
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <span className="admin-review-tag primary">
+                                  {getDeptShort(selected.department)}-
+                                  {selected.semester}0{selected.semester}
+                                </span>
+                                <span className="admin-review-tag">
+                                  {getDeptName(selected.department)}
+                                </span>
+                                <span className="admin-review-tag">
+                                  Semester_{selected.semester}
+                                </span>
+                                <span className="admin-review-tag">
+                                  {selected.year}
+                                </span>
+                                <button
+                                  onClick={() => {
+                                    setEditingUploadId(selected.id);
+                                    setEditUploadData({
+                                      department: selected.department,
+                                      subject: selected.subject,
+                                      year: String(selected.year),
+                                      semester: String(selected.semester),
+                                    });
+                                  }}
+                                  style={{
+                                    padding: "0.3rem 0.8rem",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "0.7rem",
+                                    background: "rgba(175, 179, 247, 0.15)",
+                                    border:
+                                      "1px solid rgba(175, 179, 247, 0.4)",
+                                    color: "rgba(175, 179, 247, 0.9)",
+                                    borderRadius: "0.25rem",
+                                    cursor: "pointer",
+                                    transition: "all 0.2s",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.target.style.background =
+                                      "rgba(175, 179, 247, 0.25)";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.target.style.background =
+                                      "rgba(175, 179, 247, 0.15)";
+                                  }}
+                                  title="Edit paper details"
+                                >
+                                  [EDIT_INFO]
+                                </button>
+                              </>
+                            )}
                           </div>
                         </div>
                         <div className="admin-review-header-right">
@@ -639,36 +889,65 @@ export default function AdminPanel() {
                         <div className="admin-preview-paper">
                           <div className="admin-preview-paper-header">
                             <div className="admin-preview-paper-dept">
-                              {getDeptName(selected.department)}
+                              {editingUploadId === selected.id
+                                ? getDeptName(
+                                    editUploadData.department ||
+                                      selected.department,
+                                  )
+                                : getDeptName(selected.department)}
                             </div>
                             <div className="admin-preview-paper-exam">
-                              End Semester Examination — {selected.year}
+                              End Semester Examination —{" "}
+                              {editingUploadId === selected.id
+                                ? editUploadData.year || selected.year
+                                : selected.year}
                             </div>
                           </div>
                           <div className="admin-preview-paper-info">
                             <span>
-                              Course: {getDeptShort(selected.department)}-
-                              {selected.semester}0{selected.semester}
+                              Course:{" "}
+                              {editingUploadId === selected.id
+                                ? getDeptShort(
+                                    editUploadData.department ||
+                                      selected.department,
+                                  )
+                                : getDeptShort(selected.department)}
+                              -
+                              {editingUploadId === selected.id
+                                ? editUploadData.semester || selected.semester
+                                : selected.semester}
+                              0
+                              {editingUploadId === selected.id
+                                ? editUploadData.semester || selected.semester
+                                : selected.semester}
                             </span>
                             <span>Time: 3 Hours</span>
                           </div>
                           <div className="admin-preview-paper-question">
                             <strong>Q1.</strong> Explain the fundamental
-                            concepts of {selected.subject} with suitable
-                            examples. Discuss the significance of each concept
-                            in the current academic context. (10 marks)
+                            concepts of{" "}
+                            {editingUploadId === selected.id
+                              ? editUploadData.subject || selected.subject
+                              : selected.subject}{" "}
+                            with suitable examples. Discuss the significance of
+                            each concept in the current academic context. (10
+                            marks)
                           </div>
                           <div className="admin-preview-paper-question">
                             <strong>Q2.</strong> Analyze the key principles in{" "}
-                            {selected.subject}. Under what conditions do these
-                            principles apply? Provide a detailed comparison. (15
-                            marks)
+                            {editingUploadId === selected.id
+                              ? editUploadData.subject || selected.subject
+                              : selected.subject}
+                            . Under what conditions do these principles apply?
+                            Provide a detailed comparison. (15 marks)
                           </div>
                           <div className="admin-preview-paper-question">
                             <strong>Q3.</strong> Write a detailed note on the
                             practical applications of topics covered in{" "}
-                            {selected.subject}. Include diagrams where
-                            applicable. (10 marks)
+                            {editingUploadId === selected.id
+                              ? editUploadData.subject || selected.subject
+                              : selected.subject}
+                            . Include diagrams where applicable. (10 marks)
                           </div>
                           <div className="admin-preview-placeholder">
                             [ DOCUMENT_PREVIEW ::{" "}
@@ -1125,60 +1404,184 @@ export default function AdminPanel() {
           </div>
         ) : (
           /* ═══ ANALYTICS TAB ═══ */
-          <div className="admin-analytics-section animate-slideUp" style={{ padding: '2rem', height: '100%', overflowY: 'auto' }}>
-            <h2 className="admin-departments-title" style={{ marginBottom: '2rem' }}>
-              Vault_Analytics <Activity size={18} style={{ display: 'inline', marginLeft: '0.5rem', color: 'var(--color-vault-lavender)' }} />
+          <div
+            className="admin-analytics-section animate-slideUp"
+            style={{ padding: "2rem", height: "100%", overflowY: "auto" }}
+          >
+            <h2
+              className="admin-departments-title"
+              style={{ marginBottom: "2rem" }}
+            >
+              Vault_Analytics{" "}
+              <Activity
+                size={18}
+                style={{
+                  display: "inline",
+                  marginLeft: "0.5rem",
+                  color: "var(--color-vault-lavender)",
+                }}
+              />
             </h2>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '2rem', marginBottom: '2rem' }} className="admin-analytics-grid">
-              <div className="glass-card" style={{ padding: '1.5rem' }}>
-                <h3 style={{ fontSize: '1rem', color: 'var(--color-vault-steel)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <DownloadCloud size={16} /> Weekly Traffic (Uploads vs Downloads)
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+                gap: "2rem",
+                marginBottom: "2rem",
+              }}
+              className="admin-analytics-grid"
+            >
+              <div className="glass-card" style={{ padding: "1.5rem" }}>
+                <h3
+                  style={{
+                    fontSize: "1rem",
+                    color: "var(--color-vault-steel)",
+                    marginBottom: "1.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <DownloadCloud size={16} /> Weekly Traffic (Uploads vs
+                  Downloads)
                 </h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={trafficData}>
                     <defs>
-                      <linearGradient id="colorDownloads" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#afb3f7" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#afb3f7" stopOpacity={0}/>
+                      <linearGradient
+                        id="colorDownloads"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#afb3f7"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#afb3f7"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
-                      <linearGradient id="colorUploads" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#ff8080" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#ff8080" stopOpacity={0}/>
+                      <linearGradient
+                        id="colorUploads"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#ff8080"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#ff8080"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                    <XAxis dataKey="name" stroke="#607b96" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#607b96" fontSize={12} tickLine={false} axisLine={false} />
-                    <RechartsTooltip 
-                      contentStyle={{ backgroundColor: 'rgba(22, 26, 34, 0.95)', border: '1px solid rgba(175, 179, 247, 0.2)', borderRadius: '8px', color: '#fff' }}
-                      itemStyle={{ color: '#fff' }}
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="rgba(255,255,255,0.05)"
+                      vertical={false}
                     />
-                    <Area type="monotone" dataKey="downloads" stroke="#afb3f7" fillOpacity={1} fill="url(#colorDownloads)" />
-                    <Area type="monotone" dataKey="uploads" stroke="#ff8080" fillOpacity={1} fill="url(#colorUploads)" />
+                    <XAxis
+                      dataKey="name"
+                      stroke="#607b96"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      stroke="#607b96"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <RechartsTooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(22, 26, 34, 0.95)",
+                        border: "1px solid rgba(175, 179, 247, 0.2)",
+                        borderRadius: "8px",
+                        color: "#fff",
+                      }}
+                      itemStyle={{ color: "#fff" }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="downloads"
+                      stroke="#afb3f7"
+                      fillOpacity={1}
+                      fill="url(#colorDownloads)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="uploads"
+                      stroke="#ff8080"
+                      fillOpacity={1}
+                      fill="url(#colorUploads)"
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className="glass-card" style={{ padding: '1.5rem' }}>
-                <h3 style={{ fontSize: '1rem', color: 'var(--color-vault-steel)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div className="glass-card" style={{ padding: "1.5rem" }}>
+                <h3
+                  style={{
+                    fontSize: "1rem",
+                    color: "var(--color-vault-steel)",
+                    marginBottom: "1.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
                   <FileText size={16} /> Repository Size by Department
                 </h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={deptStats}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                    <XAxis dataKey="name" stroke="#607b96" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#607b96" fontSize={12} tickLine={false} axisLine={false} />
-                    <RechartsTooltip 
-                      contentStyle={{ backgroundColor: 'rgba(22, 26, 34, 0.95)', border: '1px solid rgba(175, 179, 247, 0.2)', borderRadius: '8px', color: '#fff' }}
-                      cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="rgba(255,255,255,0.05)"
+                      vertical={false}
                     />
-                    <Bar dataKey="papers" fill="#92bcea" radius={[4, 4, 0, 0]} />
+                    <XAxis
+                      dataKey="name"
+                      stroke="#607b96"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      stroke="#607b96"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <RechartsTooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(22, 26, 34, 0.95)",
+                        border: "1px solid rgba(175, 179, 247, 0.2)",
+                        borderRadius: "8px",
+                        color: "#fff",
+                      }}
+                      cursor={{ fill: "rgba(255,255,255,0.05)" }}
+                    />
+                    <Bar
+                      dataKey="papers"
+                      fill="#92bcea"
+                      radius={[4, 4, 0, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
-            
           </div>
         )}
       </div>
