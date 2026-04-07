@@ -106,6 +106,21 @@ const developers = [
       website: '#',
     },
   },
+  {
+    name: 'Logo Designer',
+    initials: 'LD1',
+    // image: Adih,
+    role: 'Logo Designer',
+    dept: 'CSE, TSSOT',
+    bio: 'Post Open',
+    skills: [],
+    socials: {
+      // github: 'https://github.com/anirbandotdev',
+      // linkedin: 'https://www.linkedin.com/in/anirban-nath-42a63b25b/',
+      // email: 'mailto:anirbandev0101@gmail.com',
+      // website: '#',
+    },
+  },
 ];
 
 export default function DevsSection() {
@@ -155,8 +170,10 @@ export default function DevsSection() {
                   )}
                 </div>
                 <h3 className="dev-name">{dev.name}</h3>
-                <span className="dev-role">{dev.role}</span>
-                <span className="dev-role">{dev.dept}</span>
+                <div className="flex flex-col items-center">
+                 <span className="dev-role">{dev.role}</span>
+                 <span className="dev-dept w-25">{dev.dept}</span>
+                </div>
                 <p className="dev-bio">{dev.bio}</p>
 
                 {/* Skill tags */}
