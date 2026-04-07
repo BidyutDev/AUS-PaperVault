@@ -25,14 +25,7 @@ import {
   getAllPapers,
 } from "../../data/mockPapers";
 import "./AdminPanel.css";
-
-// ── Admin Credentials ──
-// Each admin has a unique username + password pair
-const ADMIN_ACCOUNTS = [
-  { username: "admin", password: "ausvault2024", role: "Super Admin" },
-  { username: "moderator", password: "mod@aus2024", role: "Moderator" },
-  { username: "reviewer", password: "review#2024", role: "Reviewer" },
-];
+import { apiFetch } from "../../api/api";
 
 /** Pending uploads use numeric ids (Date.now); coerce for display. */
 function queueIdLabel(id) {
@@ -100,19 +93,20 @@ export default function AdminPanel() {
   const pending = getPendingUploads();
   const approvedToday = getAllPapers().length;
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (isLocked) return;
 
-    const match = ADMIN_ACCOUNTS.find(
-      (acc) =>
-        acc.username.toLowerCase() === username.toLowerCase() &&
-        acc.password === password,
-    );
+    const data = await apiFetch("/admin/auth" , "POST", {
+      body : {
+        username,
+        password
+      }
+    });
 
-    if (match) {
+    if (data.success) {
       setAuthenticated(true);
-      setCurrentAdmin(match);
+      setCurrentAdmin(data.data);
       setError("");
       setLoginAttempts(0);
     } else {
