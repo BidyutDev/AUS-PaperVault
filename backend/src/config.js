@@ -5,4 +5,6 @@ config({
 });
 
 const PORT = process.env.PORT;
-export { PORT };
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
+
+export { PORT, CORS_ORIGIN };
