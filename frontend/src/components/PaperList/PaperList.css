@@ -324,3 +324,114 @@
   border: none;
   background: #fff;
 }
+
+/* ───── Mock PDF Viewer ───── */
+.mock-pdf-container {
+  width: 100%;
+  height: 100%;
+  background: #525659; /* Standard PDF viewer background */
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.mock-pdf-page {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  min-height: 1000px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  padding: 3rem;
+  font-family: "Times New Roman", Times, serif;
+  color: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.mock-pdf-header {
+  text-align: center;
+  border-bottom: 2px solid #000;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mock-pdf-header h2 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.mock-pdf-header h3 {
+  font-size: 1.1rem;
+  font-weight: normal;
+  margin: 0 0 0.5rem 0;
+}
+
+.mock-pdf-header p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.mock-pdf-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.mock-pdf-meta span:nth-child(even) {
+  text-align: right;
+}
+
+.mock-pdf-instructions {
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.mock-pdf-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+}
+
+.mock-question {
+  display: flex;
+  gap: 1rem;
+}
+
+.mock-question .q-num {
+  font-weight: bold;
+  min-width: 20px;
+}
+
+.mock-question .q-text {
+  flex: 1;
+}
+
+.mock-question .q-marks {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.mock-pdf-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  font-size: 5rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
