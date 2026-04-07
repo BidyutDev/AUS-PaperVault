@@ -12,9 +12,20 @@
   },
   "license": "ISC",
   "author": "bidyut , anirban , nilanjan",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon node src/index.js",
+    "prettier:check": "prettier . --check",
+    "prettier:write": "prettier . --write"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.1"
   }
 }
