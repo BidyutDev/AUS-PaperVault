@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { Upload, FileText, X, AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useDropzone } from 'react-dropzone';
+import { motion, AnimatePresence } from 'framer-motion';
 import departments, { YEARS, SEMESTERS, getSubjectsForSemester } from '../../data/departments';
 import { addPendingUpload } from '../../data/mockPapers';
 import './UploadForm.css';
@@ -18,16 +20,21 @@ export default function UploadForm() {
   const selectedDept = departments.find((d) => d.id === department);
   const subjects = (selectedDept && semester) ? getSubjectsForSemester(selectedDept, parseInt(semester)) : [];
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragOver(false);
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) setFile(droppedFile);
+  const onDrop = (acceptedFiles) => {
+    if (acceptedFiles[0]) setFile(acceptedFiles[0]);
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files[0]) setFile(e.target.files[0]);
-  };
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+    onDrop,
+    accept: {
+      'application/pdf': ['.pdf'],
+      'image/jpeg': ['.jpeg', '.jpg'],
+      'image/png': ['.png'],
+      'image/webp': ['.webp']
+    },
+    maxSize: 10485760, // 10MB
+    multiple: false
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -201,29 +208,32 @@ export default function UploadForm() {
               </button>
             </div>
           ) : (
-            <div
-              className={`dropzone ${dragOver ? 'dragover' : ''}`}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver(true);
+            <motion.div
+              {...getRootProps()}
+              className={`dropzone ${isDragActive ? 'dragover' : ''} ${isDragReject ? 'reject' : ''}`}
+              animate={{
+                borderColor: isDragActive ? '#afb3f7' : isDragReject ? '#ff8080' : 'rgba(122, 147, 172, 0.2)',
+                backgroundColor: isDragActive ? 'rgba(175, 179, 247, 0.08)' : isDragReject ? 'rgba(255, 128, 128, 0.08)' : 'transparent',
+                scale: isDragActive ? 1.02 : 1
               }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={handleDrop}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              style={{ cursor: 'pointer' }}
             >
-              <div className="dropzone-icon">
+              <input {...getInputProps()} />
+              <motion.div 
+                className="dropzone-icon"
+                animate={{ y: isDragActive ? -5 : 0 }}
+              >
                 <Upload />
-              </div>
+              </motion.div>
               <p className="dropzone-text">
-                Drag & drop or <strong>browse</strong>
+                {isDragActive 
+                  ? isDragReject ? 'Invalid file type!' : 'Drop paper here...'
+                  : <>Drag & drop or <strong>browse</strong></>
+                }
               </p>
               <p className="dropzone-hint">PDF, JPG, PNG — Max 10MB</p>
-              <input
-                ref={fileRef}
-                type="file"
-                accept=".pdf,.jpg,.jpeg,.png,.webp"
-                onChange={handleFileChange}
-              />
-            </div>
+            </motion.div>
           )}
         </div>
 

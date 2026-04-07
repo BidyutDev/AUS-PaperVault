@@ -5,7 +5,14 @@ import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
 import SemesterSelector from '../components/SemesterSelector/SemesterSelector';
 import SubjectSelector from '../components/SubjectSelector/SubjectSelector';
 import PaperList from '../components/PaperList/PaperList';
+import { motion } from 'framer-motion';
 import './DepartmentPage.css';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 15 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -15 }
+};
 
 export default function DepartmentPage() {
   const { deptId } = useParams();
@@ -16,7 +23,14 @@ export default function DepartmentPage() {
 
   if (!department) {
     return (
-      <div className="page-enter">
+      <motion.div 
+        className="page-enter"
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
         <div className="container-vault" style={{ padding: '4rem 1rem', textAlign: 'center' }}>
           <h1 style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-vault-danger)', marginBottom: '1rem' }}>
             Department Not Found
@@ -25,7 +39,7 @@ export default function DepartmentPage() {
             The department you&apos;re looking for doesn&apos;t exist.
           </p>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -47,7 +61,14 @@ export default function DepartmentPage() {
   }
 
   return (
-    <div className="page-enter">
+    <motion.div 
+      className="page-enter"
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={pageVariants}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
       <div className="container-vault dept-page">
         <Breadcrumb items={breadcrumbItems} />
 
@@ -96,6 +117,6 @@ export default function DepartmentPage() {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

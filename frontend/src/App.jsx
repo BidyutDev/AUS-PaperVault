@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import HomePage from './pages/HomePage';
@@ -17,18 +18,21 @@ function ScrollToTop() {
 }
 
 function AppLayout() {
+  const location = useLocation();
   return (
     <>
       <ScrollToTop />
       <Header />
       <main style={{ minHeight: '60vh' }}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/department/:deptId" element={<DepartmentPage />} />
-          <Route path="/upload" element={<UploadPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/devs" element={<DevsPage />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/department/:deptId" element={<DepartmentPage />} />
+            <Route path="/upload" element={<UploadPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/devs" element={<DevsPage />} />
+          </Routes>
+        </AnimatePresence>
       </main>
       <Footer />
     </>

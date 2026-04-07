@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, FileText, Search, X, Command } from 'lucide-react';
 import departments from '../../data/departments';
 import { getPaperCountByDept } from '../../data/mockPapers';
+import Tilt from 'react-parallax-tilt';
 import './DepartmentGrid.css';
 
 export default function DepartmentGrid() {
@@ -190,28 +191,41 @@ export default function DepartmentGrid() {
             const Icon = dept.icon;
             const paperCount = getPaperCountByDept(dept.id);
             return (
-              <Link
-                to={`/department/${dept.id}`}
+              <Tilt
                 key={dept.id}
-                className="dept-card animate-slideUp"
-                style={{
-                  '--card-accent': dept.color,
-                  animationDelay: `${index * 0.05}s`,
-                }}
+                glareEnable={true}
+                glareMaxOpacity={0.3}
+                glareColor="#afb3f7"
+                glarePosition="all"
+                scale={1.02}
+                transitionSpeed={400}
+                tiltMaxAngleX={5}
+                tiltMaxAngleY={5}
+                style={{ height: '100%' }} // Ensures the tilt container takes full height
               >
-                <div className="dept-card-icon" style={{ color: dept.color }}>
-                  <Icon />
-                </div>
-                <div className="dept-card-short">{dept.shortName}</div>
-                <div className="dept-card-name">{dept.name}</div>
-                <div className="dept-card-meta">
-                  <div className="dept-card-papers">
-                    <FileText size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
-                    <span>{paperCount}</span> papers
+                <Link
+                  to={`/department/${dept.id}`}
+                  className="dept-card animate-slideUp"
+                  style={{
+                    '--card-accent': dept.color,
+                    animationDelay: `${index * 0.05}s`,
+                    height: '100%', // Ensure link inside tilt takes full height
+                  }}
+                >
+                  <div className="dept-card-icon" style={{ color: dept.color }}>
+                    <Icon />
                   </div>
-                  <ArrowRight size={14} className="dept-card-arrow" />
-                </div>
-              </Link>
+                  <div className="dept-card-short">{dept.shortName}</div>
+                  <div className="dept-card-name">{dept.name}</div>
+                  <div className="dept-card-meta">
+                    <div className="dept-card-papers">
+                      <FileText size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
+                      <span>{paperCount}</span> papers
+                    </div>
+                    <ArrowRight size={14} className="dept-card-arrow" />
+                  </div>
+                </Link>
+              </Tilt>
             );
           })}
         </div>
