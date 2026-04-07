@@ -19,28 +19,65 @@
 }
 
 .subject-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
-  background: rgba(28, 32, 41, 0.7);
-  border: 1px solid rgba(122, 147, 172, 0.1);
+  background: rgba(22, 26, 34, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   color: inherit;
+  z-index: 1;
 }
 
-.subject-item:hover,
-.subject-item.active {
-  background: rgba(175, 179, 247, 0.06);
-  border-color: rgba(175, 179, 247, 0.25);
-  transform: translateX(4px);
+.subject-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(175, 179, 247, 0.5) 0%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.subject-item:hover {
+  transform: translateX(6px);
+  background: rgba(28, 32, 41, 0.6);
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.5),
+    0 0 15px -3px rgba(175, 179, 247, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.subject-item:hover::before {
+  opacity: 1;
+  background: linear-gradient(135deg, var(--color-vault-lavender) 0%, var(--color-vault-blue) 100%);
 }
 
 .subject-item.active {
-  border-left: 3px solid var(--color-vault-lavender);
-  box-shadow: 0 0 15px rgba(175, 179, 247, 0.08);
+  background: rgba(175, 179, 247, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 0 20px rgba(175, 179, 247, 0.3),
+    inset 0 0 10px rgba(175, 179, 247, 0.1);
+  transform: translateX(6px);
+}
+
+.subject-item.active::before {
+  opacity: 1;
+  background: linear-gradient(135deg, var(--color-vault-lavender), var(--color-vault-blue));
 }
 
 .subject-item-icon {
