@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, Building2, Home, Upload, Users, Menu, X, Shield } from 'lucide-react';
+import { FileText, Building2, Home, Upload, Users, Menu, X } from 'lucide-react';
 import departments from '../../data/departments';
 import { getTotalPaperCount } from '../../data/mockPapers';
 import './Header.css';
@@ -18,7 +18,6 @@ export default function Header() {
     { to: '/', label: 'Home', icon: Home },
     { to: '/upload', label: 'Upload', icon: Upload },
     { to: '/devs', label: 'Devs', icon: Users },
-    { to: '/admin', label: 'Admin', icon: Shield },
   ];
 
   return (

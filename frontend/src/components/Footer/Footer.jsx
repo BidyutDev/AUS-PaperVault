@@ -33,7 +33,6 @@ export default function Footer() {
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/upload">Upload Paper</Link></li>
                 <li><Link to="/devs">Developers</Link></li>
-                <li><Link to="/admin">Admin</Link></li>
               </ul>
             </div>
             <div className="footer-links-col">

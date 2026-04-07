@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Shield, Lock, ArrowLeft, SlidersHorizontal, Flag,
-  X, Upload, Eye, CheckCircle2, FileText
+  X, Upload, Eye, CheckCircle2, FileText, User, AlertTriangle, LogOut
 } from 'lucide-react';
 import departments from '../../data/departments';
 import { getPendingUploads, approveUpload, rejectUpload, getAllPapers } from '../../data/mockPapers';
 import './AdminPanel.css';
 
-const ADMIN_PASSWORD = 'ausvault2024';
+// ── Admin Credentials ──
+// Each admin has a unique username + password pair
+const ADMIN_ACCOUNTS = [
+  { username: 'admin', password: 'ausvault2024', role: 'Super Admin' },
+  { username: 'moderator', password: 'mod@aus2024', role: 'Moderator' },
+  { username: 'reviewer', password: 'review#2024', role: 'Reviewer' },
+];
 
 /** Pending uploads use numeric ids (Date.now); coerce for display. */
 function queueIdLabel(id) {
@@ -17,8 +23,13 @@ function queueIdLabel(id) {
 
 export default function AdminPanel() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [currentAdmin, setCurrentAdmin] = useState(null);
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockTimer, setLockTimer] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [actionFeedback, setActionFeedback] = useState(null);
   const [now, setNow] = useState(() => Date.now());
@@ -28,17 +39,58 @@ export default function AdminPanel() {
     return () => clearInterval(id);
   }, []);
 
+  // Lockout countdown timer
+  useEffect(() => {
+    if (!isLocked) return;
+    const id = setInterval(() => {
+      setLockTimer((prev) => {
+        if (prev <= 1) {
+          setIsLocked(false);
+          setLoginAttempts(0);
+          clearInterval(id);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [isLocked]);
+
   const pending = getPendingUploads();
-  const approvedToday = getAllPapers().length; // simplified count
+  const approvedToday = getAllPapers().length;
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    if (isLocked) return;
+
+    const match = ADMIN_ACCOUNTS.find(
+      (acc) => acc.username.toLowerCase() === username.toLowerCase() && acc.password === password
+    );
+
+    if (match) {
       setAuthenticated(true);
+      setCurrentAdmin(match);
       setError('');
+      setLoginAttempts(0);
     } else {
-      setError('ACCESS_DENIED — Invalid credentials');
+      const attempts = loginAttempts + 1;
+      setLoginAttempts(attempts);
+
+      if (attempts >= 3) {
+        setIsLocked(true);
+        setLockTimer(30); // 30-second lockout
+        setError('SYSTEM_LOCKOUT — Too many failed attempts. Wait 30s.');
+      } else {
+        setError(`ACCESS_DENIED — Invalid credentials (${3 - attempts} attempts remaining)`);
+      }
     }
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    setCurrentAdmin(null);
+    setUsername('');
+    setPassword('');
   };
 
   const handleApprove = (id) => {
@@ -90,23 +142,83 @@ export default function AdminPanel() {
               <Lock />
             </div>
             <h1 className="admin-auth-title">SYS.ADMIN_REVIEW</h1>
-            <p className="admin-auth-sub">Authenticate to access the review panel</p>
+            <p className="admin-auth-sub">Enter admin credentials to access the review panel</p>
           </div>
           <form className="admin-auth-form" onSubmit={handleLogin}>
-            <input
-              type="password"
-              className="input-cyber"
-              placeholder="Enter admin password..."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoFocus
-            />
-            {error && <div className="admin-auth-error">{error}</div>}
-            <button type="submit" className="btn-cyber-solid" style={{ width: '100%', justifyContent: 'center' }}>
+            {/* Username Field */}
+            <div className="admin-input-group">
+              <div className="admin-input-label">
+                <User size={11} />
+                Username
+              </div>
+              <input
+                type="text"
+                className="input-cyber"
+                placeholder="Enter admin username..."
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoFocus
+                disabled={isLocked}
+                id="admin-username"
+                autoComplete="off"
+              />
+            </div>
+
+            {/* Password Field */}
+            <div className="admin-input-group">
+              <div className="admin-input-label">
+                <Lock size={11} />
+                Password
+              </div>
+              <input
+                type="password"
+                className="input-cyber"
+                placeholder="Enter admin password..."
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLocked}
+                id="admin-password"
+              />
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className={`admin-auth-error ${isLocked ? 'locked' : ''}`}>
+                <AlertTriangle size={13} />
+                {error}
+              </div>
+            )}
+
+            {/* Lockout Timer */}
+            {isLocked && (
+              <div className="admin-auth-lockout">
+                <div className="admin-auth-lockout-bar">
+                  <div
+                    className="admin-auth-lockout-fill"
+                    style={{ width: `${(lockTimer / 30) * 100}%` }}
+                  />
+                </div>
+                <span className="admin-auth-lockout-text">
+                  Retry in {lockTimer}s
+                </span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="btn-cyber-solid"
+              style={{ width: '100%', justifyContent: 'center' }}
+              disabled={isLocked}
+            >
               <Lock size={14} />
-              Authenticate
+              {isLocked ? 'System Locked' : 'Authenticate'}
             </button>
           </form>
+
+          <div className="admin-auth-footer">
+            <AlertTriangle size={10} />
+            Unauthorized access attempts are logged
+          </div>
         </div>
       </div>
     );
@@ -130,6 +242,13 @@ export default function AdminPanel() {
           </div>
           <span className="admin-topbar-title">SYS.ADMIN_REVIEW</span>
           <div className="admin-topbar-right">
+            <div className="admin-user-badge">
+              <User size={11} />
+              {currentAdmin?.username} ({currentAdmin?.role})
+            </div>
+            <button className="admin-logout-btn" onClick={handleLogout} title="Logout">
+              <LogOut size={13} />
+            </button>
             <div className="admin-node-status">
               <div className="admin-node-dot" />
               Node_Active
@@ -161,6 +280,13 @@ export default function AdminPanel() {
         </div>
         <span className="admin-topbar-title">SYS.ADMIN_REVIEW</span>
         <div className="admin-topbar-right">
+          <div className="admin-user-badge">
+            <User size={11} />
+            {currentAdmin?.username} ({currentAdmin?.role})
+          </div>
+          <button className="admin-logout-btn" onClick={handleLogout} title="Logout">
+            <LogOut size={13} />
+          </button>
           <div className="admin-node-status">
             <div className="admin-node-dot" />
             Node_Active
@@ -248,6 +374,12 @@ export default function AdminPanel() {
                       {selected.fileSize
                         ? `${(selected.fileSize / (1024 * 1024)).toFixed(1)} MB`
                         : '—'} ({selected.fileName?.split('.').pop()?.toUpperCase() || 'PDF'})
+                    </span>
+                  </div>
+                  <div className="admin-review-meta-item">
+                    <span className="admin-review-meta-label">Reviewed_By</span>
+                    <span className="admin-review-meta-value admin-review-meta-reviewer">
+                      {currentAdmin?.username}
                     </span>
                   </div>
                 </div>
