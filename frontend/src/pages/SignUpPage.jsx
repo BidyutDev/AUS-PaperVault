@@ -12,15 +12,9 @@ import {
   AlertTriangle,
   CheckCircle2,
 } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import PerspectiveGrid from "../components/PerspectiveGrid/PerspectiveGrid";
+import { motion } from "framer-motion";
+import AuthLayout from "../components/AuthLayout/AuthLayout";
 import "./SignUpPage.css";
-
-const pageVariants = {
-  initial: { opacity: 0, y: 15 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -15 },
-};
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -162,46 +156,10 @@ export default function SignUpPage() {
     return colors[passwordStrength] || colors[0];
   };
 
-  // High-Energy Interactive parallax background hooks
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 40, stiffness: 120 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
-
-  const animateX1 = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 1500], [180, -180]);
-  const animateY1 = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [180, -180]);
-
-  const animateX2 = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 1500], [-250, 250]);
-  const animateY2 = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [-250, 250]);
-
-  const animateX3 = useTransform(smoothX, [0, typeof window !== 'undefined' ? window.innerWidth : 1500], [120, -120]);
-  const animateY3 = useTransform(smoothY, [0, typeof window !== 'undefined' ? window.innerHeight : 1000], [-120, 120]);
-
-  const handleMouseMove = (e) => {
-    const { clientX, clientY, currentTarget } = e;
-    const { left, top } = currentTarget.getBoundingClientRect();
-    const x = clientX - left;
-    const y = clientY - top;
-    currentTarget.style.setProperty("--mouse-x", `${x}px`);
-    currentTarget.style.setProperty("--mouse-y", `${y}px`);
-    
-    mouseX.set(x);
-    mouseY.set(y);
-  };
 
   return (
-    <motion.div
-      className="signup-page"
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      variants={pageVariants}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      onMouseMove={handleMouseMove}
-    >
-      <PerspectiveGrid />
+    <AuthLayout>
       <div className="signup-container">
         <div className="signup-card">
           {/* Card Header */}
@@ -474,20 +432,7 @@ export default function SignUpPage() {
             </p>
           </form>
         </div>
-
-        {/* Decorative Elements (Interactive Parallax) */}
-        <div className="signup-decorations">
-          <motion.div className="parallax-wrap" style={{ x: animateX1, y: animateY1 }}>
-            <div className="decoration circle-1"></div>
-          </motion.div>
-          <motion.div className="parallax-wrap" style={{ x: animateX2, y: animateY2 }}>
-            <div className="decoration circle-2"></div>
-          </motion.div>
-          <motion.div className="parallax-wrap" style={{ x: animateX3, y: animateY3 }}>
-            <div className="decoration circle-3"></div>
-          </motion.div>
-        </div>
       </div>
-    </motion.div>
+    </AuthLayout>
   );
 }

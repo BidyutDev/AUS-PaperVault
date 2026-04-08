@@ -1,36 +1,4 @@
-.signup-page {
-  min-height: 100vh;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Premium Cursor Glow Effect */
-.signup-page::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-    rgba(175, 179, 247, 0.12),
-    transparent 40%
-  );
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.signup-page:hover::before {
-  opacity: 1;
-}
+/* Layout handled by AuthLayout */
 
 .signup-container {
   width: 100%;
@@ -405,77 +373,7 @@
   opacity: 0.8;
 }
 
-/* ───── Decorations ───── */
-.signup-decorations {
-  display: none;
-}
-
-.parallax-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.decoration {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.6;
-  animation: organicFloat 12s ease-in-out infinite alternate;
-  mix-blend-mode: screen;
-}
-
-.circle-1 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
-  top: -10%;
-  right: -10%;
-  animation-delay: 0s;
-}
-
-.circle-2 {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
-  bottom: -20%;
-  left: -20%;
-  animation-delay: -4s;
-}
-
-.circle-3 {
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, #c026d3 0%, transparent 70%);
-  top: 40%;
-  left: 30%;
-  animation-delay: -8s;
-}
-
-@keyframes organicFloat {
-  0% { transform: scale(1) translate(0, 0) rotate(0deg); }
-  33% { transform: scale(1.1) translate(30px, -50px) rotate(10deg); }
-  66% { transform: scale(0.9) translate(-40px, 40px) rotate(-5deg); }
-  100% { transform: scale(1.05) translate(20px, 20px) rotate(5deg); }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(20px, -20px);
-  }
-  50% {
-    transform: translate(-20px, 20px);
-  }
-  75% {
-    transform: translate(20px, 20px);
-  }
-}
+/* Decorations and Keyframes migrated to AuthLayout.css */
 
 /* ───── Responsive ───── */
 @media (max-width: 480px) {
