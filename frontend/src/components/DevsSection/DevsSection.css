@@ -140,22 +140,41 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dev-card:hover .dev-card-inner {
-  transform: rotateY(180deg);
+.dev-card-inner.dual-gallery {
+  --g: 4px;
+  display: grid;
+  clip-path: inset(1px); /* avoid visual glitchs */
+  border-radius: 3px;
 }
 
 /* Shared face styles */
 .dev-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  grid-area: 1/1; /* stack them */
   border-radius: 3px;
   overflow: hidden;
+  transition: .4s .1s;
+}
+
+.dev-card-inner.dual-gallery > .dev-img-1 {
+  --_p: 100%; /* Shows fully by default */
+  clip-path: polygon(0 0, calc(100% + var(--_p)) 0 , 0 calc(100% + var(--_p)));
+  z-index: 2;
+}
+
+.dev-card-inner.dual-gallery > .dev-img-2 {
+  --_p: -100%; /* Hidden by default */
+  clip-path: polygon(100% 100%, 100% calc(0% - var(--_p)), calc(0% - var(--_p)) 100%);
+  z-index: 1;
+}
+
+.dev-card:hover .dev-card-inner.dual-gallery > .dev-img-1 {
+  --_p: -100%; /* Shrinks out */
+}
+
+.dev-card:hover .dev-card-inner.dual-gallery > .dev-img-2 {
+  --_p: 100%; /* Expands fully */
 }
 
 /* ── Front face ── */
@@ -165,13 +184,57 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end; /* Push overlay to bottom */
+  padding: 0; /* Let background span fully */
+}
+
+/* New full image layout */
+.dev-full-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.85; /* Blend well with theme */
+  transition: opacity 0.3s ease;
+}
+
+.dev-face-front:hover .dev-full-image {
+  opacity: 0.5; /* Darken slightly on hover */
+}
+
+.dev-full-initials {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: linear-gradient(135deg, var(--color-vault-blue), var(--color-vault-lavender));
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 1rem;
-  padding: 2rem;
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: 800;
+  color: #fff;
+  opacity: 0.85;
+}
+
+.dev-name-overlay {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 2.5rem 1rem 1.5rem;
+  background: linear-gradient(to top, rgba(10, 12, 16, 0.95) 0%, rgba(10, 12, 16, 0.7) 50%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 /* Top accent bar on front */
-.dev-face-front::before {
+.dev-face-front::after { /* Changed to ::after to show above image */
   content: '';
   position: absolute;
   top: 0;
@@ -181,6 +244,7 @@
   background: linear-gradient(90deg, var(--color-vault-blue), var(--color-vault-lavender), var(--color-vault-blue));
   background-size: 200% 100%;
   animation: shimmer 4s linear infinite;
+  z-index: 10;
 }
 
 /* ── Avatar ── */
@@ -191,21 +255,48 @@
   flex-shrink: 0;
 }
 
-.dev-avatar-image {
+/* ── Dual Image Effect Gallery ── */
+.dev-avatar.gallery {
+  --g: 4px; /* the gap */
+  display: grid;
+  clip-path: inset(1px); /* to avoid visual glitchs */
+  border-radius: 50%; /* Keep circular avatar */
+  overflow: hidden;
+}
+
+.dev-avatar.gallery > .dev-avatar-image,
+.dev-avatar.gallery > .dev-avatar-initials {
+  --_p: calc(-1 * var(--g));
+  grid-area: 1/1;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(175, 179, 247, 0.25);
+  border-radius: 0; /* Let overflow/clip-path handle rounding */
   display: block;
+  transition: .4s .1s;
+  z-index: 1; /* Above ring if needed, but ring is absolute */
+}
+
+/* Default state: cut diagonally */
+.dev-avatar.gallery > .dev-img-1 {
+  clip-path: polygon(0 0, calc(100% + var(--_p)) 0 , 0 calc(100% + var(--_p)));
+}
+.dev-avatar.gallery > .dev-img-2 {
+  clip-path: polygon(100% 100%, 100% calc(0% - var(--_p)), calc(0% - var(--_p)) 100%);
+}
+
+/* Hover interactions */
+.dev-avatar.gallery:hover > .dev-img-2,
+.dev-avatar.gallery:hover > .dev-img-1:hover {
+  --_p: calc(50% - var(--g));
+}
+.dev-avatar.gallery:hover > .dev-img-1,
+.dev-avatar.gallery:hover > .dev-img-1:hover + .dev-img-2 {
+  --_p: calc(-50% - var(--g));
 }
 
 .dev-avatar-initials {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
   background: linear-gradient(135deg, var(--color-vault-blue), var(--color-vault-lavender));
-  border: 2px solid rgba(175, 179, 247, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -283,7 +374,6 @@
 .dev-face-back {
   background: linear-gradient(145deg, rgba(22, 26, 35, 0.98), rgba(16, 19, 26, 1));
   border: 1px solid rgba(175, 179, 247, 0.22);
-  transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
   justify-content: space-between;

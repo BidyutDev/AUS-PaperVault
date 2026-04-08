@@ -141,27 +141,22 @@ function DevCard({ dev, index }) {
       className="dev-card animate-slideUp"
       style={{ animationDelay: `${index * 0.12}s` }}
     >
-      <div className="dev-card-inner">
-        {/* Front */}
-        <div className="dev-face dev-face-front">
-          <div className="dev-avatar">
-            <div className="dev-avatar-ring" />
-            {dev.image ? (
-              <img src={dev.image} alt={dev.name} className="dev-avatar-image" />
-            ) : (
-              <div className="dev-avatar-initials">{dev.initials || dev.name.slice(0, 2)}</div>
-            )}
-            <div className="dev-status" />
+      <div className="dev-card-inner dual-gallery">
+        {/* Face 1: Image covering whole card */}
+        <div className="dev-face dev-face-front dev-img-1">
+          {dev.image ? (
+            <img src={dev.image} alt={dev.name} className="dev-full-image" />
+          ) : (
+            <div className="dev-full-initials">{dev.initials || dev.name.slice(0, 2)}</div>
+          )}
+          <div className="dev-name-overlay">
+            <p className="dev-front-name">{dev.name}</p>
+            <span className="dev-front-role">{dev.role}</span>
           </div>
-          <p className="dev-front-name">{dev.name}</p>
-          <span className="dev-front-role">{dev.role}</span>
-          <span className="dev-hover-hint">
-            hover to explore <ArrowRight />
-          </span>
         </div>
 
-        {/* Back */}
-        <div className="dev-face dev-face-back">
+        {/* Face 2: Details */}
+        <div className="dev-face dev-face-back dev-img-2">
           <div className="dev-back-header">
             <p className="dev-back-name">{dev.name}</p>
             <div className="dev-back-badges">

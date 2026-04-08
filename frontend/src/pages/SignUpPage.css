@@ -34,7 +34,7 @@
 
 .signup-container {
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
   position: relative;
   z-index: 10;
   padding-top: 5rem; /* For fixed navbar */
@@ -50,7 +50,7 @@
   border-radius: 1.25rem;
   overflow: hidden;
   background-clip: padding-box;
-  padding: 2rem 1.75rem;
+  padding: 1.5rem;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05); /* Inner gleam only */
   animation: slideUp 0.6s ease-out;
 }
@@ -69,16 +69,16 @@
 /* ───── Header ───── */
 .signup-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .signup-icon {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1rem;
+  margin: 0 auto 0.75rem;
   background: linear-gradient(
     135deg,
     rgba(175, 179, 247, 0.15),
@@ -90,20 +90,20 @@
 }
 
 .signup-icon svg {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
 }
 
 .signup-title {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .signup-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: rgba(175, 179, 247, 0.6);
 }
 
@@ -111,7 +111,7 @@
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .form-row {
