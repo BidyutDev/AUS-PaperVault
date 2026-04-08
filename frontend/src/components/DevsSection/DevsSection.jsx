@@ -1,9 +1,9 @@
 import { Code2, Globe, Mail, Plus } from 'lucide-react';
+import Bubbly from './Bubbly.jpeg';
 import './DevsSection.css';
 import Niigadyut from './Niigadyut.jpeg';
 import Adih from './adih.jpeg';
-import Mehehe from './mehehe.jpeg';
-import Bubbly from './Bubbly.jpeg';
+import Mehehe from './mehehe.jpg';
 
 /* ─── Brand SVG icons ─── */
 const GithubIcon = () => (
