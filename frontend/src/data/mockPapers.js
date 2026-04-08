@@ -522,9 +522,30 @@ export function updatePendingUpload(uploadId, updates) {
   }
 }
 
-// Get all papers (mock + approved)
+// Helper to get deleted mock papers from localStorage
+export function getDeletedMockPapers() {
+  try {
+    const stored = localStorage.getItem("deletedMockPapers");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+// Helper to mark a mock paper as deleted
+export function deleteMockPaper(paperId) {
+  const deleted = getDeletedMockPapers();
+  if (!deleted.includes(paperId)) {
+    deleted.push(paperId);
+    localStorage.setItem("deletedMockPapers", JSON.stringify(deleted));
+  }
+}
+
+// Get all non-deleted papers (mock + approved)
 export function getAllPapers() {
-  return [...mockPapers, ...getApprovedPapers()];
+  const deletedMockPaperIds = getDeletedMockPapers();
+  const activeMockPapers = mockPapers.filter((p) => !deletedMockPaperIds.includes(p.id));
+  return [...activeMockPapers, ...getApprovedPapers()];
 }
 
 // Get paper count by department

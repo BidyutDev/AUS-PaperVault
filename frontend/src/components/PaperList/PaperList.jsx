@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { FileText, Download, FolderOpen, Eye, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Tilt from "react-parallax-tilt";
-import departments, { YEARS } from "../../data/departments";
+import { getDepartments, YEARS } from "../../data/departments";
 import { getAllPapers } from "../../data/mockPapers";
 import { useApprovedPapers } from "../../hooks/useDepartments";
 import "./PaperList.css";
@@ -181,7 +181,7 @@ export default function PaperList({
                         <div className="mock-pdf-header">
                           <h2>Assam University, Silchar</h2>
                           <h3>
-                            {departments.find(
+                            {getDepartments().find(
                               (d) => d.id === previewPaper.department,
                             )?.name || previewPaper.department}
                           </h3>

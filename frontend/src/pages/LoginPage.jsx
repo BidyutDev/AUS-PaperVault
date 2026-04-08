@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Mail, ArrowRight, Lock } from "lucide-react";
 import { motion } from "framer-motion";
@@ -18,8 +18,7 @@ export default function LoginPage() {
   // If already logged in, redirect to intended page or home
   if (isLoggedIn) {
     const from = location.state?.from?.pathname || "/";
-    navigate(from);
-    return null;
+    return <Navigate to={from} replace />;
   }
 
 
