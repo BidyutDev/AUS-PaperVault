@@ -73,12 +73,17 @@ export default function FeedbackTab() {
                 position: "absolute",
                 top: "1rem",
                 right: "1rem",
+                opacity: 1,
+                zIndex: 10,
                 background: "rgba(248, 113, 113, 0.1)",
                 border: "1px solid rgba(248, 113, 113, 0.3)",
                 color: "var(--color-vault-danger)",
                 padding: "0.4rem",
                 borderRadius: "0.25rem",
                 cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
               }}
             >
               <Trash2 size={14} />

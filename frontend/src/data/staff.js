@@ -1,6 +1,8 @@
 // Mock schema for handling frontend-assigned Staff rules.
 // Structure: { id, username, password, role, assignedAt }
 
+import { notifySuperAdminEvent } from "./adminNotifications";
+
 const LOCAL_STORAGE_KEY = "vault_staff";
 
 // Default admin users that parallel the backend for visual representation
@@ -46,6 +48,21 @@ export const addStaff = (username, password, role) => {
 
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(staff));
   window.dispatchEvent(new CustomEvent("staffUpdated"));
+  if (existingIndex >= 0) {
+    notifySuperAdminEvent({
+      title: "Staff role updated",
+      body: `User "${username}" is now ${role}.`,
+      linkTab: "staff",
+      type: "staff",
+    });
+  } else {
+    notifySuperAdminEvent({
+      title: "Staff promoted",
+      body: `${username} was granted ${role} access.`,
+      linkTab: "staff",
+      type: "staff",
+    });
+  }
   return { success: true };
 };
 
@@ -60,6 +77,12 @@ export const removeStaff = (id) => {
   const newStaff = staff.filter(s => s.id !== id);
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newStaff));
   window.dispatchEvent(new CustomEvent("staffUpdated"));
+  notifySuperAdminEvent({
+    title: "Staff access revoked",
+    body: `Removed admin access for ${existingItem?.username || id}.`,
+    linkTab: "staff",
+    type: "staff",
+  });
   return { success: true };
 };
 

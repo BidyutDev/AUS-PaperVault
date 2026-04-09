@@ -1,5 +1,7 @@
 // Mock question papers for demonstration
 // In production, these would come from an API
+import { notifyPaperUpload } from "./adminNotifications";
+
 const mockPapers = [
   // CSE papers
   {
@@ -487,6 +489,12 @@ export function addPendingUpload(upload) {
   };
   pending.push(newUpload);
   localStorage.setItem("pendingUploads", JSON.stringify(pending));
+  notifyPaperUpload({
+    departmentLabel: String(upload?.department ?? upload?.departmentId ?? ""),
+    subjectLabel: String(upload?.subject ?? ""),
+    fileName: String(upload?.fileName ?? upload?.filename ?? ""),
+  });
+  window.dispatchEvent(new Event("uploadsUpdated"));
   return newUpload;
 }
 

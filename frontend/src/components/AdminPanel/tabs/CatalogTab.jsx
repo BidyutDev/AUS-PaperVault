@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Book, CheckCircle2, Edit, Plus, Trash2, X } from "lucide-react";
 import { getSubjectsForSemester, SEMESTERS } from "../../../data/departments";
 import { deleteMockPaper } from "../../../data/mockPapers";
+import { notifySuperAdminEvent } from "../../../data/adminNotifications";
 
 export default function CatalogTab({
   allDepartments,
@@ -61,6 +62,14 @@ export default function CatalogTab({
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
+      const dname = allDepartments.find((d) => d.id === deptId)?.name || deptId;
+      notifySuperAdminEvent({
+        title: "Catalog: subject added",
+        body: `Added "${subjectName}" to ${dname}, semester ${semester}.`,
+        linkTab: "catalog",
+        type: "catalog",
+      });
+
       setDeptSuccess(`Subject "${subjectName}" added successfully! ✓`);
       setNewSubjectName("");
       setTimeout(() => setDeptSuccess(""), 3000);
@@ -93,6 +102,14 @@ export default function CatalogTab({
       localStorage.setItem("aus_vault_departments", JSON.stringify(serializeDepts));
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
+
+      const dnameDel = allDepartments.find((d) => d.id === deptId)?.name || deptId;
+      notifySuperAdminEvent({
+        title: "Catalog: subject removed",
+        body: `Removed "${subjectName}" from ${dnameDel}, semester ${semester}.`,
+        linkTab: "catalog",
+        type: "catalog",
+      });
 
       setDeptSuccess(`Subject "${subjectName}" deleted successfully! ✓`);
       setTimeout(() => setDeptSuccess(""), 3000);
@@ -136,6 +153,14 @@ export default function CatalogTab({
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
+      const dnameRen = allDepartments.find((d) => d.id === deptId)?.name || deptId;
+      notifySuperAdminEvent({
+        title: "Catalog: subject renamed",
+        body: `In ${dnameRen}, semester ${semester}: "${oldName}" → "${newName}".`,
+        linkTab: "catalog",
+        type: "catalog",
+      });
+
       setDeptSuccess(`Subject renamed from "${oldName}" to "${newName}"! ✓`);
       setEditingSubject(null);
       setEditingSubjectName("");
@@ -158,6 +183,12 @@ export default function CatalogTab({
       const updatedSemesters = [...semestersData, sem].sort((a, b) => a - b);
       localStorage.setItem("aus_vault_semesters", JSON.stringify(updatedSemesters));
       window.dispatchEvent(new Event("semestersUpdated"));
+      notifySuperAdminEvent({
+        title: "Catalog: semester added",
+        body: `Semester ${sem} is now available across the vault.`,
+        linkTab: "catalog",
+        type: "catalog",
+      });
       setDeptSuccess(`Semester ${sem} added successfully! ✓`);
       setNewSemester("");
       setTimeout(() => setDeptSuccess(""), 3000);
@@ -176,6 +207,12 @@ export default function CatalogTab({
       const updatedSemesters = semestersData.filter((s) => s !== semester);
       localStorage.setItem("aus_vault_semesters", JSON.stringify(updatedSemesters));
       window.dispatchEvent(new Event("semestersUpdated"));
+      notifySuperAdminEvent({
+        title: "Catalog: semester removed",
+        body: `Semester ${semester} was removed from the catalog.`,
+        linkTab: "catalog",
+        type: "catalog",
+      });
       setDeptSuccess(`Semester ${semester} deleted successfully! ✓`);
       setTimeout(() => setDeptSuccess(""), 3000);
     } catch (err) {
@@ -190,6 +227,7 @@ export default function CatalogTab({
     }
 
     try {
+      const paperMeta = allPapers.find((p) => p.id === paperId);
       const isMock = !approvedPapers.some((p) => p.id === paperId);
       if (isMock) {
         deleteMockPaper(paperId);
@@ -199,6 +237,15 @@ export default function CatalogTab({
       }
 
       window.dispatchEvent(new Event("papersUpdated"));
+
+      notifySuperAdminEvent({
+        title: "Catalog: paper removed",
+        body: paperMeta
+          ? `Deleted "${paperMeta.subject || "paper"}" (${paperMeta.fileName || paperId}).`
+          : `Removed question paper id ${paperId}.`,
+        linkTab: "catalog",
+        type: "catalog",
+      });
 
       setDeptSuccess("Question paper deleted successfully! ✓");
       setTimeout(() => setDeptSuccess(""), 3000);

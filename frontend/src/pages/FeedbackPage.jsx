@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MessageSquare, Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { submitFeedback } from "../data/feedback";
+import { notifyFeedbackSubmitted } from "../data/adminNotifications";
 import "./FeedbackPage.css";
 import { apiFetch } from "../api/api";
 
@@ -37,8 +37,12 @@ export default function FeedbackPage() {
       if (!data.success) {
         setError("Error in sending feedback");
         setSubmitting(false);
-        return 
+        return;
       }
+      notifyFeedbackSubmitted({
+        name: name?.trim() || "Anonymous",
+        preview: message,
+      });
       setSubmitting(false);
       setSubmitted(true);
       setName("");

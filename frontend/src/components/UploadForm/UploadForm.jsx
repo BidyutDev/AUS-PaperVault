@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
 import { useDepartments, useSemesters } from "../../hooks/useDepartments";
 import { getSubjectsForSemester } from "../../data/departments";
+import { notifyPaperUpload } from "../../data/adminNotifications";
 import "./UploadForm.css";
 
 export default function UploadForm() {
@@ -90,6 +91,11 @@ export default function UploadForm() {
         throw new Error(data.message || "Upload failed");
       }
 
+      notifyPaperUpload({
+        departmentLabel: selectedDept?.name || department,
+        subjectLabel: subject,
+        fileName: file?.name || "",
+      });
       setSubmitted(true);
     } catch (error) {
       console.error("Upload error:", error);

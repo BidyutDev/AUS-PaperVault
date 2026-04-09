@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus, Upload, X, AlertTriangle, CheckCircle2, Trash2 } from "lucide-react";
 import { addDepartment, deleteDepartment, getDepartments } from "../../../data/departments";
+import { notifySuperAdminEvent } from "../../../data/adminNotifications";
 
 export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
   const [showAddDeptForm, setShowAddDeptForm] = useState(false);
@@ -61,6 +62,13 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
 
       setAllDepartments(getDepartments());
       window.dispatchEvent(new Event("departmentsUpdated"));
+
+      notifySuperAdminEvent({
+        title: "Department added",
+        body: `Created "${newDeptForm.name}" (${newDeptForm.shortName.toUpperCase()}).`,
+        linkTab: "departments",
+        type: "department",
+      });
 
       setNewDeptForm({
         id: "",
@@ -131,6 +139,13 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
+      notifySuperAdminEvent({
+        title: "Department updated",
+        body: `Saved changes for "${editDeptForm.name}".`,
+        linkTab: "departments",
+        type: "department",
+      });
+
       setEditingDeptId(null);
       setShowEditForm(false);
       setDeptSuccess("Department updated successfully! ✓");
@@ -167,6 +182,12 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     try {
       deleteDepartment(dept.id);
       setAllDepartments(getDepartments());
+      notifySuperAdminEvent({
+        title: "Department removed",
+        body: `Deleted department "${dept.name}".`,
+        linkTab: "departments",
+        type: "department",
+      });
       setDeptSuccess(`Department "${dept.name}" deleted successfully! ✓`);
       setTimeout(() => setDeptSuccess(""), 3000);
     } catch (err) {

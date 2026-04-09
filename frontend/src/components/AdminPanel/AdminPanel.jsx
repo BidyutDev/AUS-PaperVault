@@ -27,6 +27,7 @@ import AnalyticsTab from "./tabs/AnalyticsTab";
 import CatalogTab from "./tabs/CatalogTab";
 import FeedbackTab from "./tabs/FeedbackTab";
 import StaffTab from "./tabs/StaffTab";
+import AdminNotificationsBell from "./AdminNotificationsBell";
 
 export default function AdminPanel() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -245,6 +246,11 @@ export default function AdminPanel() {
         </div>
         <span className="admin-topbar-title">SYS.ADMIN_REVIEW</span>
         <div className="admin-topbar-right">
+          <AdminNotificationsBell
+            currentAdmin={currentAdmin}
+            hasAccessToTab={hasAccessToTab}
+            setAdminTab={setAdminTab}
+          />
           <div className="admin-user-badge">
             <User size={11} />
             {currentAdmin?.username} ({currentAdmin?.role})

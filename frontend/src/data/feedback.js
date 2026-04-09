@@ -1,5 +1,7 @@
 // src/data/feedback.js
 
+import { notifyFeedbackSubmitted } from "./adminNotifications";
+
 const STORAGE_KEY = "vault_feedback";
 
 /**
@@ -50,7 +52,12 @@ export function submitFeedback(data) {
   
   feedbackList.unshift(newFeedback); // add to top
   localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbackList));
-  
+
+  notifyFeedbackSubmitted({
+    name: newFeedback.name,
+    preview: newFeedback.message || "",
+  });
+
   // Notify other components
   window.dispatchEvent(new Event("feedbackUpdated"));
   return newFeedback;

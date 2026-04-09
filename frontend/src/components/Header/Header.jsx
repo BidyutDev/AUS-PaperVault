@@ -16,7 +16,7 @@ import { useAuth } from "../../context/AuthContext";
 import { getTotalPaperCount } from "../../data/mockPapers";
 import { useDepartments } from "../../hooks/useDepartments";
 import "./Header.css";
-import logoAus from "./logoAus.jpeg";
+import logoAus from "./papervault.svg";
 
 export default function Header() {
   const departments = useDepartments();
