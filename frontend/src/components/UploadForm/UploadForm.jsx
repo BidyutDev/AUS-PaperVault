@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   ArrowRight,
+  AlertCircle,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
@@ -13,7 +14,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
 import { useDepartments } from "../../hooks/useDepartments";
 import { SEMESTERS, getSubjectsForSemester } from "../../data/departments";
-import { addPendingUpload } from "../../data/mockPapers";
 import "./UploadForm.css";
 
 export default function UploadForm() {
@@ -28,7 +28,10 @@ export default function UploadForm() {
   const [dragOver, setDragOver] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showLoginWarning, setShowLoginWarning] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
   const fileRef = useRef();
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const selectedDept = departments.find((d) => d.id === department);
   const subjects =
@@ -53,7 +56,7 @@ export default function UploadForm() {
       multiple: false,
     });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check if user is logged in
@@ -64,17 +67,35 @@ export default function UploadForm() {
 
     if (!department || !subject || !semester || !year || !file) return;
 
-    addPendingUpload({
-      department,
-      subject,
-      semester: parseInt(semester),
-      year: parseInt(year),
-      fileName: file.name,
-      fileSize: file.size,
-      uploaderName: "Anonymous",
-    });
+    setUploading(true);
+    setUploadError(null);
 
-    setSubmitted(true);
+    try {
+      const formData = new FormData();
+      formData.append("department", department);
+      formData.append("semester", semester);
+      formData.append("subject", subject);
+      formData.append("year", year);
+      formData.append("file", file);
+
+      const response = await fetch(`${BASE_URL}/files/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Upload failed");
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Upload error:", error);
+      setUploadError(error.message || "Failed to upload file. Please try again.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const resetForm = () => {
@@ -84,6 +105,7 @@ export default function UploadForm() {
     setYear("");
     setFile(null);
     setSubmitted(false);
+    setUploadError(null);
   };
 
   if (submitted) {
@@ -353,18 +375,41 @@ export default function UploadForm() {
           <button
             type="submit"
             className="btn-cyber-solid"
-            disabled={!department || !subject || !semester || !year || !file}
+            disabled={!department || !subject || !semester || !year || !file || uploading}
             style={{
               opacity:
-                !department || !subject || !semester || !year || !file
+                !department || !subject || !semester || !year || !file || uploading
                   ? 0.5
                   : 1,
             }}
           >
             <Upload size={14} />
-            Submit Paper
+            {uploading ? "Uploading..." : "Submit Paper"}
           </button>
         </div>
+
+        {/* Error Message */}
+        {uploadError && (
+          <motion.div
+            className="upload-error"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              marginTop: "1rem",
+              padding: "1rem",
+              borderRadius: "0.5rem",
+              backgroundColor: "rgba(255, 128, 128, 0.1)",
+              border: "1px solid rgba(255, 128, 128, 0.3)",
+              display: "flex",
+              gap: "0.75rem",
+              alignItems: "flex-start",
+              color: "#ff8080",
+            }}
+          >
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "0.125rem" }} />
+            <span>{uploadError}</span>
+          </motion.div>
+        )}
       </form>
     </div>
   );
