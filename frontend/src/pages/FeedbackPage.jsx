@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { MessageSquare, Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { submitFeedback } from "../data/feedback";
 import "./FeedbackPage.css";
+import { apiFetch } from "../api/api";
 
 const pageVariants = {
   initial: { opacity: 0, y: 15 },
@@ -18,21 +19,35 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!message) return;
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (!message) return;
 
-    setSubmitting(true);
-    setError(null);
+      setSubmitting(true);
+      setError(null);
 
-    // Save feedback to storage
-    submitFeedback({ name, email, message });
-
-    setSubmitting(false);
-    setSubmitted(true);
-    setName("");
-    setEmail("");
-    setMessage("");
+      const data = await apiFetch("/feedback/send", "POST", {
+        body: {
+          name,
+          email,
+          message,
+        },
+      });
+      if (!data.success) {
+        setError("Error in sending feedback");
+        setSubmitting(false);
+        return 
+      }
+      setSubmitting(false);
+      setSubmitted(true);
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      setError(err.message);
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -52,7 +67,8 @@ export default function FeedbackPage() {
             </div>
             <h2 className="feedback-success-title">Thank You!</h2>
             <p className="feedback-success-text">
-              We appreciate your feedback. It helps us make AUS PaperVault better for everyone.
+              We appreciate your feedback. It helps us make AUS PaperVault
+              better for everyone.
             </p>
             <button
               className="btn-cyber-solid mt-4"
@@ -87,10 +103,7 @@ export default function FeedbackPage() {
           </p>
         </div>
 
-        <form
-          className="feedback-form glass-card"
-          onSubmit={handleSubmit}
-        >
+        <form className="feedback-form glass-card" onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Name *</label>
             <input
