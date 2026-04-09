@@ -53,12 +53,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const data = await apiFetch("/user/login", "POST", {
-        body: {
-          identifier: email,
-          password: password,
-        },
-      });
+      const data = await login(email , password);
       if (!data.success) {
         setError("Login failed. Please try again.");
       } else {

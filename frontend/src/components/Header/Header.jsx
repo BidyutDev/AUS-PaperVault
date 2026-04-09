@@ -116,7 +116,7 @@ export default function Header() {
                   className="user-menu-btn"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   aria-label="User menu"
-                  title={`Logged in as ${user.emailOrUsername}`}
+                  title={`Logged in as ${user.username}`}
                 >
                   <UserIcon size={18} />
                   <span className="user-name">{user.username}</span>

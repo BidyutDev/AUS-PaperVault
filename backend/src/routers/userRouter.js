@@ -62,6 +62,23 @@ userRouter.post("/request-token", async (req, res) => {
     }
 });
 
+userRouter.get("/profile", authMiddleware, async (req, res) => {
+    if (!res.success) {
+        return sendError(res, "User is not logged in", STATUS_CODES.FORBIDDEN);
+    }
+
+    const user = await User.findOne({ _id: res.user._id });
+
+    if (!user) {
+        return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);
+    }
+
+    sendSuccess(res, "User fetched succesfully", STATUS_CODES.SUCCESS, {
+        username: user.username,
+        email: user.email,
+    });
+});
+
 userRouter.post("/register", async (req, res) => {
     try {
         const { success } = signUpSchema.safeParse(req.body);
@@ -114,7 +131,7 @@ userRouter.post("/register", async (req, res) => {
             res,
             "User succesfully created",
             STATUS_CODES.SUCCESS,
-            { token }
+            { token, username, email }
         );
     } catch (err) {
         console.log(err);
@@ -174,6 +191,8 @@ userRouter.post("/login", async (req, res) => {
 
         sendSuccess(res, "Logged in successfully", STATUS_CODES.SUCCESS, {
             token,
+            username: user.username,
+            email: user.email,
         });
     } catch (err) {
         console.log(err);

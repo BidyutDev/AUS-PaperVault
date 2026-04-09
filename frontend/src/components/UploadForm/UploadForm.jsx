@@ -77,10 +77,13 @@ export default function UploadForm() {
       formData.append("subject", subject);
       formData.append("year", year);
       formData.append("file", file);
-
+      const token = localStorage.getItem("access_token");
       const response = await fetch(`${BASE_URL}/files/upload`, {
         method: "POST",
         body: formData,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
@@ -92,7 +95,9 @@ export default function UploadForm() {
       setSubmitted(true);
     } catch (error) {
       console.error("Upload error:", error);
-      setUploadError(error.message || "Failed to upload file. Please try again.");
+      setUploadError(
+        error.message || "Failed to upload file. Please try again.",
+      );
     } finally {
       setUploading(false);
     }
@@ -375,10 +380,22 @@ export default function UploadForm() {
           <button
             type="submit"
             className="btn-cyber-solid"
-            disabled={!department || !subject || !semester || !year || !file || uploading}
+            disabled={
+              !department ||
+              !subject ||
+              !semester ||
+              !year ||
+              !file ||
+              uploading
+            }
             style={{
               opacity:
-                !department || !subject || !semester || !year || !file || uploading
+                !department ||
+                !subject ||
+                !semester ||
+                !year ||
+                !file ||
+                uploading
                   ? 0.5
                   : 1,
             }}
@@ -406,7 +423,10 @@ export default function UploadForm() {
               color: "#ff8080",
             }}
           >
-            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "0.125rem" }} />
+            <AlertCircle
+              size={18}
+              style={{ flexShrink: 0, marginTop: "0.125rem" }}
+            />
             <span>{uploadError}</span>
           </motion.div>
         )}
