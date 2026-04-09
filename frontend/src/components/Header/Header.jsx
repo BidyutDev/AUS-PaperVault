@@ -1,20 +1,21 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
 import {
-  FileText,
   Building2,
+  FileText,
   Home,
-  Upload,
-  Users,
-  Menu,
-  X,
   LogOut,
+  Menu,
+  Upload,
   User as UserIcon,
+  Users,
+  X,
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { useDepartments } from "../../hooks/useDepartments";
 import { getTotalPaperCount } from "../../data/mockPapers";
+import { useDepartments } from "../../hooks/useDepartments";
 import "./Header.css";
+import logoAus from "./logoAus.jpeg";
 
 export default function Header() {
   const departments = useDepartments();
@@ -66,7 +67,7 @@ export default function Header() {
               onClick={() => setMobileOpen(false)}
             >
               <div className="logo-icon-box">
-                <FileText />
+                <img src={logoAus} alt="AUS PaperVault Logo" className="logo-image" />
               </div>
               <div className="logo-text">
                 <span className="logo-main">
