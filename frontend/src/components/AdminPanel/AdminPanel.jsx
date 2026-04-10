@@ -14,11 +14,9 @@ import {
   MessageSquare,
   Users as UsersIcon,
 } from "lucide-react";
-import { getStaff } from "../../data/staff";
 import { useAuth } from "../../context/AuthContext";
 import { getDepartments } from "../../data/departments";
 import { useSemesters, useApprovedPapers, useAllPapers } from "../../hooks/useDepartments";
-import { apiFetch } from "../../api/api";
 import "./AdminPanel.css";
 
 // Import Tabs
@@ -33,17 +31,9 @@ import AdminNotificationsBell from "./AdminNotificationsBell";
 export default function AdminPanel() {
   const { user, isLoggedIn, logout } = useAuth();
   const [adminTab, setAdminTab] = useState("review"); // 'review' | 'departments' | 'analytics' | 'catalog'
-  const [staffList, setStaffList] = useState([]);
 
-  useEffect(() => {
-    const fetchStaff = () => setStaffList(getStaff());
-    fetchStaff();
-    window.addEventListener("staffUpdated", fetchStaff);
-    return () => window.removeEventListener("staffUpdated", fetchStaff);
-  }, []);
-
-  const currentAdmin = isLoggedIn && user 
-    ? staffList.find(s => s.username === user.username) 
+  const currentAdmin = isLoggedIn && user.role != "Member" 
+    ? user 
     : null;
     
   const authenticated = !!currentAdmin;

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { ROLES } from "../roles.js";
 
 const userSchema = new mongoose.Schema(
     {
@@ -50,6 +51,16 @@ const userSchema = new mongoose.Schema(
         isVerified: {
             type: Boolean,
             default: false,
+        },
+        role: {
+            type: String,
+            enum: [
+                ROLES.SUPER_ADMIN,
+                ROLES.MODERATOR,
+                ROLES.REVIEWER,
+                ROLES.MEMBER,
+            ],
+            default: ROLES.MEMBER,
         },
     },
     {

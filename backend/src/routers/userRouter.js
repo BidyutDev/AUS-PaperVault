@@ -46,6 +46,7 @@ userRouter.post("/request-token", async (req, res) => {
             _id: user._id,
             username: user.username,
             email: user.email,
+            role: user.role,
         });
 
         sendSuccess(res, "New access token generated", STATUS_CODES.SUCCESS, {
@@ -76,6 +77,7 @@ userRouter.get("/profile", authMiddleware, async (req, res) => {
     sendSuccess(res, "User fetched succesfully", STATUS_CODES.SUCCESS, {
         username: user.username,
         email: user.email,
+        role: user.role,
     });
 });
 
@@ -125,13 +127,14 @@ userRouter.post("/register", async (req, res) => {
             _id: newUser._id,
             username,
             email,
+            role: newUser.role,
         });
 
         return sendSuccess(
             res,
             "User succesfully created",
             STATUS_CODES.SUCCESS,
-            { token, username, email }
+            { token, username, email, role: newUser.role }
         );
     } catch (err) {
         console.log(err);
@@ -187,12 +190,14 @@ userRouter.post("/login", async (req, res) => {
             _id: user._id,
             username: user.username,
             email: user.email,
+            role: user.role,
         });
 
         sendSuccess(res, "Logged in successfully", STATUS_CODES.SUCCESS, {
             token,
             username: user.username,
             email: user.email,
+            role: user.role,
         });
     } catch (err) {
         console.log(err);

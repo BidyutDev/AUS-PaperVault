@@ -19,7 +19,11 @@ export function AuthProvider({ children }) {
             },
           });
 
-          setUser({ username: data.username, email: data.email });
+          setUser({
+            username: data.username,
+            email: data.email,
+            role: data.role,
+          });
         } catch (err) {
           console.error("Failed to parse stored user:", err);
           localStorage.removeItem("access_token");
@@ -41,7 +45,7 @@ export function AuthProvider({ children }) {
       if (!data.success) {
         return { success: false, error: data.message };
       }
-      setUser({ username: data.username, email: data.email });
+      setUser({ username: data.username, email: data.email, role: data.role });
       localStorage.setItem("access_token", data.token);
       return { success: true, token: data.token };
     } catch (err) {
@@ -66,7 +70,7 @@ export function AuthProvider({ children }) {
         return { success: false, error: data.message };
       }
 
-      setUser({ username: data.username, email: data.email });
+      setUser({ username: data.username, email: data.email, role: data.role });
       localStorage.setItem("access_token", data.token);
       return { success: true, token: data.token };
     } catch (err) {
