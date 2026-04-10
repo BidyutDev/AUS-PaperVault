@@ -9,6 +9,7 @@ import {
   Users,
   X,
   MessageSquare,
+  Shield,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -56,6 +57,10 @@ export default function Header() {
     { to: "/devs", label: "Devs", icon: Users },
     { to: "/feedback", label: "Feedback", icon: MessageSquare },
   ];
+
+  if (user && user.role !== "Member") {
+    navLinks.push({ to: "/admin", label: "Admin", icon: Shield });
+  }
 
   return (
     <header className="header-wrapper">
