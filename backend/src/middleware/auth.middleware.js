@@ -20,7 +20,7 @@ export const authMiddleware = (req, res, next) => {
         if (decoded) {
             res.user = decoded;
             res.success = true;
-            next();
+            return next();
         }
         sendError(res, "No data in token", STATUS_CODES.FORBIDDEN);
     } catch (err) {
