@@ -7,6 +7,7 @@ export const apiFetch = async (endpoint, method = "GET", options = {}) => {
             "Content-Type": "application/json",
             ...(options.headers || {}),
         },
+        credentials : "include"
     };
 
     // Only attach body for non-GET/HEAD requests

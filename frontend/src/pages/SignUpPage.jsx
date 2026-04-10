@@ -127,16 +127,7 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      const data = await apiFetch("/user/register", "POST", {
-        body: {
-          firstName: formData.firstName.trim(),
-          lastName: formData.lastName.trim(),
-          username: formData.username.trim(),
-          email: formData.email.trim(),
-          phoneNumber: formData.phoneNumber.replace(/\D/g, ""),
-          password: formData.password.trim(),
-        },
-      });
+      const data = await signup(formData);
 
       if (!data.success) {
         setErrors({ submit: "Sign up failed. Please try again." });
