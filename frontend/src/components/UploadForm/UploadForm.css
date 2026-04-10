@@ -25,7 +25,7 @@
   font-family: var(--font-heading);
   font-size: clamp(1.3rem, 3vw, 1.8rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   margin-bottom: 0.5rem;
 }
 
@@ -77,7 +77,7 @@
   justify-content: center;
   padding: 2.5rem 1.5rem;
   min-height: 180px;
-  background: rgba(28, 32, 41, 0.6);
+  background: rgba(var(--color-vault-card-rgb), 0.6);
   border: 2px dashed rgba(122, 147, 172, 0.2);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -85,9 +85,9 @@
 
 .dropzone:hover,
 .dropzone.dragover {
-  border-color: rgba(175, 179, 247, 0.5);
-  background: rgba(175, 179, 247, 0.04);
-  box-shadow: inset 0 0 30px rgba(175, 179, 247, 0.04);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.5);
+  background: rgba(var(--color-vault-lavender-rgb), 0.04);
+  box-shadow: inset 0 0 30px rgba(var(--color-vault-lavender-rgb), 0.04);
 }
 
 .dropzone-icon {
@@ -96,8 +96,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(175, 179, 247, 0.08);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.08);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   margin-bottom: 1rem;
 }
 
@@ -136,8 +136,8 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .file-preview-icon svg {
@@ -146,7 +146,7 @@
 
 .file-preview-name {
   font-size: 0.85rem;
-  color: #e2e8f0;
+  color: var(--color-vault-text);
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -165,15 +165,15 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.2);
+  background: rgba(var(--color-vault-danger-rgb), 0.1);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.2);
   color: var(--color-vault-danger);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .file-preview-remove:hover {
-  background: rgba(248, 113, 113, 0.2);
+  background: rgba(var(--color-vault-danger-rgb), 0.2);
 }
 
 /* ───── Submit ───── */
@@ -247,7 +247,7 @@
 .login-warning-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(var(--color-vault-black-rgb), 0.5);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -262,8 +262,8 @@
   width: 100%;
   padding: 2rem;
   text-align: center;
-  background: rgba(13, 15, 20, 0.95);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-darker-rgb), 0.95);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   border-radius: 0.75rem;
 }
 
@@ -276,8 +276,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   color: var(--color-vault-lavender);
   cursor: pointer;
   transition: all 0.25s ease;
@@ -285,8 +285,8 @@
 }
 
 .warning-close-btn:hover {
-  background: rgba(175, 179, 247, 0.12);
-  border-color: rgba(175, 179, 247, 0.25);
+  background: rgba(var(--color-vault-lavender-rgb), 0.12);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.25);
 }
 
 .warning-icon {
@@ -296,17 +296,17 @@
   width: 64px;
   height: 64px;
   margin: 0 auto 1.5rem;
-  background: rgba(248, 113, 113, 0.1);
-  border: 2px solid rgba(248, 113, 113, 0.3);
+  background: rgba(var(--color-vault-danger-rgb), 0.1);
+  border: 2px solid rgba(var(--color-vault-danger-rgb), 0.3);
   border-radius: 0.5rem;
-  color: rgba(248, 113, 113, 0.9);
+  color: rgba(var(--color-vault-danger-rgb), 0.9);
 }
 
 .warning-title {
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   margin-bottom: 0.75rem;
 }
 

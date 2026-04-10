@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { FileText, Download, FolderOpen, Eye, X } from "lucide-react";
+import { FileText, Download, FolderOpen, Eye, X, Bookmark, BookmarkCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import { getDepartments, YEARS } from "../../data/departments";
 import { useAllPapers } from "../../hooks/useDepartments";
+import { useBookmarks } from "../../hooks/useBookmarks";
+import { useDownloads } from "../../hooks/useDownloads";
 import "./PaperList.css";
 
 export default function PaperList({
@@ -12,16 +14,19 @@ export default function PaperList({
   subject,
   semester,
   selectedYear: propSelectedYear,
+  papers: propPapers, // Optional: if provided, skips filtering (used by BookmarksPage)
 }) {
   const [internalYear, setInternalYear] = useState(null);
   const [previewPaper, setPreviewPaper] = useState(null);
   const allPapers = useAllPapers();
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const { getDownloadCount, incrementDownload } = useDownloads();
 
   // Use prop if provided, otherwise use internal state
   const selectedYear =
     propSelectedYear !== undefined ? propSelectedYear : internalYear;
 
-  const filtered = allPapers.filter(
+  const filtered = propPapers || allPapers.filter(
     (p) =>
       p.department === departmentId &&
       p.subject === subject &&
@@ -30,13 +35,18 @@ export default function PaperList({
   );
 
   // Only show year tabs if selectedYear prop is not provided (for backward compatibility)
-  const showYearTabs = propSelectedYear === undefined;
+  const showYearTabs = propSelectedYear === undefined && !propPapers;
+
+  const handleDownload = (paper) => {
+    incrementDownload(paper.id);
+    // In a real app, this would trigger an actual file download
+  };
 
   return (
     <div className="paper-list">
       <div className="paper-list-header">
         <h3 className="paper-list-title">
-          Question Papers {filtered.length > 0 && `(${filtered.length})`}
+          {propPapers ? "Saved Papers" : "Question Papers"} {filtered.length > 0 && `(${filtered.length})`}
         </h3>
         {showYearTabs && (
           <div className="year-tabs">
@@ -64,9 +74,11 @@ export default function PaperList({
           <div className="paper-empty-icon">
             <FolderOpen />
           </div>
-          <p className="paper-empty-text">No papers found</p>
+          <p className="paper-empty-text">{propPapers ? "No saved papers" : "No papers found"}</p>
           <p className="paper-empty-sub">
-            {selectedYear
+            {propPapers 
+              ? "Papers you save will appear here."
+              : selectedYear
               ? `No papers available for ${selectedYear}. Try another year.`
               : "No papers uploaded for this combination yet."}
           </p>
@@ -101,9 +113,22 @@ export default function PaperList({
                       Sem: <span>{paper.semester}</span>
                     </span>
                     <span className="paper-card-tag">{paper.fileName}</span>
+                    {getDownloadCount(paper.id) > 0 && (
+                      <span className="paper-card-tag" style={{ color: "var(--color-vault-lavender)" }}>
+                        ↓ {getDownloadCount(paper.id)}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="paper-card-actions">
+                  <button
+                    className="paper-card-download"
+                    title={isBookmarked(paper.id) ? "Remove bookmark" : "Save paper"}
+                    onClick={() => toggleBookmark(paper.id)}
+                    style={{ color: isBookmarked(paper.id) ? "var(--color-vault-lavender)" : "" }}
+                  >
+                    {isBookmarked(paper.id) ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
+                  </button>
                   <button
                     className="paper-card-download"
                     title="Quick Look preview"
@@ -115,6 +140,7 @@ export default function PaperList({
                   <button
                     className="paper-card-download"
                     title="Download paper"
+                    onClick={() => handleDownload(paper)}
                   >
                     <Download size={14} />
                     <span className="paper-btn-label">Download</span>

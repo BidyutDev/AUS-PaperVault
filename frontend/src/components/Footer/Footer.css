@@ -1,7 +1,7 @@
 .footer {
   position: relative;
-  border-top: 1px solid rgba(175, 179, 247, 0.08);
-  background: rgba(13, 15, 20, 0.9);
+  border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
+  background: rgba(var(--color-vault-darker-rgb), 0.9);
   overflow: hidden;
 }
 
@@ -12,7 +12,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(175, 179, 247, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--color-vault-lavender-rgb), 0.3), transparent);
 }
 
 .footer-inner {
@@ -48,8 +48,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(175, 179, 247, 0.1);
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
 }
 
 .footer-logo-icon svg {
@@ -62,7 +62,7 @@
   font-family: var(--font-heading);
   font-size: 0.85rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   letter-spacing: 0.06em;
 }
 

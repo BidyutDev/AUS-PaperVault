@@ -27,10 +27,10 @@
   justify-content: center;
   width: 72px;
   height: 72px;
-  background: rgba(22, 26, 34, 0.4);
+  background: rgba(var(--color-vault-card-alt-rgb), 0.4);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.05);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -47,15 +47,15 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(175, 179, 247, 0.5) 0%,
+    rgba(var(--color-vault-lavender-rgb), 0.5) 0%,
     transparent 60%
   );
   -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    linear-gradient(var(--color-vault-text) 0 0) content-box,
+    linear-gradient(var(--color-vault-text) 0 0);
   mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    linear-gradient(var(--color-vault-text) 0 0) content-box,
+    linear-gradient(var(--color-vault-text) 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0.5;
@@ -65,12 +65,12 @@
 
 .year-item:hover {
   transform: translateY(-3px);
-  background: rgba(28, 32, 41, 0.6);
+  background: rgba(var(--color-vault-card-rgb), 0.6);
   box-shadow:
-    0 10px 25px -5px rgba(0, 0, 0, 0.5),
-    0 0 15px -3px rgba(175, 179, 247, 0.4);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
+    0 10px 25px -5px rgba(var(--color-vault-black-rgb), 0.5),
+    0 0 15px -3px rgba(var(--color-vault-lavender-rgb), 0.4);
+  border-color: rgba(var(--color-vault-white-rgb), 0.1);
+  color: var(--color-vault-text);
 }
 
 .year-item:hover::before {
@@ -83,12 +83,12 @@
 }
 
 .year-item.active {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(175, 179, 247, 0.15);
+  border-color: rgba(var(--color-vault-white-rgb), 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.15);
   color: var(--color-vault-lavender);
   box-shadow:
-    0 0 20px rgba(175, 179, 247, 0.3),
-    inset 0 0 10px rgba(175, 179, 247, 0.1);
+    0 0 20px rgba(var(--color-vault-lavender-rgb), 0.3),
+    inset 0 0 10px rgba(var(--color-vault-lavender-rgb), 0.1);
 }
 
 .year-item.active::before {

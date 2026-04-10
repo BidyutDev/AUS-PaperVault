@@ -11,15 +11,15 @@
 
 /* ───── Signup Card ───── */
 .signup-card {
-  background: rgba(255, 255, 255, 0.03); /* Lighter transparent fill for pure glass */
+  background: rgba(var(--color-vault-white-rgb), 0.03); /* Lighter transparent fill for pure glass */
   backdrop-filter: blur(40px) saturate(150%);
   -webkit-backdrop-filter: blur(40px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.15);
   border-radius: 1.25rem;
   overflow: hidden;
   background-clip: padding-box;
   padding: 1.5rem;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05); /* Inner gleam only */
+  box-shadow: inset 0 0 0 1px rgba(var(--color-vault-white-rgb), 0.05); /* Inner gleam only */
   animation: slideUp 0.6s ease-out;
 }
 
@@ -49,10 +49,10 @@
   margin: 0 auto 0.75rem;
   background: linear-gradient(
     135deg,
-    rgba(175, 179, 247, 0.15),
+    rgba(var(--color-vault-lavender-rgb), 0.15),
     rgba(146, 188, 234, 0.1)
   );
-  border: 1px solid rgba(175, 179, 247, 0.25);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.25);
   border-radius: 0.5rem;
   color: var(--color-vault-lavender);
 }
@@ -66,13 +66,13 @@
   font-family: var(--font-heading);
   font-size: 1.3rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   margin-bottom: 0.25rem;
 }
 
 .signup-subtitle {
   font-size: 0.8rem;
-  color: rgba(175, 179, 247, 0.6);
+  color: rgba(var(--color-vault-lavender-rgb), 0.6);
 }
 
 /* ───── Form ───── */
@@ -127,15 +127,15 @@
   padding: 0.6rem 0.5rem 0.6rem 2.75rem;
   background: transparent;
   border: none;
-  border-bottom: 1.5px solid rgba(175, 179, 247, 0.25);
+  border-bottom: 1.5px solid rgba(var(--color-vault-lavender-rgb), 0.25);
   border-radius: 0;
-  color: #fff;
+  color: var(--color-vault-text);
   font-size: 0.9rem;
   transition: all 0.2s ease;
 }
 
 .form-input::placeholder {
-  color: rgba(175, 179, 247, 0.35);
+  color: rgba(var(--color-vault-lavender-rgb), 0.35);
 }
 
 .form-input:focus {
@@ -150,11 +150,11 @@
 }
 
 .form-input.input-error {
-  border-bottom-color: rgba(248, 113, 113, 0.4);
+  border-bottom-color: rgba(var(--color-vault-danger-rgb), 0.4);
 }
 
 .form-input.input-error:focus {
-  border-bottom-color: rgba(248, 113, 113, 0.8);
+  border-bottom-color: rgba(var(--color-vault-danger-rgb), 0.8);
 }
 
 /* ───── Password Toggle ───── */
@@ -191,7 +191,7 @@
 
 .strength-bar {
   height: 4px;
-  background: rgba(175, 179, 247, 0.1);
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
   border-radius: 2px;
   flex: 1;
   overflow: hidden;
@@ -248,7 +248,7 @@
 
 .checkbox-label {
   font-size: 0.85rem;
-  color: rgba(175, 179, 247, 0.8);
+  color: rgba(var(--color-vault-lavender-rgb), 0.8);
   cursor: pointer;
   line-height: 1.4;
 }
@@ -266,7 +266,7 @@
 /* ───── Error Message ───── */
 .error-text {
   font-size: 0.75rem;
-  color: rgba(248, 113, 113, 0.9);
+  color: rgba(var(--color-vault-danger-rgb), 0.9);
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -278,10 +278,10 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem 1rem;
-  background: rgba(248, 113, 113, 0.08);
-  border: 1px solid rgba(248, 113, 113, 0.25);
+  background: rgba(var(--color-vault-danger-rgb), 0.08);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.25);
   border-radius: 0.375rem;
-  color: rgba(248, 113, 113, 0.9);
+  color: rgba(var(--color-vault-danger-rgb), 0.9);
   font-size: 0.85rem;
 }
 
@@ -299,12 +299,12 @@
   margin-top: 0.5rem;
   background: linear-gradient(
     135deg,
-    rgba(175, 179, 247, 0.3),
+    rgba(var(--color-vault-lavender-rgb), 0.3),
     rgba(146, 188, 234, 0.2)
   );
-  border: 1px solid rgba(175, 179, 247, 0.3);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.3);
   border-radius: 0.5rem;
-  color: #fff;
+  color: var(--color-vault-text);
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
@@ -314,11 +314,11 @@
 .signup-button:hover:not(:disabled) {
   background: linear-gradient(
     135deg,
-    rgba(175, 179, 247, 0.4),
+    rgba(var(--color-vault-lavender-rgb), 0.4),
     rgba(146, 188, 234, 0.3)
   );
-  border-color: rgba(175, 179, 247, 0.5);
-  box-shadow: 0 0 20px rgba(175, 179, 247, 0.2);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.5);
+  box-shadow: 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.2);
 }
 
 .signup-button:active:not(:disabled) {
@@ -341,8 +341,8 @@
   content: "";
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid #fff;
+  border: 2px solid rgba(var(--color-vault-white-rgb), 0.3);
+  border-top: 2px solid var(--color-vault-text);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -357,7 +357,7 @@
 .login-link {
   text-align: center;
   font-size: 0.9rem;
-  color: rgba(175, 179, 247, 0.7);
+  color: rgba(var(--color-vault-lavender-rgb), 0.7);
   margin-top: 1rem;
 }
 

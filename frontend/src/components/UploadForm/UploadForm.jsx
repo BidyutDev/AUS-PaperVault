@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
 import { useDepartments, useSemesters } from "../../hooks/useDepartments";
 import { getSubjectsForSemester } from "../../data/departments";
@@ -31,6 +32,7 @@ export default function UploadForm() {
   const [submitted, setSubmitted] = useState(false);
   const [showLoginWarning, setShowLoginWarning] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState(null);
   const fileRef = useRef();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -55,10 +57,9 @@ export default function UploadForm() {
       multiple: false,
     });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if user is logged in
     if (!isLoggedIn) {
       setShowLoginWarning(true);
       return;
@@ -67,44 +68,60 @@ export default function UploadForm() {
     if (!department || !subject || !semester || !year || !file) return;
 
     setUploading(true);
+    setUploadProgress(0);
     setUploadError(null);
 
-    try {
-      const formData = new FormData();
-      formData.append("department", department);
-      formData.append("semester", semester);
-      formData.append("subject", subject);
-      formData.append("year", year);
-      formData.append("file", file);
-      const token = localStorage.getItem("access_token");
-      const response = await fetch(`${BASE_URL}/files/upload`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+    const formData = new FormData();
+    formData.append("department", department);
+    formData.append("semester", semester);
+    formData.append("subject", subject);
+    formData.append("year", year);
+    formData.append("file", file);
 
-      const data = await response.json();
+    const token = localStorage.getItem("access_token");
+    const xhr = new XMLHttpRequest();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Upload failed");
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        setUploadProgress(percentComplete);
       }
+    };
 
-      notifyPaperUpload({
-        departmentLabel: selectedDept?.name || department,
-        subjectLabel: subject,
-        fileName: file?.name || "",
-      });
-      setSubmitted(true);
-    } catch (error) {
-      console.error("Upload error:", error);
-      setUploadError(
-        error.message || "Failed to upload file. Please try again.",
-      );
-    } finally {
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        notifyPaperUpload({
+          departmentLabel: selectedDept?.name || department,
+          subjectLabel: subject,
+          fileName: file?.name || "",
+        });
+        toast.success("Upload Successful", {
+          description: "Your paper has been queued for admin review."
+        });
+        setSubmitted(true);
+      } else {
+        let errorMessage = "Upload failed";
+        try {
+          const res = JSON.parse(xhr.responseText);
+          errorMessage = res.message || errorMessage;
+        } catch (e) {}
+        setUploadError(errorMessage);
+        toast.error("Upload Failed", { description: errorMessage });
+      }
       setUploading(false);
+    };
+
+    xhr.onerror = () => {
+      setUploadError("Network error occurred during upload.");
+      toast.error("Upload Failed", { description: "Network error occurred." });
+      setUploading(false);
+    };
+
+    xhr.open("POST", `${BASE_URL}/files/upload`, true);
+    if (token) {
+      xhr.setRequestHeader("authorization", `Bearer ${token}`);
     }
+    xhr.send(formData);
   };
 
   const resetForm = () => {
@@ -115,6 +132,7 @@ export default function UploadForm() {
     setFile(null);
     setSubmitted(false);
     setUploadError(null);
+    setUploadProgress(0);
   };
 
   if (submitted) {
@@ -405,9 +423,23 @@ export default function UploadForm() {
             }}
           >
             <Upload size={14} />
-            {uploading ? "Uploading..." : "Submit Paper"}
+            {uploading ? `Uploading ${uploadProgress}%` : "Submit Paper"}
           </button>
         </div>
+
+        {/* Progress Bar */}
+        {uploading && (
+          <div style={{ marginTop: "1rem", width: "100%", background: "rgba(175, 179, 247, 0.1)", borderRadius: "4px", overflow: "hidden" }}>
+            <div 
+              style={{
+                height: "6px",
+                background: "var(--color-vault-lavender)",
+                width: `${uploadProgress}%`,
+                transition: "width 0.2s ease",
+              }}
+            />
+          </div>
+        )}
 
         {/* Error Message */}
         {uploadError && (

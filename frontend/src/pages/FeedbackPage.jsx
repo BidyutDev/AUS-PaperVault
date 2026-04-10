@@ -8,16 +8,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { apiFetch } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { notifyFeedbackSubmitted } from "../data/adminNotifications";
+import { pageVariants, pageTransition } from "../lib/animations";
 import "./FeedbackPage.css";
-
-const pageVariants = {
-  initial: { opacity: 0, y: 15 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -15 },
-};
 
 export default function FeedbackPage() {
   const { user } = useAuth();
@@ -36,7 +32,7 @@ export default function FeedbackPage() {
         animate="animate"
         exit="exit"
         variants={pageVariants}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={pageTransition}
       >
         <div className="container-vault feedback-wrapper">
           <div
@@ -97,6 +93,9 @@ export default function FeedbackPage() {
       });
       if (!data.success) {
         setError("Error in sending feedback");
+        toast.error("Failed to send feedback", {
+          description: "There was a problem sending your feedback. Please try again."
+        });
         setSubmitting(false);
         return;
       }
@@ -108,11 +107,17 @@ export default function FeedbackPage() {
       window.dispatchEvent(new Event("feedbackUpdated"));
       setSubmitting(false);
       setSubmitted(true);
+      toast.success("Feedback target secured", {
+        description: "Your message has been delivered to the dev team."
+      });
       setName("");
       setEmail("");
       setMessage("");
     } catch (err) {
       setError(err.message);
+      toast.error("Transmission failed", {
+        description: err.message
+      });
       setSubmitting(false);
     }
   };

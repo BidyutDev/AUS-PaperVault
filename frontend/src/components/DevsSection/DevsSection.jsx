@@ -60,7 +60,7 @@ const ArrowRight = () => (
 const techStack = [
   { name: 'React', desc: 'UI Framework', icon: ReactIcon, color: '#61dafb' },
   { name: 'Tailwind CSS', desc: 'Styling', icon: TailwindIcon, color: '#38bdf8' },
-  { name: 'Express', desc: 'Backend', icon: ExpressIcon, color: '#e2e8f0' },
+  { name: 'Express', desc: 'Backend', icon: ExpressIcon, color: 'var(--color-vault-text)' },
 ];
 
 const developers = [

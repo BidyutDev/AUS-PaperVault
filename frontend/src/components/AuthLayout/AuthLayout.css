@@ -19,7 +19,7 @@
   margin-top: -400px; /* Center offset */
   margin-left: -400px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(175, 179, 247, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(var(--color-vault-lavender-rgb), 0.15) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
   opacity: 0;
@@ -82,7 +82,7 @@
 .decoration-3 {
   width: 300px;
   height: 300px;
-  background: #fff;
+  background: var(--color-vault-text);
   top: 40%;
   left: 30%;
   animation-delay: -8s;

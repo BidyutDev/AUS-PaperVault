@@ -4,19 +4,32 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "./context/AuthContext";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
+
+// Eager loaded for instant LCP
 import HomePage from "./pages/HomePage";
 import DepartmentPage from "./pages/DepartmentPage";
-import UploadPage from "./pages/UploadPage";
-import AdminPage from "./pages/AdminPage";
-import DevsPage from "./pages/DevsPage";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
-import FeedbackPage from "./pages/FeedbackPage";
+
+// Lazy loaded routes
+const UploadPage = lazy(() => import("./pages/UploadPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const DevsPage = lazy(() => import("./pages/DevsPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const FeedbackPage = lazy(() => import("./pages/FeedbackPage"));
+const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
+
+function PageSkeleton() {
+  return (
+    <div style={{ display: "flex", justifyContent: "center", padding: "4rem", color: "var(--color-vault-steel)", fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}>
+      Loading module...
+    </div>
+  );
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,8 +39,29 @@ function ScrollToTop() {
   return null;
 }
 
+function useDocumentTitle() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    let title = "AUS PaperVault";
+    if (pathname.startsWith("/department/")) {
+      const dept = pathname.split("/")[2];
+      title = `${dept.toUpperCase()} — AUS PaperVault`;
+    } else if (pathname === "/login") title = "Login — AUS PaperVault";
+    else if (pathname === "/signup") title = "Sign Up — AUS PaperVault";
+    else if (pathname === "/upload") title = "Upload — AUS PaperVault";
+    else if (pathname === "/devs") title = "Developers — AUS PaperVault";
+    else if (pathname === "/admin") title = "Admin — AUS PaperVault";
+    else if (pathname === "/feedback") title = "Feedback — AUS PaperVault";
+    else if (pathname === "/bookmarks") title = "Saved Papers — AUS PaperVault";
+    
+    document.title = title;
+  }, [pathname]);
+}
+
 function AppLayout() {
   const location = useLocation();
+  useDocumentTitle();
+  
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
 
@@ -37,16 +71,19 @@ function AppLayout() {
       <Header />
       <main style={{ minHeight: isAuthPage ? "100vh" : "calc(100vh - 160px)" }}>
         <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/department/:deptId" element={<DepartmentPage />} />
-            <Route path="/upload" element={<UploadPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/devs" element={<DevsPage />} />
-            <Route path="/feedback" element={<FeedbackPage />} />
-          </Routes>
+          <Suspense fallback={<PageSkeleton />}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/department/:deptId" element={<DepartmentPage />} />
+              <Route path="/upload" element={<UploadPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/devs" element={<DevsPage />} />
+              <Route path="/feedback" element={<FeedbackPage />} />
+              <Route path="/bookmarks" element={<BookmarksPage />} />
+            </Routes>
+          </Suspense>
         </AnimatePresence>
       </main>
       <Footer />

@@ -17,8 +17,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.65rem 1.25rem;
-  background: rgba(13, 15, 20, 0.95);
-  border-bottom: 1px solid rgba(175, 179, 247, 0.08);
+  background: rgba(var(--color-vault-darker-rgb), 0.95);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
 }
 
 .admin-topbar-left {
@@ -53,7 +53,7 @@
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #fff;
+  color: var(--color-vault-text);
 }
 
 .admin-topbar-right {
@@ -95,8 +95,8 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(175, 179, 247, 0.06);
-  background: rgba(13, 15, 20, 0.6);
+  border-right: 1px solid rgba(var(--color-vault-lavender-rgb), 0.06);
+  background: rgba(var(--color-vault-darker-rgb), 0.6);
 }
 
 @media (max-width: 900px) {
@@ -107,7 +107,7 @@
     width: 100%;
     max-height: 320px;
     border-right: none;
-    border-bottom: 1px solid rgba(175, 179, 247, 0.06);
+    border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.06);
   }
 }
 
@@ -115,13 +115,13 @@
 .admin-sidebar-stats {
   display: flex;
   gap: 0;
-  border-bottom: 1px solid rgba(175, 179, 247, 0.06);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.06);
 }
 
 .admin-sidebar-stat {
   flex: 1;
   padding: 1rem;
-  border-right: 1px solid rgba(175, 179, 247, 0.04);
+  border-right: 1px solid rgba(var(--color-vault-lavender-rgb), 0.04);
 }
 
 .admin-sidebar-stat:last-child {
@@ -158,7 +158,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(175, 179, 247, 0.04);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.04);
 }
 
 .admin-queue-title {
@@ -198,15 +198,15 @@
 }
 
 .admin-queue-item:hover {
-  background: rgba(175, 179, 247, 0.03);
-  border-color: rgba(175, 179, 247, 0.06);
+  background: rgba(var(--color-vault-lavender-rgb), 0.03);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.06);
 }
 
 .admin-queue-item.active {
-  background: rgba(175, 179, 247, 0.06);
-  border-color: rgba(175, 179, 247, 0.1);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.1);
   border-left-color: var(--color-vault-lavender);
-  box-shadow: inset 0 0 20px rgba(175, 179, 247, 0.03);
+  box-shadow: inset 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.03);
 }
 
 .admin-queue-item-top {
@@ -233,12 +233,12 @@
   font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--color-vault-text);
   line-height: 1.3;
 }
 
 .admin-queue-item.active .admin-queue-item-subject {
-  color: #fff;
+  color: var(--color-vault-text);
 }
 
 .admin-queue-item-meta {
@@ -262,8 +262,8 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(175, 179, 247, 0.06);
-  background: rgba(13, 15, 20, 0.4);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.06);
+  background: rgba(var(--color-vault-darker-rgb), 0.4);
 }
 
 @media (min-width: 640px) {
@@ -301,7 +301,7 @@
   font-family: var(--font-heading);
   font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   margin-bottom: 0.6rem;
 }
 
@@ -316,15 +316,15 @@
   font-size: 0.6rem;
   letter-spacing: 0.06em;
   padding: 0.25rem 0.65rem;
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.12);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
   color: var(--color-vault-steel);
   text-transform: uppercase;
 }
 
 .admin-review-tag.primary {
-  background: rgba(175, 179, 247, 0.12);
-  border-color: rgba(175, 179, 247, 0.25);
+  background: rgba(var(--color-vault-lavender-rgb), 0.12);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.25);
   color: var(--color-vault-lavender);
 }
 
@@ -367,7 +367,7 @@
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--color-vault-text);
 }
 
 /* ───── Document Preview Area ───── */
@@ -380,7 +380,7 @@
   overflow-y: auto;
   background: radial-gradient(
     ellipse at center,
-    rgba(175, 179, 247, 0.02),
+    rgba(var(--color-vault-lavender-rgb), 0.02),
     transparent 70%
   );
 }
@@ -391,8 +391,8 @@
   min-height: 400px;
   background: #fafafa;
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(0, 0, 0, 0.2);
+    0 4px 24px rgba(var(--color-vault-black-rgb), 0.5),
+    0 0 40px rgba(var(--color-vault-black-rgb), 0.2);
   padding: 2.5rem 2rem;
   color: #1a1a1a;
   font-family: "Times New Roman", Times, serif;
@@ -456,8 +456,8 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.85rem 1.5rem;
-  background: rgba(13, 15, 20, 0.95);
-  border-top: 1px solid rgba(175, 179, 247, 0.08);
+  background: rgba(var(--color-vault-darker-rgb), 0.95);
+  border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
 }
 
 .admin-flag-btn {
@@ -494,16 +494,16 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #fff;
-  background: rgba(248, 113, 113, 0.15);
+  color: var(--color-vault-text);
+  background: rgba(var(--color-vault-danger-rgb), 0.15);
   border: 2px solid var(--color-vault-danger);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .admin-reject-btn:hover {
-  background: rgba(248, 113, 113, 0.25);
-  box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+  background: rgba(var(--color-vault-danger-rgb), 0.25);
+  box-shadow: 0 0 20px rgba(var(--color-vault-danger-rgb), 0.2);
 }
 
 .admin-approve-btn {
@@ -525,7 +525,7 @@
 
 .admin-approve-btn:hover {
   background: #c4c7ff;
-  box-shadow: 0 0 25px rgba(175, 179, 247, 0.4);
+  box-shadow: 0 0 25px rgba(var(--color-vault-lavender-rgb), 0.4);
 }
 
 /* ───── Auth Gate ───── */
@@ -537,7 +537,7 @@
   padding: 2rem;
   background: radial-gradient(
     ellipse 60% 50% at 50% 50%,
-    rgba(175, 179, 247, 0.04) 0%,
+    rgba(var(--color-vault-lavender-rgb), 0.04) 0%,
     transparent 70%
   );
 }
@@ -564,8 +564,8 @@
   color: var(--color-vault-lavender);
   margin-bottom: 0.75rem;
   padding: 0.3rem 0.8rem;
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .admin-auth-icon {
@@ -575,8 +575,8 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem;
-  background: rgba(175, 179, 247, 0.06);
-  border: 2px solid rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 2px solid rgba(var(--color-vault-lavender-rgb), 0.2);
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
@@ -590,7 +590,7 @@
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   margin-bottom: 0.3rem;
 }
 
@@ -640,8 +640,8 @@
   color: var(--color-vault-danger);
   text-align: center;
   padding: 0.6rem 0.75rem;
-  background: rgba(248, 113, 113, 0.06);
-  border: 1px solid rgba(248, 113, 113, 0.15);
+  background: rgba(var(--color-vault-danger-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.15);
   animation: slideUp 0.3s ease-out;
 }
 
@@ -724,8 +724,8 @@
   text-transform: uppercase;
   color: var(--color-vault-lavender);
   padding: 0.3rem 0.7rem;
-  background: rgba(175, 179, 247, 0.08);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.08);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .admin-user-badge svg {
@@ -738,8 +738,8 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: rgba(248, 113, 113, 0.06);
-  border: 1px solid rgba(248, 113, 113, 0.15);
+  background: rgba(var(--color-vault-danger-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.15);
   color: var(--color-vault-gray);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -747,9 +747,9 @@
 
 .admin-logout-btn:hover {
   color: var(--color-vault-danger);
-  background: rgba(248, 113, 113, 0.12);
-  border-color: rgba(248, 113, 113, 0.3);
-  box-shadow: 0 0 12px rgba(248, 113, 113, 0.1);
+  background: rgba(var(--color-vault-danger-rgb), 0.12);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.3);
+  box-shadow: 0 0 12px rgba(var(--color-vault-danger-rgb), 0.1);
 }
 
 /* ───── Admin notifications (bell) ───── */
@@ -766,9 +766,9 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   border-radius: 8px;
-  background: rgba(175, 179, 247, 0.06);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
   color: var(--color-vault-steel);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -776,8 +776,8 @@
 
 .admin-notif-trigger:hover {
   color: var(--color-vault-lavender);
-  border-color: rgba(175, 179, 247, 0.28);
-  background: rgba(175, 179, 247, 0.1);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.28);
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
 }
 
 .admin-notif-badge {
@@ -795,7 +795,7 @@
   color: #0f1118;
   background: var(--color-vault-lavender);
   border-radius: 999px;
-  box-shadow: 0 0 10px rgba(175, 179, 247, 0.45);
+  box-shadow: 0 0 10px rgba(var(--color-vault-lavender-rgb), 0.45);
 }
 
 .admin-notif-dropdown {
@@ -807,9 +807,9 @@
   display: flex;
   flex-direction: column;
   background: rgba(16, 18, 28, 0.98);
-  border: 1px solid rgba(175, 179, 247, 0.12);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
   border-radius: 10px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 16px 48px rgba(var(--color-vault-black-rgb), 0.55);
   z-index: 1100;
   overflow: hidden;
   animation: slideUp 0.2s ease forwards;
@@ -831,7 +831,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(175, 179, 247, 0.08);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
   flex-shrink: 0;
 }
 
@@ -845,7 +845,7 @@
   font-family: var(--font-heading);
   font-size: 0.8rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-vault-text);
   letter-spacing: 0.04em;
 }
 
@@ -901,18 +901,18 @@
   display: flex;
   align-items: flex-start;
   width: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(var(--color-vault-white-rgb), 0.04);
   background: transparent;
   transition: background 0.15s ease;
   position: relative;
 }
 
 .admin-notif-item:hover {
-  background: rgba(175, 179, 247, 0.06);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
 }
 
 .admin-notif-item--unread {
-  background: rgba(175, 179, 247, 0.04);
+  background: rgba(var(--color-vault-lavender-rgb), 0.04);
 }
 
 .admin-notif-item-content {
@@ -940,7 +940,7 @@
   font-family: var(--font-heading);
   font-size: 0.78rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--color-vault-text);
   line-height: 1.3;
 }
 
@@ -993,8 +993,8 @@
 
 .admin-notif-clear-btn:hover {
   color: var(--color-vault-danger, #f87171);
-  background: rgba(248, 113, 113, 0.1);
-  border-color: rgba(248, 113, 113, 0.25);
+  background: rgba(var(--color-vault-danger-rgb), 0.1);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.25);
 }
 
 /* ───── Reviewer tag in meta ───── */
@@ -1035,7 +1035,7 @@
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--color-vault-text);
   margin-bottom: 0.35rem;
 }
 
@@ -1064,7 +1064,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  border: 1px dashed rgba(175, 179, 247, 0.15);
+  border: 1px dashed rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .admin-no-selection-icon svg {
@@ -1118,8 +1118,8 @@
   display: flex;
   gap: 1rem;
   padding: 0.75rem 1.25rem;
-  background: rgba(13, 15, 20, 0.7);
-  border-bottom: 1px solid rgba(175, 179, 247, 0.08);
+  background: rgba(var(--color-vault-darker-rgb), 0.7);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
 }
 
 .admin-tab-btn {
@@ -1140,13 +1140,13 @@
 
 .admin-tab-btn:hover {
   color: var(--color-vault-lavender);
-  background: rgba(175, 179, 247, 0.05);
+  background: rgba(var(--color-vault-lavender-rgb), 0.05);
 }
 
 .admin-tab-btn.active {
   color: var(--color-vault-lavender);
-  background: rgba(175, 179, 247, 0.1);
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1175,14 +1175,14 @@
   justify-content: space-between;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(175, 179, 247, 0.1);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
 }
 
 .admin-departments-title {
   font-family: var(--font-heading);
   font-size: 1.3rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   letter-spacing: 0.02em;
 }
 
@@ -1195,13 +1195,13 @@
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--color-vault-text);
   background: linear-gradient(
     135deg,
-    rgba(175, 179, 247, 0.2),
+    rgba(var(--color-vault-lavender-rgb), 0.2),
     rgba(146, 188, 234, 0.2)
   );
-  border: 1px solid rgba(175, 179, 247, 0.3);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.3);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1210,11 +1210,11 @@
 .admin-add-dept-btn:hover {
   background: linear-gradient(
     135deg,
-    rgba(175, 179, 247, 0.3),
+    rgba(var(--color-vault-lavender-rgb), 0.3),
     rgba(146, 188, 234, 0.3)
   );
-  border-color: rgba(175, 179, 247, 0.5);
-  box-shadow: 0 4px 12px rgba(175, 179, 247, 0.15);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.5);
+  box-shadow: 0 4px 12px rgba(var(--color-vault-lavender-rgb), 0.15);
   transform: translateY(-2px);
 }
 
@@ -1224,10 +1224,10 @@
   padding: 1.5rem;
   background: linear-gradient(
     145deg,
-    rgba(28, 32, 41, 0.8),
-    rgba(23, 26, 33, 0.9)
+    rgba(var(--color-vault-card-rgb), 0.8),
+    rgba(var(--color-vault-dark-rgb), 0.9)
   );
-  border: 1px solid rgba(175, 179, 247, 0.12);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
   border-radius: 8px;
   animation: slideIn 0.3s ease;
 }
@@ -1268,24 +1268,24 @@
   padding: 0.6rem 0.8rem;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #fff;
-  background: rgba(13, 15, 20, 0.6);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  color: var(--color-vault-text);
+  background: rgba(var(--color-vault-darker-rgb), 0.6);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   border-radius: 4px;
   transition: all 0.2s ease;
 }
 
 .admin-form-input:focus {
   outline: none;
-  background: rgba(13, 15, 20, 0.8);
-  border-color: rgba(175, 179, 247, 0.4);
-  box-shadow: 0 0 12px rgba(175, 179, 247, 0.1);
+  background: rgba(var(--color-vault-darker-rgb), 0.8);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.4);
+  box-shadow: 0 0 12px rgba(var(--color-vault-lavender-rgb), 0.1);
 }
 
 .admin-form-input[type="color"] {
   width: 50px;
   height: 40px;
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -1301,8 +1301,8 @@ select.admin-form-input {
 }
 
 select.admin-form-input option {
-  background: rgba(13, 15, 20, 0.9);
-  color: #fff;
+  background: rgba(var(--color-vault-darker-rgb), 0.9);
+  color: var(--color-vault-text);
   border: none;
   padding: 0.5rem;
 }
@@ -1323,7 +1323,7 @@ select.admin-form-input option {
 .admin-form-color {
   width: 50px;
   height: 40px;
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -1333,8 +1333,8 @@ select.admin-form-input option {
   font-size: 0.7rem;
   color: var(--color-vault-gray);
   padding: 0.3rem 0.6rem;
-  background: rgba(175, 179, 247, 0.05);
-  border: 1px solid rgba(175, 179, 247, 0.1);
+  background: rgba(var(--color-vault-lavender-rgb), 0.05);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
   border-radius: 3px;
 }
 
@@ -1352,8 +1352,8 @@ select.admin-form-input option {
 }
 
 .admin-form-error {
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
+  background: rgba(var(--color-vault-danger-rgb), 0.1);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.3);
   color: var(--color-vault-danger);
 }
 
@@ -1403,14 +1403,14 @@ select.admin-form-input option {
 }
 
 .admin-form-cancel {
-  background: rgba(175, 179, 247, 0.08);
-  border-color: rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.08);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.2);
   color: var(--color-vault-gray);
 }
 
 .admin-form-cancel:hover {
-  background: rgba(175, 179, 247, 0.12);
-  border-color: rgba(175, 179, 247, 0.3);
+  background: rgba(var(--color-vault-lavender-rgb), 0.12);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.3);
 }
 
 /* ───── Departments List ───── */
@@ -1444,10 +1444,10 @@ select.admin-form-input option {
   padding: 1.25rem;
   background: linear-gradient(
     145deg,
-    rgba(28, 32, 41, 0.7),
-    rgba(23, 26, 33, 0.85)
+    rgba(var(--color-vault-card-rgb), 0.7),
+    rgba(var(--color-vault-dark-rgb), 0.85)
   );
-  border: 1px solid rgba(175, 179, 247, 0.1);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
   border-radius: 8px;
   transition: all 0.3s ease;
   overflow: hidden;
@@ -1456,11 +1456,11 @@ select.admin-form-input option {
 .admin-dept-card:hover {
   background: linear-gradient(
     145deg,
-    rgba(28, 32, 41, 0.9),
-    rgba(23, 26, 33, 1)
+    rgba(var(--color-vault-card-rgb), 0.9),
+    rgba(var(--color-vault-dark-rgb), 1)
   );
-  border-color: rgba(175, 179, 247, 0.25);
-  box-shadow: 0 8px 24px rgba(175, 179, 247, 0.1);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.25);
+  box-shadow: 0 8px 24px rgba(var(--color-vault-lavender-rgb), 0.1);
   transform: translateY(-4px);
 }
 
@@ -1486,7 +1486,7 @@ select.admin-form-input option {
   font-family: var(--font-heading);
   font-size: 0.85rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-vault-text);
   margin: 0;
 }
 
@@ -1510,7 +1510,7 @@ select.admin-form-input option {
   gap: 0.8rem;
   margin-top: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid rgba(175, 179, 247, 0.1);
+  border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
 }
 
 .admin-dept-card-meta small {
@@ -1531,8 +1531,8 @@ select.admin-form-input option {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(175, 179, 247, 0.1);
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
   border-radius: 4px;
   color: var(--color-vault-lavender);
   font-size: 0.9rem;
@@ -1543,14 +1543,14 @@ select.admin-form-input option {
 
 .admin-dept-card:hover .admin-dept-card-edit {
   opacity: 1;
-  background: rgba(175, 179, 247, 0.2);
-  border-color: rgba(175, 179, 247, 0.4);
+  background: rgba(var(--color-vault-lavender-rgb), 0.2);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.4);
 }
 
 .admin-dept-card-edit:hover {
-  background: rgba(175, 179, 247, 0.3);
-  border-color: rgba(175, 179, 247, 0.5);
-  box-shadow: 0 2px 8px rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.3);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.5);
+  box-shadow: 0 2px 8px rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .admin-dept-card-delete {
@@ -1562,8 +1562,8 @@ select.admin-form-input option {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.2);
+  background: rgba(var(--color-vault-danger-rgb), 0.1);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.2);
   border-radius: 4px;
   color: var(--color-vault-danger);
   font-size: 0.9rem;
@@ -1574,27 +1574,27 @@ select.admin-form-input option {
 
 .admin-dept-card:hover .admin-dept-card-delete {
   opacity: 1;
-  background: rgba(248, 113, 113, 0.2);
-  border-color: rgba(248, 113, 113, 0.4);
+  background: rgba(var(--color-vault-danger-rgb), 0.2);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.4);
 }
 
 .admin-dept-card-delete:hover {
-  background: rgba(248, 113, 113, 0.3);
-  border-color: rgba(248, 113, 113, 0.5);
-  box-shadow: 0 2px 8px rgba(248, 113, 113, 0.15);
+  background: rgba(var(--color-vault-danger-rgb), 0.3);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.5);
+  box-shadow: 0 2px 8px rgba(var(--color-vault-danger-rgb), 0.15);
 }
 
 @media (max-width: 1024px), (hover: none) and (pointer: coarse) {
   .admin-dept-card-edit,
   .admin-dept-card-delete {
     opacity: 1;
-    background: rgba(175, 179, 247, 0.15);
-    border-color: rgba(175, 179, 247, 0.3);
+    background: rgba(var(--color-vault-lavender-rgb), 0.15);
+    border-color: rgba(var(--color-vault-lavender-rgb), 0.3);
   }
   
   .admin-dept-card-delete {
-    background: rgba(248, 113, 113, 0.15);
-    border-color: rgba(248, 113, 113, 0.3);
+    background: rgba(var(--color-vault-danger-rgb), 0.15);
+    border-color: rgba(var(--color-vault-danger-rgb), 0.3);
   }
 }
 
@@ -1629,11 +1629,11 @@ select.admin-form-input option {
 
 .admin-stats-modal {
   background: rgba(22, 24, 40, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.1);
   border-radius: 12px;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(var(--color-vault-black-rgb), 0.5);
   animation: slideUp 0.3s ease forwards;
   overflow: hidden;
   position: relative;
@@ -1665,8 +1665,8 @@ select.admin-form-input option {
 }
 
 .admin-staff-chart-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(var(--color-vault-white-rgb), 0.02);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.06);
   border-radius: 10px;
   padding: 1rem 1rem 0.75rem;
   min-height: 0;
@@ -1697,7 +1697,7 @@ select.admin-form-input option {
 
 .admin-stats-header {
   padding: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(var(--color-vault-white-rgb), 0.05);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1717,8 +1717,8 @@ select.admin-form-input option {
 }
 
 .admin-stats-item {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(var(--color-vault-white-rgb), 0.02);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.05);
   border-radius: 8px;
   padding: 1rem;
   display: flex;
@@ -1733,7 +1733,7 @@ select.admin-form-input option {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
 }
 
 .admin-stats-label {
@@ -1756,7 +1756,7 @@ select.admin-form-input option {
 }
 
 .admin-stats-close-btn:hover {
-  color: #fff;
+  color: var(--color-vault-text);
 }
 
 /* ───── Mobile adjustments ───── */
@@ -1807,7 +1807,7 @@ select.admin-form-input option {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(var(--color-vault-black-rgb), 0.6);
   backdrop-filter: blur(6px);
   animation: fadeIn 0.15s ease;
 }
@@ -1822,10 +1822,10 @@ select.admin-form-input option {
   width: min(420px, calc(100vw - 2rem));
   padding: 2rem 2rem 1.5rem;
   background: rgba(16, 18, 28, 0.98);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   border-radius: 14px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6),
-              0 0 40px rgba(175, 179, 247, 0.05);
+  box-shadow: 0 24px 64px rgba(var(--color-vault-black-rgb), 0.6),
+              0 0 40px rgba(var(--color-vault-lavender-rgb), 0.05);
   text-align: center;
   animation: modalSlideIn 0.2s ease;
 }
@@ -1850,7 +1850,7 @@ select.admin-form-input option {
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   margin: 0 0 0.6rem;
 }
 
@@ -1878,17 +1878,17 @@ select.admin-form-input option {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-vault-steel);
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .confirm-modal-cancel:hover {
-  color: #fff;
-  background: rgba(175, 179, 247, 0.12);
-  border-color: rgba(175, 179, 247, 0.3);
+  color: var(--color-vault-text);
+  background: rgba(var(--color-vault-lavender-rgb), 0.12);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.3);
 }
 
 .confirm-modal-confirm {
@@ -1904,19 +1904,19 @@ select.admin-form-input option {
 }
 
 .confirm-modal-confirm--danger {
-  color: #fff;
-  background: rgba(248, 113, 113, 0.2);
-  border: 1px solid rgba(248, 113, 113, 0.4);
+  color: var(--color-vault-text);
+  background: rgba(var(--color-vault-danger-rgb), 0.2);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.4);
 }
 
 .confirm-modal-confirm--danger:hover {
-  background: rgba(248, 113, 113, 0.35);
-  border-color: rgba(248, 113, 113, 0.6);
-  box-shadow: 0 0 20px rgba(248, 113, 113, 0.2);
+  background: rgba(var(--color-vault-danger-rgb), 0.35);
+  border-color: rgba(var(--color-vault-danger-rgb), 0.6);
+  box-shadow: 0 0 20px rgba(var(--color-vault-danger-rgb), 0.2);
 }
 
 .confirm-modal-confirm--warning {
-  color: #fff;
+  color: var(--color-vault-text);
   background: rgba(251, 191, 36, 0.2);
   border: 1px solid rgba(251, 191, 36, 0.4);
 }
@@ -1946,8 +1946,8 @@ select.admin-form-input option {
 }
 
 .confirm-modal-close:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-vault-text);
+  background: rgba(var(--color-vault-white-rgb), 0.08);
 }
 
 /* ───── RESPONSIVE STAFF TAB LAYOUT ───── */

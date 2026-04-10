@@ -8,7 +8,7 @@
   gap: 1rem;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  background: linear-gradient(135deg, rgba(28, 32, 41, 0.8) 0%, rgba(23, 26, 33, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(var(--color-vault-card-rgb), 0.8) 0%, rgba(var(--color-vault-dark-rgb), 0.9) 100%);
   border: 1px solid rgba(122, 147, 172, 0.12);
   border-left: 3px solid var(--color-vault-lavender);
 }
@@ -19,8 +19,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.12);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
   flex-shrink: 0;
 }
 
@@ -33,7 +33,7 @@
   font-family: var(--font-heading);
   font-size: clamp(1rem, 2.5vw, 1.4rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--color-vault-text);
   line-height: 1.2;
 }
 

@@ -48,6 +48,26 @@ export default function AnalyticsTab({ allDepartments }) {
         />
       </h2>
 
+      {/* Top Stat Cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+        <div className="glass-card" style={{ padding: "1.5rem", borderLeft: "3px solid var(--color-vault-lavender)" }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--color-vault-steel)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Total Uploads</div>
+          <div style={{ fontSize: "2rem", fontWeight: "bold", fontFamily: "var(--font-heading)", color: "var(--color-vault-text)" }}>1,248</div>
+        </div>
+        <div className="glass-card" style={{ padding: "1.5rem", borderLeft: "3px solid var(--color-vault-warning)" }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--color-vault-steel)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Pending Review</div>
+          <div style={{ fontSize: "2rem", fontWeight: "bold", fontFamily: "var(--font-heading)", color: "var(--color-vault-text)" }}>42</div>
+        </div>
+        <div className="glass-card" style={{ padding: "1.5rem", borderLeft: "3px solid var(--color-vault-success)" }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--color-vault-steel)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Approved</div>
+          <div style={{ fontSize: "2rem", fontWeight: "bold", fontFamily: "var(--font-heading)", color: "var(--color-vault-text)" }}>1,180</div>
+        </div>
+        <div className="glass-card" style={{ padding: "1.5rem", borderLeft: "3px solid var(--color-vault-danger)" }}>
+          <div style={{ fontSize: "0.8rem", color: "var(--color-vault-steel)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Rejection Rate</div>
+          <div style={{ fontSize: "2rem", fontWeight: "bold", fontFamily: "var(--font-heading)", color: "var(--color-vault-text)" }}>2.1%</div>
+        </div>
+      </div>
+
       <div
         className="admin-analytics-grid"
         style={{ marginBottom: "2rem" }}
@@ -100,9 +120,9 @@ export default function AnalyticsTab({ allDepartments }) {
                   backgroundColor: "rgba(22, 26, 34, 0.95)",
                   border: "1px solid rgba(175, 179, 247, 0.2)",
                   borderRadius: "8px",
-                  color: "#fff",
+                  color: "var(--color-vault-text)",
                 }}
-                itemStyle={{ color: "#fff" }}
+                itemStyle={{ color: "var(--color-vault-text)" }}
               />
               <Area
                 type="monotone"
@@ -160,7 +180,7 @@ export default function AnalyticsTab({ allDepartments }) {
                   backgroundColor: "rgba(22, 26, 34, 0.95)",
                   border: "1px solid rgba(175, 179, 247, 0.2)",
                   borderRadius: "8px",
-                  color: "#fff",
+                  color: "var(--color-vault-text)",
                 }}
                 cursor={{ fill: "rgba(255,255,255,0.05)" }}
               />

@@ -41,7 +41,7 @@ const staffChartTooltip = {
     borderRadius: "8px",
     fontSize: "12px",
   },
-  labelStyle: { color: "#e2e8f0" },
+  labelStyle: { color: "var(--color-vault-text)" },
 };
 
 function hashStaffId(id) {
@@ -380,7 +380,7 @@ export default function StaffTab() {
        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.2rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <UserIcon size={14} color="var(--color-vault-gray)" />
-            <span style={{ fontWeight: "600", fontSize: "0.9rem", color: "#fff", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{st.username}</span>
+            <span style={{ fontWeight: "600", fontSize: "0.9rem", color: "var(--color-vault-text)", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{st.username}</span>
             {st.isRoot && <span style={{ fontSize: "0.55rem", padding: "0.1rem 0.4rem", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "var(--color-vault-gray)" }}>ROOT</span>}
           </div>
           
@@ -435,7 +435,7 @@ export default function StaffTab() {
               <UserIcon size={22} color="var(--color-vault-lavender)" />
             </div>
             <div>
-              <h3 id="staff-stats-title" style={{ margin: 0, color: "#fff", fontSize: "1.2rem" }}>
+              <h3 id="staff-stats-title" style={{ margin: 0, color: "var(--color-vault-text)", fontSize: "1.2rem" }}>
                 {selectedStaffForStats.username}
               </h3>
               <div style={{ fontSize: "0.75rem", color: "var(--color-vault-gray)", marginTop: "0.25rem" }}>
@@ -551,7 +551,7 @@ export default function StaffTab() {
                          }}
                          onMouseEnter={(e) => {
                            e.currentTarget.style.background = "rgba(139, 92, 246, 0.15)";
-                           e.currentTarget.style.color = "#fff";
+                           e.currentTarget.style.color = "var(--color-vault-text)";
                          }}
                          onMouseLeave={(e) => {
                            e.currentTarget.style.background = "transparent";

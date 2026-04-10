@@ -40,7 +40,7 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--color-vault-gray);
-  background: rgba(28, 32, 41, 0.8);
+  background: rgba(var(--color-vault-card-rgb), 0.8);
   border: 1px solid rgba(122, 147, 172, 0.1);
   cursor: pointer;
   transition: all 0.25s ease;
@@ -55,7 +55,7 @@
   color: var(--color-vault-dark);
   background: var(--color-vault-lavender);
   border-color: var(--color-vault-lavender);
-  box-shadow: 0 0 12px rgba(175, 179, 247, 0.3);
+  box-shadow: 0 0 12px rgba(var(--color-vault-lavender-rgb), 0.3);
 }
 
 .year-tab-all {
@@ -65,7 +65,7 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   color: var(--color-vault-gray);
-  background: rgba(28, 32, 41, 0.8);
+  background: rgba(var(--color-vault-card-rgb), 0.8);
   border: 1px solid rgba(122, 147, 172, 0.1);
   cursor: pointer;
   transition: all 0.25s ease;
@@ -78,8 +78,8 @@
 
 .year-tab-all.active {
   color: var(--color-vault-lavender);
-  border-color: rgba(175, 179, 247, 0.4);
-  background: rgba(175, 179, 247, 0.08);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.4);
+  background: rgba(var(--color-vault-lavender-rgb), 0.08);
 }
 
 /* ───── Paper Cards ───── */
@@ -95,10 +95,10 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  background: rgba(22, 26, 34, 0.4);
+  background: rgba(var(--color-vault-card-alt-rgb), 0.4);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.05);
   border-radius: 8px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
@@ -110,9 +110,9 @@
   inset: 0;
   border-radius: 8px;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(175, 179, 247, 0.3) 0%, transparent 60%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(135deg, rgba(var(--color-vault-lavender-rgb), 0.3) 0%, transparent 60%);
+  -webkit-mask: linear-gradient(var(--color-vault-text) 0 0) content-box, linear-gradient(var(--color-vault-text) 0 0);
+  mask: linear-gradient(var(--color-vault-text) 0 0) content-box, linear-gradient(var(--color-vault-text) 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0.5;
@@ -122,11 +122,11 @@
 
 .paper-card:hover {
   transform: translateX(4px);
-  background: rgba(28, 32, 41, 0.6);
+  background: rgba(var(--color-vault-card-rgb), 0.6);
   box-shadow:
-    0 10px 25px -5px rgba(0, 0, 0, 0.5),
-    0 0 15px -3px rgba(175, 179, 247, 0.4);
-  border-color: rgba(255, 255, 255, 0.1);
+    0 10px 25px -5px rgba(var(--color-vault-black-rgb), 0.5),
+    0 0 15px -3px rgba(var(--color-vault-lavender-rgb), 0.4);
+  border-color: rgba(var(--color-vault-white-rgb), 0.1);
 }
 
 .paper-card:hover::before {
@@ -140,8 +140,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(175, 179, 247, 0.08);
-  border: 1px solid rgba(175, 179, 247, 0.12);
+  background: rgba(var(--color-vault-lavender-rgb), 0.08);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
   flex-shrink: 0;
 }
 
@@ -159,7 +159,7 @@
 .paper-card-subject {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #e2e8f0;
+  color: var(--color-vault-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -200,8 +200,8 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-vault-lavender);
-  background: rgba(175, 179, 247, 0.06);
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
   cursor: pointer;
   transition: all 0.3s ease;
   flex-shrink: 0;
@@ -209,9 +209,9 @@
 }
 
 .paper-card-download:hover {
-  background: rgba(175, 179, 247, 0.12);
+  background: rgba(var(--color-vault-lavender-rgb), 0.12);
   border-color: var(--color-vault-lavender);
-  box-shadow: 0 0 15px rgba(175, 179, 247, 0.15);
+  box-shadow: 0 0 15px rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 /* ───── Responsive: Paper Cards ───── */
@@ -308,7 +308,7 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem;
-  background: rgba(175, 179, 247, 0.04);
+  background: rgba(var(--color-vault-lavender-rgb), 0.04);
   border: 1px dashed rgba(122, 147, 172, 0.2);
 }
 
@@ -349,12 +349,12 @@
   width: 100%;
   max-width: 900px;
   height: 85vh;
-  background: rgba(22, 26, 34, 0.7);
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  background: rgba(var(--color-vault-card-alt-rgb), 0.7);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
   border-radius: 16px;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.8),
-    0 0 40px rgba(175, 179, 247, 0.1);
+    0 25px 50px -12px rgba(var(--color-vault-black-rgb), 0.8),
+    0 0 40px rgba(var(--color-vault-lavender-rgb), 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -365,15 +365,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.2rem 1.5rem;
-  background: rgba(28, 32, 41, 0.9);
-  border-bottom: 1px solid rgba(175, 179, 247, 0.15);
+  background: rgba(var(--color-vault-card-rgb), 0.9);
+  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .preview-modal-header h3 {
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-vault-text);
   letter-spacing: 0.05em;
   margin: 0;
   white-space: nowrap;
@@ -388,8 +388,8 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(var(--color-vault-white-rgb), 0.05);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.1);
   border-radius: 50%;
   color: var(--color-vault-gray);
   cursor: pointer;
@@ -408,14 +408,14 @@
   flex: 1;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--color-vault-text);
 }
 
 .preview-iframe {
   width: 100%;
   height: 100%;
   border: none;
-  background: #fff;
+  background: var(--color-vault-text);
 }
 
 /* ───── Responsive: Preview Modal ───── */
@@ -477,9 +477,9 @@
 .mock-pdf-page {
   width: 100%;
   max-width: 800px;
-  background: #fff;
+  background: var(--color-vault-text);
   min-height: 1000px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(var(--color-vault-black-rgb), 0.3);
   padding: 3rem;
   font-family: "Times New Roman", Times, serif;
   color: #000;
@@ -567,7 +567,7 @@
   transform: translate(-50%, -50%) rotate(-45deg);
   font-size: 5rem;
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.04);
+  color: rgba(var(--color-vault-black-rgb), 0.04);
   white-space: nowrap;
   pointer-events: none;
   z-index: 1;

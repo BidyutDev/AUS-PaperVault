@@ -10,20 +10,28 @@ import {
   X,
   MessageSquare,
   Shield,
+  Search,
+  Sun,
+  Moon,
+  Bookmark,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { getTotalPaperCount } from "../../data/mockPapers";
 import { useDepartments } from "../../hooks/useDepartments";
+import SearchModal from "../SearchModal/SearchModal";
 import "./Header.css";
 import logoAus from "./papervault.svg";
 
 export default function Header() {
   const departments = useDepartments();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const userMenuRef = useRef(null);
   const location = useLocation();
 
@@ -51,11 +59,24 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [userMenuOpen]);
 
+  // Global ⌘K / Ctrl+K shortcut
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const navLinks = [
     { to: "/", label: "Home", icon: Home },
     { to: "/upload", label: "Upload", icon: Upload },
     { to: "/devs", label: "Devs", icon: Users },
     { to: "/feedback", label: "Feedback", icon: MessageSquare },
+    { to: "/bookmarks", label: "Saved", icon: Bookmark },
   ];
 
   if (user && user.role !== "Member") {
@@ -64,8 +85,13 @@ export default function Header() {
 
   return (
     <header className="header-wrapper">
+      {/* Skip to content link for accessibility */}
+      <a href="#main-content" className="skip-to-content">
+        Skip to content
+      </a>
+
       <div className="header">
-        <div className="container-vault">
+        <div className="header-fullpage-inner">
           <div className="header-inner">
             {/* ── Left: Logo + Stats ── */}
             <Link
@@ -102,7 +128,7 @@ export default function Header() {
             </div>
 
             {/* ── Center: Nav (pushes right via margin-left:auto) ── */}
-            <nav className="header-nav">
+            <nav className="header-nav" aria-label="Main navigation">
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -115,8 +141,28 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* ── Right: User / Auth ── */}
+            {/* ── Right: Search + Theme + User ── */}
             <div className="header-right">
+              {/* Search Trigger */}
+              <button
+                className="search-trigger"
+                onClick={() => setSearchOpen(true)}
+                aria-label="Open search"
+              >
+                <Search size={14} />
+                <span>⌘K</span>
+              </button>
+
+              {/* Theme Toggle */}
+              <button
+                className="theme-toggle-btn"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                title={`${theme === "dark" ? "Light" : "Dark"} mode`}
+              >
+                {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+              </button>
+
               {user ? (
                 <div className="user-menu-container" ref={userMenuRef}>
                   <button
@@ -213,6 +259,9 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }

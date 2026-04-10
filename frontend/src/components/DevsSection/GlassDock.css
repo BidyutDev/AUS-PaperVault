@@ -1,13 +1,13 @@
 /* Glass Component Borders and Backgrounds */
 .glass-dock-container {
   background: rgba(14, 18, 25, 0.65);
-  border: 1px solid rgba(175, 179, 247, 0.15);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
 }
 
 .glass-dock-tooltip {
-  background: rgba(22, 26, 34, 0.95);
+  background: rgba(var(--color-vault-card-alt-rgb), 0.95);
   color: #e6edf3;
-  border: 1px solid rgba(175, 179, 247, 0.2);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
 }
 
 /* Mobile adjustments */
