@@ -19,6 +19,14 @@ const LinkedinIcon = ({ size, className, ...props }) => (
   </svg>
 );
 
+const InstagramIcon = ({ size, className, ...props }) => (
+  <svg width={size || 15} height={size || 15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
 /* ─── Tech stack icons ─── */
 const ReactIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -66,8 +74,9 @@ const developers = [
     socials: {
       github: 'https://github.com/BidyutDev',
       linkedin: 'https://www.linkedin.com/in/bidyut-priyam-kumar/',
-      email: 'mailto:dev1@example.com',
+      email: 'mailto:bidyutdev2006@gmail.com',
       website: '#',
+      instagram: 'https://www.instagram.com/bidyutpriyamkumar/',
     },
   },
   {
@@ -80,8 +89,9 @@ const developers = [
     socials: {
       github: 'https://github.com/kamiism',
       linkedin: 'https://www.linkedin.com/in/nilanjan-kumar-roy-186260380/',
-      email: 'mailto:dev2@example.com',
+      email: 'mailto:kumarroynilanjan@gmail.com',
       website: '#',
+      instagram: '#',
     },
   },
   {
@@ -96,6 +106,7 @@ const developers = [
       linkedin: 'https://www.linkedin.com/in/anirban-nath-42a63b25b/',
       email: 'mailto:anirbandev0101@gmail.com',
       website: '#',
+      instagram: '#',
     },
   },
   {
@@ -108,8 +119,9 @@ const developers = [
     socials: {
       github: '#',
       linkedin: 'https://www.linkedin.com/in/bhavik-lal-a01178279/',
-      email: '#',
+      email: 'mailto:bhaviklal5248@gmail.com',
       website: '#',
+      instagram: '#',
     }
   }
 ];
@@ -117,10 +129,11 @@ const developers = [
 /* ─── Dev Card ─── */
 function DevCard({ dev, index }) {
   const dockItems = [];
-  if (dev.socials?.github && dev.socials.github !== '#') dockItems.push({ title: 'GitHub', icon: GithubIcon, href: dev.socials.github });
-  if (dev.socials?.linkedin && dev.socials.linkedin !== '#') dockItems.push({ title: 'LinkedIn', icon: LinkedinIcon, href: dev.socials.linkedin });
-  if (dev.socials?.email && dev.socials.email !== '#') dockItems.push({ title: 'Email', icon: Mail, href: dev.socials.email });
-  if (dev.socials?.website && dev.socials.website !== '#') dockItems.push({ title: 'Website', icon: Globe, href: dev.socials.website });
+  if (dev.socials?.github) dockItems.push({ title: 'GitHub', icon: GithubIcon, href: dev.socials.github });
+  if (dev.socials?.linkedin) dockItems.push({ title: 'LinkedIn', icon: LinkedinIcon, href: dev.socials.linkedin });
+  dockItems.push({ title: 'Instagram', icon: InstagramIcon, href: dev.socials?.instagram || '#' });
+  if (dev.socials?.email) dockItems.push({ title: 'Email', icon: Mail, href: dev.socials.email });
+  dockItems.push({ title: 'Website', icon: Globe, href: dev.socials?.website || '#' });
 
   const hasSocials = dockItems.length > 0;
 
