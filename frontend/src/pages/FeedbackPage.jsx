@@ -148,11 +148,12 @@ export default function FeedbackPage() {
             <label className="form-label">Name *</label>
             <input
               type="text"
-              className="input-cyber"
+              className="feedback-name-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
               required
+              readOnly
             />
           </div>
 
@@ -160,11 +161,12 @@ export default function FeedbackPage() {
             <label className="form-label">Email *</label>
             <input
               type="email"
-              className="input-cyber"
+              className="feedback-email-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="We'll only use this to reply back"
               required
+              readOnly
             />
           </div>
 

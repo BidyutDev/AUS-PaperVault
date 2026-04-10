@@ -53,6 +53,32 @@
 
 /* Base form elements reuse global styles (form-group, form-label, input-cyber) */
 
+.feedback-name-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #685896;
+  background: rgba(23, 26, 33, 0.8);
+  border: 1px solid var(--color-vault-border);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.feedback-email-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #685896;
+  background: rgba(23, 26, 33, 0.8);
+  border: 1px solid var(--color-vault-border);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
 .feedback-submit-row {
   display: flex;
   justify-content: space-between;
@@ -65,8 +91,8 @@
 .feedback-notice {
   display: flex;
   align-items: center;
+  color: #b9b11e;
   gap: 0.5rem;
-  color: var(--color-vault-steel);
   font-size: 0.8rem;
   font-family: var(--font-mono);
 }
