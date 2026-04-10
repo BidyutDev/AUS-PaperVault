@@ -10,13 +10,6 @@ const feedbackRouter = Router();
 
 feedbackRouter.post("/send", authMiddleware, async (req, res) => {
     try {
-        if (!res.success) {
-            return sendError(
-                res,
-                "User is not logged in",
-                STATUS_CODES.FORBIDDEN
-            );
-        }
         const { success, error, data } = feedbackSchema.safeParse(req.body);
 
         if (!success) {
@@ -52,9 +45,8 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
 feedbackRouter.get("/list", authMiddleware, async (req, res) => {
     try {
         if (
-            res.success &&
-            (res.user.role == ROLES.SUPER_ADMIN ||
-                res.user.role == ROLES.MODERATOR)
+            res.user.role == ROLES.SUPER_ADMIN ||
+            res.user.role == ROLES.MODERATOR
         ) {
             const feedbacks = await Feedback.find();
             sendSuccess(
@@ -79,9 +71,8 @@ feedbackRouter.get("/list", authMiddleware, async (req, res) => {
 feedbackRouter.delete("/delete", authMiddleware, async (req, res) => {
     try {
         if (
-            res.success &&
-            (res.user.role == ROLES.SUPER_ADMIN ||
-                res.user.role == ROLES.MODERATOR)
+            res.user.role == ROLES.SUPER_ADMIN ||
+            res.user.role == ROLES.MODERATOR
         ) {
             await Feedback.deleteOne({});
         } else {
