@@ -481,6 +481,12 @@
   gap: 1rem;
 }
 
+@media (max-width: 400px) {
+  .verification-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
 .btn-cyber {
   padding: 0.75rem;
   background: rgba(var(--color-vault-lavender-rgb), 0.05);

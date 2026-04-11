@@ -52,7 +52,7 @@
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--color-vault-light);
+  color: var(--color-vault-text);
   margin-bottom: 0.3rem;
 }
 
@@ -131,7 +131,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: var(--color-vault-light);
+  color: var(--color-vault-text);
   font-family: var(--font-body);
   font-size: 0.85rem;
 }
