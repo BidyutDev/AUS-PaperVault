@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import PaperList from "../components/PaperList/PaperList";
 import { useBookmarks } from "../hooks/useBookmarks";
 import { useAllPapers } from "../hooks/useDepartments";
-import { pageVariants, pageTransition } from "../lib/animations";
+import { pageTransition, pageVariants } from "../lib/animations";
 import "./BookmarksPage.css";
 
 export default function BookmarksPage() {
   const { bookmarks } = useBookmarks();
   const allPapers = useAllPapers();
-  const bookmarkedPapers = allPapers.filter((p) => bookmarks.includes(p.id));
+  const bookmarkedPapers = allPapers.filter((p) => bookmarks.includes(String(p.id)));
 
   return (
     <motion.div

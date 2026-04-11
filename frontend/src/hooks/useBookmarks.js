@@ -1,14 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const STORAGE_KEY = "aus_vault_bookmarks";
 
-function getStoredBookmarks() {
+const normalizeBookmarkId = (paperId) => String(paperId);
+
+function parseStoredBookmarks() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    return stored ? JSON.parse(stored).map(normalizeBookmarkId) : [];
   } catch {
     return [];
   }
+}
+
+function saveBookmarks(bookmarks) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
 }
 
 /**
@@ -16,7 +22,7 @@ function getStoredBookmarks() {
  * Stores paper IDs in localStorage.
  */
 export function useBookmarks() {
-  const [bookmarks, setBookmarks] = useState(getStoredBookmarks);
+  const [bookmarks, setBookmarks] = useState(parseStoredBookmarks);
 
   // Sync across tabs
   useEffect(() => {
@@ -30,37 +36,40 @@ export function useBookmarks() {
   }, []);
 
   const addBookmark = useCallback((paperId) => {
+    const id = normalizeBookmarkId(paperId);
     setBookmarks((prev) => {
-      if (prev.includes(paperId)) return prev;
-      const next = [...prev, paperId];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      saveBookmarks(next);
       window.dispatchEvent(new Event("bookmarksUpdated"));
       return next;
     });
   }, []);
 
   const removeBookmark = useCallback((paperId) => {
+    const id = normalizeBookmarkId(paperId);
     setBookmarks((prev) => {
-      const next = prev.filter((id) => id !== paperId);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      const next = prev.filter((storedId) => storedId !== id);
+      saveBookmarks(next);
       window.dispatchEvent(new Event("bookmarksUpdated"));
       return next;
     });
   }, []);
 
   const toggleBookmark = useCallback((paperId) => {
+    const id = normalizeBookmarkId(paperId);
     setBookmarks((prev) => {
-      const next = prev.includes(paperId)
-        ? prev.filter((id) => id !== paperId)
-        : [...prev, paperId];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      const next = prev.includes(id)
+        ? prev.filter((storedId) => storedId !== id)
+        : [...prev, id];
+      saveBookmarks(next);
       window.dispatchEvent(new Event("bookmarksUpdated"));
       return next;
     });
   }, []);
 
   const isBookmarked = useCallback(
-    (paperId) => bookmarks.includes(paperId),
+    (paperId) => bookmarks.includes(normalizeBookmarkId(paperId)),
     [bookmarks]
   );
 
