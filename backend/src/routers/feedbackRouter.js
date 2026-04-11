@@ -68,13 +68,23 @@ feedbackRouter.get("/list", authMiddleware, async (req, res) => {
     }
 });
 
-feedbackRouter.delete("/delete", authMiddleware, async (req, res) => {
+feedbackRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
     try {
         if (
             res.user.role == ROLES.SUPER_ADMIN ||
             res.user.role == ROLES.MODERATOR
         ) {
-            await Feedback.deleteOne({});
+            const { id } = req.params;
+            const deleteFeedback = await Feedback.deleteOne({ _id: id });
+
+            if (deleteFeedback.deletedCount != 0) {
+                return sendSuccess(
+                    res,
+                    "Feedback deleted successfully",
+                    STATUS_CODES.SUCCESS
+                );
+            }
+            sendError(res, "No feedback found", STATUS_CODES.NOT_FOUND);
         } else {
             sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
         }

@@ -59,9 +59,9 @@ export default function FeedbackTab() {
     setConfirmDeleteId(id);
   };
 
-  const executeDelete = () => {
+  const executeDelete = async () => {
     if (confirmDeleteId) {
-      deleteFeedback(confirmDeleteId);
+      await deleteFeedback(confirmDeleteId);
       setConfirmDeleteId(null);
     }
   };
@@ -120,7 +120,7 @@ export default function FeedbackTab() {
             style={{ padding: "1.5rem", position: "relative" }}
           >
             <button
-              onClick={() => handleDelete(item.id)}
+              onClick={() => handleDelete(item._id)}
               className="admin-dept-card-delete"
               title="Delete feedback"
               style={{
