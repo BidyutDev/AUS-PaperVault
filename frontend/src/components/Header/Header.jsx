@@ -1,19 +1,19 @@
 import {
+  Bookmark,
   Building2,
   FileText,
   Home,
   LogOut,
   Menu,
+  MessageSquare,
+  Moon,
+  Search,
+  Shield,
+  Sun,
   Upload,
   User as UserIcon,
   Users,
   X,
-  MessageSquare,
-  Shield,
-  Search,
-  Sun,
-  Moon,
-  Bookmark,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -23,7 +23,7 @@ import { getTotalPaperCount } from "../../data/mockPapers";
 import { useDepartments } from "../../hooks/useDepartments";
 import SearchModal from "../SearchModal/SearchModal";
 import "./Header.css";
-import logoAus from "./papervault.svg";
+import logoAus from "./logo_clean.png";
 
 export default function Header() {
   const departments = useDepartments();

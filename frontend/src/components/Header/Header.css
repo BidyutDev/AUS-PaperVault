@@ -70,8 +70,8 @@
 
 .logo-icon-box {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,9 +80,9 @@
 }
 
 .logo-image {
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   filter: drop-shadow(0 2px 4px rgba(var(--color-vault-black-rgb), 0.2));
 }
 

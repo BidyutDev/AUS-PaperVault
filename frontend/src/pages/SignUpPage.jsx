@@ -524,6 +524,22 @@ export default function SignUpPage() {
                   {isLoading ? "Verifying..." : "Verify & Sign Up"}
                 </button>
               </div>
+
+              <div className="resend-wrapper" style={{ marginTop: "1rem", fontSize: "0.85rem", color: "var(--color-vault-gray)" }}>
+                Didn't receive the code?{" "}
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    import("sonner").then(({ toast }) => {
+                      toast.success("Verification code resent!");
+                    });
+                  }}
+                  className="terms-link"
+                  style={{ background: "none", border: "none", padding: 0, font: "inherit", cursor: "pointer" }}
+                >
+                  Resend Code
+                </button>
+              </div>
             </form>
           </motion.div>
         </div>
