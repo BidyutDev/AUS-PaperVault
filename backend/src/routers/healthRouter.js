@@ -2,11 +2,13 @@ import { Router } from "express";
 import { sendError, sendSuccess } from "../utils/apiResponse.js";
 import { STATUS_CODES } from "../utils/statusCodes.js";
 import mongoose from "mongoose";
+import transporter from "../services/email.js";
 
 const healthRouter = Router();
 
-healthRouter.get("/", (req, res) => {
+healthRouter.get("/", async (req, res) => {
     try {
+        await transporter.verify();
         const uptime = Math.floor(process.uptime());
         const mongoState = mongoose.connection.readyState;
 
@@ -16,6 +18,7 @@ healthRouter.get("/", (req, res) => {
             return sendSuccess(res, "Server is healthy", STATUS_CODES.SUCCESS, {
                 uptime: `${uptime >= 3600 ? `${Math.floor(uptime / 3600)} hours ` : ""}${Math.floor((uptime - Math.floor(uptime / 3600) * 60 * 60) / 60)} mins ${uptime % 60} seconds`,
                 database: dbStatus,
+                smtp_server: "up",
             });
         }
 
