@@ -41,7 +41,7 @@ export const updateStaff = async (username, role) => {
   try {
     const staff = await getStaff();
 
-    const existingStaff = staff.find((s) => s.username === username);
+    const existingStaff = staff.find((s) => s.username === username && s.role === role);
 
     if (!existingStaff || existingStaff.length == 0) {
       const token = localStorage.getItem("access_token");
