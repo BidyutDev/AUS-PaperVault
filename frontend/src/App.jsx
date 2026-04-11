@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { useEffect, Suspense, lazy } from "react";
 import { AnimatePresence } from "framer-motion";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 
@@ -74,6 +74,42 @@ function AppLayout() {
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
 
+  const { user } = useAuth();
+
+  if (!user || ["Member" , "Moderator" , "Reviewer"].includes(user.role)) {
+    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+    }
+    useEffect(() => {
+      const handleContextMenu = (e) => {
+        e.preventDefault();
+      };
+
+      const handleKeyDown = (e) => {
+        // F12
+        if (e.key === "F12") {
+          e.preventDefault();
+        }
+
+        // Ctrl+Shift+I / J / C
+        if (
+          (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
+          (e.ctrlKey && e.key === "U")
+        ) {
+          e.preventDefault();
+        }
+      };
+
+      document.addEventListener("contextmenu", handleContextMenu);
+      document.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        document.removeEventListener("contextmenu", handleContextMenu);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }, []);
+  }
+
   return (
     <>
       <ScrollToTop />
@@ -101,37 +137,6 @@ function AppLayout() {
 }
 
 export default function App() {
-  if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
-    window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
-  }
-  useEffect(() => {
-    const handleContextMenu = (e) => {
-      e.preventDefault();
-    };
-
-    const handleKeyDown = (e) => {
-      // F12
-      if (e.key === "F12") {
-        e.preventDefault();
-      }
-
-      // Ctrl+Shift+I / J / C
-      if (
-        (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
-        (e.ctrlKey && e.key === "U")
-      ) {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
   return (
     <AuthProvider>
       <Router>
