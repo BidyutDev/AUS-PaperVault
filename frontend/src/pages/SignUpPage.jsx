@@ -36,6 +36,7 @@ export default function SignUpPage() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
+  const [isSendingCode, setIsSendingCode] = useState(false);
 
   const { signup } = useAuth();
   const navigate = useNavigate();
@@ -125,6 +126,9 @@ export default function SignUpPage() {
       setErrors(newErrors);
       return;
     }
+
+    setIsSendingCode(true);
+
     try {
       const otpRes = await apiFetch("/email/send-verification", "POST", {
         body: {
@@ -135,12 +139,13 @@ export default function SignUpPage() {
 
       if (otpRes.success) {
         setShowVerificationModal(true);
+        setIsSendingCode(false);
         return;
       }
       throw new Error("Error in sending otp");
     } catch (err) {
       console.log(err);
-
+      setIsSendingCode(false);
       setErrors({ submit: "Sign up failed. Please try again." });
     }
   };
@@ -437,21 +442,26 @@ export default function SignUpPage() {
               </motion.div>
             )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="signup-button"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <span className="loading-spinner">Creating Account...</span>
-              ) : (
+            {/* Submit Button & Loader */}
+            {isSendingCode ? (
+              <div className="verification-loading-view" style={{ padding: "1rem 0" }}>
+                <div className="theme-loader"></div>
+                <p className="verification-subtitle" style={{ margin: "1rem 0 0 0", fontSize: "0.9rem", color: "var(--color-vault-lavender)" }}>
+                  Please Wait! Creating Your Account...
+                </p>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="signup-button"
+                disabled={isLoading}
+              >
                 <>
                   <span>Create Account</span>
                   <ArrowRight size={16} />
                 </>
-              )}
-            </button>
+              </button>
+            )}
 
             {/* Login Link */}
             <p className="login-link">
