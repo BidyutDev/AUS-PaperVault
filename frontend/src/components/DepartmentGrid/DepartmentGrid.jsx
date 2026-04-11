@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, FileText, Search, X, Command } from "lucide-react";
-import { useDepartments, useAllPapers } from "../../hooks/useDepartments";
+import { ArrowRight, FileText, Search, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Tilt from "react-parallax-tilt";
+import { Link, useNavigate } from "react-router-dom";
+import { useAllPapers, useDepartments } from "../../hooks/useDepartments";
 import "./DepartmentGrid.css";
 
 export default function DepartmentGrid() {
@@ -27,18 +27,6 @@ export default function DepartmentGrid() {
   });
 
   const showDropdown = isFocused && searchQuery.trim().length > 0;
-
-  // Keyboard shortcut: Ctrl+K to focus search
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   // Handle arrow keys + enter in dropdown
   const handleSearchKeyDown = useCallback(
@@ -129,13 +117,6 @@ export default function DepartmentGrid() {
                 <X size={14} />
               </button>
             )}
-            <div
-              className="dept-search-shortcut"
-              title="Press Ctrl+K to search"
-            >
-              <Command size={10} />
-              <span>K</span>
-            </div>
           </div>
 
           {/* ═══════ SEARCH DROPDOWN ═══════ */}
