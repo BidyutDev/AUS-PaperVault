@@ -94,6 +94,32 @@ body {
   min-height: 100vh;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+.glass-card,
+.glass {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .btn-cyber,
+  .btn-cyber-solid,
+  .btn-cyber-danger {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* ───── Custom Scrollbar (Webkit) ───── */
 ::-webkit-scrollbar {
   width: 6px;
