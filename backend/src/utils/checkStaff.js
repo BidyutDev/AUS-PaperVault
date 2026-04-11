@@ -1,5 +1,4 @@
 import getUserByRoles from "../data/staff.js";
-import User from "../models/user.model.js";
 import { ROLES } from "../roles.js";
 
 const checkStaff = async (username, password, role) => {
@@ -9,7 +8,7 @@ const checkStaff = async (username, password, role) => {
         const admins = await getUserByRoles([role]);
 
         for (const admin of admins) {
-            const isValidPassword = await User.comparePassword(password);
+            const isValidPassword = await admin.comparePassword(password);
             if (admin.username == username && isValidPassword) {
                 isStaff = true;
             }

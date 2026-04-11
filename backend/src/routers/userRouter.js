@@ -114,13 +114,6 @@ userRouter.post("/register", async (req, res) => {
             email,
         });
 
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
-
         const newUser = await User.create({
             firstName,
             lastName,
@@ -137,7 +130,12 @@ userRouter.post("/register", async (req, res) => {
             email,
             role: newUser.role,
         });
-
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         return sendSuccess(
             res,
             "User succesfully created",

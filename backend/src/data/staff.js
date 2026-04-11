@@ -4,7 +4,7 @@ const getUserByRoles = async (roles = []) => {
     try {
         const query = roles.length ? { roles: { $in: roles } } : {};
         const users = await User.find(query).select(
-            "-password -refreshTokenExpiry -refreshToken -phoneNumber"
+            " -refreshTokenExpiry -refreshToken -phoneNumber"
         );
 
         return users;
