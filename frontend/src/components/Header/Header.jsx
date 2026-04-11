@@ -87,10 +87,10 @@ export default function Header() {
   return (
     <motion.header
       className="header-wrapper"
-      initial={{ y: "-100%" }}
-      animate={{ y: 0 }}
-      exit={{ y: "-100%" }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: 'linear' }}
     >
       {/* Skip to content link for accessibility */}
       <a href="#main-content" className="skip-to-content">
@@ -153,11 +153,12 @@ export default function Header() {
               {/* Search Trigger */}
               <button
                 className="search-trigger"
+                style={{ gap: "1rem"}}
                 onClick={() => setSearchOpen(true)}
                 aria-label="Open search"
               >
                 <Search size={14} />
-                <span>⌘K</span>
+                <span>⌘+K</span>
               </button>
 
               {/* Theme Toggle */}

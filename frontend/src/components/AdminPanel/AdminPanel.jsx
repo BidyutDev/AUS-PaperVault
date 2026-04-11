@@ -13,8 +13,11 @@ import {
   Book,
   MessageSquare,
   Users as UsersIcon,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { getDepartments } from "../../data/departments";
 import { useSemesters, useApprovedPapers, useAllPapers } from "../../hooks/useDepartments";
 import "./AdminPanel.css";
@@ -30,6 +33,7 @@ import AdminNotificationsBell from "./AdminNotificationsBell";
 
 export default function AdminPanel() {
   const { user, isLoggedIn, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [adminTab, setAdminTab] = useState("review"); // 'review' | 'departments' | 'analytics' | 'catalog'
 
   const currentAdmin = isLoggedIn && user.role != "Member" 
@@ -106,6 +110,13 @@ export default function AdminPanel() {
             hasAccessToTab={hasAccessToTab}
             setAdminTab={setAdminTab}
           />
+          <button
+            className="admin-notif-trigger"
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
           <div className="admin-user-badge">
             <User size={11} />
             <span className="admin-user-text">{currentAdmin?.username} ({currentAdmin?.role})</span>

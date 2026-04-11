@@ -15,10 +15,10 @@ import Footer from "./components/Footer/Footer";
 // Eager loaded for instant LCP
 import HomePage from "./pages/HomePage";
 import DepartmentPage from "./pages/DepartmentPage";
+import AdminPage from "./pages/AdminPage";
 
 // Lazy loaded routes
 const UploadPage = lazy(() => import("./pages/UploadPage"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
 const DevsPage = lazy(() => import("./pages/DevsPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
@@ -118,11 +118,11 @@ function AppLayout() {
   return (
     <>
       <ScrollToTop />
-      <AnimatePresence>
-        {!isAdminPage && <Header />}
+      <AnimatePresence initial={false}>
+        {!isAdminPage && <Header key="header" />}
       </AnimatePresence>
       <main style={{ minHeight: (isAuthPage || isAdminPage) ? "100vh" : "calc(100vh - 160px)" }}>
-        <AnimatePresence mode={isAdminPage ? undefined : "wait"}>
+        <AnimatePresence mode="wait">
           <Suspense fallback={<PageSkeleton />}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<HomePage />} />
