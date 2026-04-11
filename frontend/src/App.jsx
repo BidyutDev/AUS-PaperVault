@@ -25,7 +25,16 @@ const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
 
 function PageSkeleton() {
   return (
-    <div style={{ display: "flex", justifyContent: "center", padding: "4rem", color: "var(--color-vault-steel)", fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        padding: "4rem",
+        color: "var(--color-vault-steel)",
+        fontFamily: "var(--font-mono)",
+        fontSize: "0.85rem",
+      }}
+    >
       Loading module...
     </div>
   );
@@ -53,7 +62,7 @@ function useDocumentTitle() {
     else if (pathname === "/admin") title = "Admin — AUS PaperVault";
     else if (pathname === "/feedback") title = "Feedback — AUS PaperVault";
     else if (pathname === "/bookmarks") title = "Saved Papers — AUS PaperVault";
-    
+
     document.title = title;
   }, [pathname]);
 }
@@ -61,7 +70,7 @@ function useDocumentTitle() {
 function AppLayout() {
   const location = useLocation();
   useDocumentTitle();
-  
+
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
 
@@ -92,6 +101,37 @@ function AppLayout() {
 }
 
 export default function App() {
+  if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
+    window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+  }
+  useEffect(() => {
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+    };
+
+    const handleKeyDown = (e) => {
+      // F12
+      if (e.key === "F12") {
+        e.preventDefault();
+      }
+
+      // Ctrl+Shift+I / J / C
+      if (
+        (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("contextmenu", handleContextMenu);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <AuthProvider>
       <Router>

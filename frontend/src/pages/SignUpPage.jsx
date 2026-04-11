@@ -117,7 +117,7 @@ export default function SignUpPage() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = validateForm();
@@ -125,14 +125,29 @@ export default function SignUpPage() {
       setErrors(newErrors);
       return;
     }
+    try {
+      const otpRes = await apiFetch("/email/send-verification", "POST", {
+        body: {
+          username: formData.username.trim(),
+          email: formData.email.trim(),
+        },
+      });
 
-    // Instead of signing up immediately, show the verification modal
-    setShowVerificationModal(true);
+      if (otpRes.success) {
+        setShowVerificationModal(true);
+        return;
+      }
+      throw new Error("Error in sending otp");
+    } catch (err) {
+      console.log(err);
+
+      setErrors({ submit: "Sign up failed. Please try again." });
+    }
   };
 
   const handleVerifyEmail = async (e) => {
     e.preventDefault();
-    
+
     if (verificationCode.length < 6) {
       setErrors({ verify: "Please enter a valid 6-digit verification code." });
       return;
@@ -141,13 +156,18 @@ export default function SignUpPage() {
     setIsLoading(true);
 
     try {
-      const data = await signup(formData);
-
-      if (!data.success) {
-        setErrors({ submit: "Sign up failed. Please try again." });
-        setShowVerificationModal(false);
-      } else {
-        localStorage.setItem("access_token", data.token);
+      const verifyOtp = await apiFetch("/email/verify-otp", "POST", {
+        body: {
+          username: formData.username.trim(),
+          email: formData.email.trim(),
+          otp: verificationCode,
+        },
+      });
+      if (verifyOtp.success) {
+        const data = await signup(formData);
+        if (!data.success) {
+          throw new Error("Error in signing up");
+        }
         navigate("/");
       }
     } catch (err) {
@@ -447,7 +467,7 @@ export default function SignUpPage() {
       {/* Verification Modal Overlay */}
       {showVerificationModal && (
         <div className="verification-overlay">
-          <motion.div 
+          <motion.div
             className="verification-modal glass-card"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -458,9 +478,10 @@ export default function SignUpPage() {
             </div>
             <h2 className="verification-title">Verify your Email</h2>
             <p className="verification-subtitle">
-              We've sent a 6-digit verification code to <strong>{formData.email || "your email"}</strong>.
+              We've sent a 6-digit verification code to{" "}
+              <strong>{formData.email || "your email"}</strong>.
             </p>
-            
+
             <form onSubmit={handleVerifyEmail} className="verification-form">
               <div className="form-group">
                 <input
@@ -472,26 +493,31 @@ export default function SignUpPage() {
                   value={verificationCode}
                   onChange={(e) => {
                     setVerificationCode(e.target.value.replace(/\D/g, ""));
-                    if(errors.verify) setErrors({...errors, verify: null});
+                    if (errors.verify) setErrors({ ...errors, verify: null });
                   }}
                   autoFocus
                 />
                 {errors.verify && (
-                  <span className="error-text text-center" style={{marginTop: "0.5rem", display: "block"}}>{errors.verify}</span>
+                  <span
+                    className="error-text text-center"
+                    style={{ marginTop: "0.5rem", display: "block" }}
+                  >
+                    {errors.verify}
+                  </span>
                 )}
               </div>
-              
+
               <div className="verification-actions">
-                <button 
-                  type="button" 
-                  className="btn-cyber" 
+                <button
+                  type="button"
+                  className="btn-cyber"
                   onClick={() => setShowVerificationModal(false)}
                   disabled={isLoading}
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn-cyber-solid"
                   disabled={isLoading || verificationCode.length < 6}
                 >

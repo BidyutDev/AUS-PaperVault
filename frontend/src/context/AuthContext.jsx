@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
               authorization: `Bearer ${accessToken}`,
             },
           });
-          
+
           if (!data.success && data.error == "TokenExpiredError") {
             const res = await apiFetch("/user/request-token", "POST");
             if (!res.success) {
@@ -83,10 +83,14 @@ export function AuthProvider({ children }) {
       if (!data.success) {
         return { success: false, error: data.message };
       }
-
-      setUser({ username: data.username, email: data.email, role: data.role });
-      localStorage.setItem("access_token", data.token);
-      return { success: true, token: data.token };
+      setUser({
+        userId: data.userId,
+        username: data.username,
+        email: data.email,
+        role: data.role,
+      });
+      localStorage.setItem("access_token" , data.token)
+      return { success: true, token: data.token , userId: data.userId , email : data.email};
     } catch (err) {
       return { success: false, error: err.message };
     }
