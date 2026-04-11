@@ -54,6 +54,8 @@
   align-items: center;
   padding: 0.6rem 0;
   gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 /* ───── Logo ───── */
@@ -114,6 +116,26 @@
   letter-spacing: 0.15em;
   color: var(--color-vault-gray);
   text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .logo-icon-box {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo-main {
+    font-size: 0.9rem;
+  }
+
+  .logo-sub {
+    display: none;
+  }
 }
 
 /* ───── Stats Banner (Desktop) ───── */

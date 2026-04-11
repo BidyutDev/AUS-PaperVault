@@ -7,6 +7,22 @@
   padding: 4rem 0 3rem;
 }
 
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0 2rem;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    padding: 0 0.75rem;
+  }
+
+  .hero-badge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* ───── Background Grid ───── */
 .hero-bg {
   position: absolute;
