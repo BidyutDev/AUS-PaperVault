@@ -153,23 +153,23 @@ export default function Header() {
               {/* Search Trigger */}
               <button
                 className="search-trigger"
-                style={{ gap: "1rem"}}
                 onClick={() => setSearchOpen(true)}
                 aria-label="Open search"
               >
-                <Search size={14} />
-                <span>⌘+K</span>
+                <Search size={16} />
+                <span className="search-text">⌘+K</span>
               </button>
 
-              {/* Theme Toggle */}
-              <button
-                className="theme-toggle-btn"
-                onClick={toggleTheme}
-                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-                title={`${theme === "dark" ? "Light" : "Dark"} mode`}
-              >
-                {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-              </button>
+              <div className="desktop-actions">
+                {/* Theme Toggle */}
+                <button
+                  className="theme-toggle-btn"
+                  onClick={toggleTheme}
+                  aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                  title={`${theme === "dark" ? "Light" : "Dark"} mode`}
+                >
+                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                </button>
 
               {user ? (
                 <div className="user-menu-container" ref={userMenuRef}>
@@ -224,16 +224,17 @@ export default function Header() {
                   </Link>
                 </div>
               )}
-            </div>
+              </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="mobile-menu-btn"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle navigation menu"
-            >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+              {/* Mobile Menu Button */}
+              <button
+                className="mobile-menu-btn"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label="Toggle navigation menu"
+              >
+                {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu */}
@@ -254,17 +255,70 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`nav-link ${isActive(link.to) ? "active" : ""}`}
-                onClick={() => setMobileOpen(false)}
+            <div className="mobile-nav-links">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`nav-link ${isActive(link.to) ? "active" : ""}`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <link.icon size={14} />
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <hr className="mobile-menu-divider" />
+
+            <div className="mobile-actions">
+              <button
+                className="mobile-action-btn theme-item"
+                onClick={() => {
+                  toggleTheme();
+                  setMobileOpen(false);
+                }}
               >
-                <link.icon size={14} />
-                {link.label}
-              </Link>
-            ))}
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+              </button>
+
+              {user ? (
+                <>
+                  <div className="mobile-action-item user-info-item">
+                    <UserIcon size={16} />
+                    <span>{user.username}</span>
+                  </div>
+                  <button
+                    className="mobile-action-btn logout-item"
+                    onClick={() => {
+                      logout();
+                      setMobileOpen(false);
+                    }}
+                  >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <div className="mobile-auth-wrapper">
+                  <Link
+                    to="/login"
+                    className="mobile-action-btn login-item"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="mobile-action-btn signup-item"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
