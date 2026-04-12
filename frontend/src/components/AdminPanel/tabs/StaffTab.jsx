@@ -28,8 +28,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { getStaff, addStaff, removeStaff } from "../../../data/staff";
-import { getMockUsers } from "../../../data/mockUsers";
+import { getStaff, updateStaff, removeStaff, getUsers } from "../../../data/staff";
 import ConfirmModal from "../ConfirmModal";
 
 const CHART_H = 268;
@@ -307,16 +306,24 @@ export default function StaffTab() {
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("Moderator");
   const [error, setError] = useState("");
-  const [mockUsers, setMockUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [selectedStaffForStats, setSelectedStaffForStats] = useState(null);
 
   useEffect(() => {
-    setStaffList(getStaff());
-    setMockUsers(getMockUsers());
+    const initStaff = async () => {
+      const staff = await getStaff();
+      setStaffList(staff);
+    }
+    const initUsers = async () => {
+      const users = await getUsers();
+      setUsers(users);
+    }
+    initStaff();
+    initUsers();
 
     const handleUpdate = () => {
-      setStaffList(getStaff());
+      initStaff();
     };
 
     window.addEventListener("staffUpdated", handleUpdate);
@@ -327,14 +334,14 @@ export default function StaffTab() {
     };
   }, []);
 
-  const handleAddStaff = (e) => {
+  const handleUpdateStaff = async (e) => {
     e.preventDefault();
     if (!username.trim()) {
       setError("Username is required.");
       return;
     }
 
-    const res = addStaff(username.trim(), "", role);
+    const res = await updateStaff(username.trim(), role);
     if (!res.success) {
       setError(res.error);
     } else {
@@ -350,27 +357,27 @@ export default function StaffTab() {
     setConfirmRemove(st);
   };
 
-  const executeRemove = () => {
+  const executeRemove = async () => {
     if (!confirmRemove) return;
-    const res = removeStaff(confirmRemove.id);
+    const res = await removeStaff(confirmRemove);
     setConfirmRemove(null);
     if (!res.success) {
-      alert(res.error);
+      alert("Error");
     }
   };
 
-  const rootStaff = staffList.filter(s => s.isRoot);
-  const customModerators = staffList.filter(s => !s.isRoot && s.role === "Moderator");
-  const customReviewers = staffList.filter(s => !s.isRoot && s.role === "Reviewer");
+  const rootStaff = staffList.filter(s => s.role == "Super Admin");
+  const customModerators = staffList.filter(s => s.role === "Moderator");
+  const customReviewers = staffList.filter(s => s.role === "Reviewer");
 
   const renderCard = (st, idx) => (
     <div 
-      key={st.id} 
+      key={st._id} 
       className="admin-dept-card" 
       style={{ 
         padding: "0.75rem", 
         minWidth: 0,
-        gridColumn: (st.isRoot && idx === 0) ? "1 / -1" : "auto",
+        gridColumn: (st.role == "Super Admin" && idx === 0) ? "1 / -1" : "auto",
         cursor: "pointer"
       }}
       onClick={() => setSelectedStaffForStats(st)}
@@ -381,7 +388,7 @@ export default function StaffTab() {
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <UserIcon size={14} color="var(--color-vault-gray)" />
             <span style={{ fontWeight: "600", fontSize: "0.9rem", color: "var(--color-vault-text)", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{st.username}</span>
-            {st.isRoot && <span style={{ fontSize: "0.55rem", padding: "0.1rem 0.4rem", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "var(--color-vault-gray)" }}>ROOT</span>}
+            {st.role == "Super Admin" && <span style={{ fontSize: "0.55rem", padding: "0.1rem 0.4rem", background: "rgba(255,255,255,0.1)", borderRadius: "4px", color: "var(--color-vault-gray)" }}>ROOT</span>}
           </div>
           
           <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "var(--color-vault-lavender)" }}>
@@ -389,7 +396,7 @@ export default function StaffTab() {
           </div>
        </div>
 
-       {!st.isRoot && (
+       {st.role != "Super Admin" && (
          <button 
            className="admin-dept-card-delete"
            style={{ position: "absolute", top: "0.5rem", right: "0.5rem", opacity: 1, height: "32px", width: "32px", zIndex: 10 }}
@@ -494,7 +501,7 @@ export default function StaffTab() {
              </div>
            )}
 
-           <form onSubmit={handleAddStaff} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+           <form onSubmit={handleUpdateStaff} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
              <div className="admin-form-group" style={{ position: "relative" }}>
                <label className="admin-form-label">Username</label>
                <input 
@@ -528,13 +535,13 @@ export default function StaffTab() {
                    gap: "2px",
                    padding: "4px"
                  }}>
-                   {mockUsers.filter(u => u.toLowerCase().includes(username.toLowerCase())).length > 0 ? (
-                     mockUsers.filter(u => u.toLowerCase().includes(username.toLowerCase())).map(u => (
+                   {users.filter(u => u.username.toLowerCase().includes(username.toLowerCase())).length > 0 ? (
+                     users.filter(u => u.username.toLowerCase().includes(username.toLowerCase())).map(u => (
                        <div 
-                         key={u}
+                         key={u._id}
                          onMouseDown={(e) => e.preventDefault()} // Prevent blur from firing before click
                          onClick={() => {
-                           setUsername(u);
+                           setUsername(u.username);
                            setShowAutocomplete(false);
                          }}
                          style={{
@@ -559,7 +566,7 @@ export default function StaffTab() {
                          }}
                        >
                          <UserIcon size={12} style={{ opacity: 0.6 }} />
-                         {u}
+                         {u.username}
                        </div>
                      ))
                    ) : (
