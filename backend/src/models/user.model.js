@@ -48,10 +48,6 @@ const userSchema = new mongoose.Schema(
         refreshTokenExpiry: {
             type: Number,
         },
-        isVerified: {
-            type: Boolean,
-            default: false,
-        },
         role: {
             type: String,
             enum: [
