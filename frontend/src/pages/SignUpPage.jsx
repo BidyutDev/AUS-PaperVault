@@ -175,6 +175,17 @@ export default function SignUpPage() {
         }
         navigate("/");
       } else {
+        if (verifyOtp.error && typeof verifyOtp.error.attemptsLeft === 'number') {
+          const attemptsLeft = verifyOtp.error.attemptsLeft;
+          if (attemptsLeft > 0) {
+            setErrors({ verify: verifyOtp.message });
+            return;
+          } else {
+            setErrors({ submit: verifyOtp.message });
+            setShowVerificationModal(false);
+            return;
+          }
+        }
         throw new Error(verifyOtp.message || "Verification failed");
       }
     } catch (err) {
