@@ -330,6 +330,15 @@ textarea {
 .btn-cyber:active {
   transform: translateY(0);
 }
+.btn-cyber:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  background: transparent;
+  border-color: var(--color-vault-gray);
+  color: var(--color-vault-gray);
+}
 .btn-cyber-solid {
   position: relative;
   display: inline-flex;
@@ -348,10 +357,17 @@ textarea {
   transition: all 0.3s ease;
   text-decoration: none;
 }
-.btn-cyber-solid:hover {
+.btn-cyber-solid:hover:not(:disabled) {
   background: #c4c7ff;
   box-shadow: 0 0 25px rgba(var(--color-vault-lavender-rgb), 0.4);
   transform: translateY(-1px);
+}
+.btn-cyber-solid:disabled {
+  opacity: 0.5;
+  background: var(--color-vault-gray);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 .btn-cyber-danger {
   position: relative;
