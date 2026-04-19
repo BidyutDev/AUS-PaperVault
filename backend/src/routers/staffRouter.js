@@ -28,7 +28,7 @@ staffRouter.post("/auth", async (req, res) => {
 
 staffRouter.get("/user-list", authMiddleware, async (req, res) => {
     try {
-        if (res.user.role != ROLES.SUPER_ADMIN) {
+        if (req.user.role != ROLES.SUPER_ADMIN) {
             return sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
         }
 
@@ -48,7 +48,7 @@ staffRouter.get("/user-list", authMiddleware, async (req, res) => {
 
 staffRouter.get("/staff-list", authMiddleware, async (req, res) => {
     try {
-        if (res.user.role != ROLES.SUPER_ADMIN) {
+        if (req.user.role != ROLES.SUPER_ADMIN) {
             return sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
         }
 
@@ -68,7 +68,7 @@ staffRouter.get("/staff-list", authMiddleware, async (req, res) => {
 
 staffRouter.post("/update-stuff", authMiddleware, async (req, res) => {
     try {
-        if (res.user.role != ROLES.SUPER_ADMIN) {
+        if (req.user.role != ROLES.SUPER_ADMIN) {
             return sendError(res, "Not authorized", STATUS_CODES.UNAUTHORIZED);
         }
 

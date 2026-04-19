@@ -68,7 +68,7 @@ userRouter.post("/request-token", async (req, res) => {
 
 userRouter.get("/profile", authMiddleware, async (req, res) => {
     try {
-        const user = await User.findOne({ _id: res.user._id });
+        const user = await User.findOne({ _id: req.user._id });
 
         if (!user) {
             return sendError(res, "User not found", STATUS_CODES.NOT_FOUND);

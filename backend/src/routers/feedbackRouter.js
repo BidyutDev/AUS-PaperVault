@@ -22,15 +22,15 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
         }
 
         await Feedback.create({
-            user: res.user._id,
-            username: res.user.username,
-            email: res.user.email,
+            user: req.user._id,
+            username: req.user.username,
+            email: req.user.email,
             message: data.message,
         });
 
         sendSuccess(res, "Feedback sent successfully", STATUS_CODES.SUCCESS, {
-            username: res.user.username,
-            email: res.user.email,
+            username: req.user.username,
+            email: req.user.email,
         });
     } catch (err) {
         sendError(
@@ -45,8 +45,8 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
 feedbackRouter.get("/list", authMiddleware, async (req, res) => {
     try {
         if (
-            res.user.role == ROLES.SUPER_ADMIN ||
-            res.user.role == ROLES.MODERATOR
+            req.user.role == ROLES.SUPER_ADMIN ||
+            req.user.role == ROLES.MODERATOR
         ) {
             const feedbacks = await Feedback.find();
             sendSuccess(
@@ -71,8 +71,8 @@ feedbackRouter.get("/list", authMiddleware, async (req, res) => {
 feedbackRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
     try {
         if (
-            res.user.role == ROLES.SUPER_ADMIN ||
-            res.user.role == ROLES.MODERATOR
+            req.user.role == ROLES.SUPER_ADMIN ||
+            req.user.role == ROLES.MODERATOR
         ) {
             const { id } = req.params;
             const deleteFeedback = await Feedback.deleteOne({ _id: id });

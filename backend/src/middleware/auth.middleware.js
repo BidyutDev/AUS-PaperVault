@@ -4,6 +4,9 @@ import { STATUS_CODES } from "../utils/statusCodes.js";
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = (req, res, next) => {
+    if (req.method === "OPTIONS") {
+        return next();
+    }
     const header = req.headers.authorization;
 
     if (!header) {
@@ -18,7 +21,7 @@ export const authMiddleware = (req, res, next) => {
         const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
 
         if (decoded) {
-            res.user = decoded;
+            req.user = decoded;
             return next();
         }
         sendError(res, "No data in token", STATUS_CODES.FORBIDDEN);

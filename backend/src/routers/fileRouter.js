@@ -68,7 +68,7 @@ fileRouter.post("/action/:status/:id", authMiddleware, async (req, res) => {
         }
 
         file.isApproved = status === "approve" ? true : false;
-        file.approvedBy = res.user._id;
+        file.approvedBy = req.user._id;
         if (!file.isApproved) {
             await file.deleteOne();
             return sendSuccess(
