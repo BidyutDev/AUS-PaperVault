@@ -175,11 +175,8 @@ export default function SignUpPage() {
         }
         navigate("/");
       } else {
-        if (verifyOtp.error && typeof verifyOtp.error.attemptsLeft === 'number') {
-          setErrors({ verify: verifyOtp.message });
-          return;
-        }
-        throw new Error(verifyOtp.message || "Verification failed");
+        setErrors({ verify: verifyOtp.message || "Verification failed." });
+        return;
       }
     } catch (err) {
       setErrors({ submit: err.message || "Sign up failed. Please try again." });
