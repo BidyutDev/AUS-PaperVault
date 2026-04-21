@@ -24,6 +24,7 @@ const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const FeedbackPage = lazy(() => import("./pages/FeedbackPage"));
 const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 
 function PageSkeleton() {
   return (
@@ -58,6 +59,7 @@ function useDocumentTitle() {
       const dept = pathname.split("/")[2];
       title = `${dept.toUpperCase()} — AUS PaperVault`;
     } else if (pathname === "/login") title = "Login — AUS PaperVault";
+    else if (pathname === "/reset-password") title = "Reset Password — AUS PaperVault";
     else if (pathname === "/signup") title = "Sign Up — AUS PaperVault";
     else if (pathname === "/upload") title = "Upload — AUS PaperVault";
     else if (pathname === "/devs") title = "Developers — AUS PaperVault";
@@ -74,7 +76,7 @@ function AppLayout() {
   useDocumentTitle();
 
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/signup";
+    location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/reset-password";
   const isAdminPage = location.pathname.startsWith("/admin");
 
   const { user, isLoading } = useAuth();
@@ -134,6 +136,7 @@ function AppLayout() {
               <Route path="/devs" element={<DevsPage />} />
               <Route path="/feedback" element={<FeedbackPage />} />
               <Route path="/bookmarks" element={<BookmarksPage />} />
+              <Route path="/reset-password" element={<ForgotPasswordPage />} />
             </Routes>
           </Suspense>
         </AnimatePresence>
