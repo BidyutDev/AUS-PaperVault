@@ -94,12 +94,13 @@ export default function ForgotPasswordPage() {
 
     setIsLoading(true);
     try {
-      // TODO: Replace with real backend call when endpoint is ready:
-      // const data = await apiFetch("/user/forgot-password", "POST", {
-      //   body: { email },
-      // });
-      // if (!data.success) { setError(data.message); return; }
-      await new Promise((resolve) => setTimeout(resolve, 1400));
+      const data = await apiFetch("/email/reset-password-send-otp", "POST", {
+        body: { email },
+      });
+      if (!data.success) {
+        setError(data.error || data.message);
+        return;
+      }
 
       setStep(STEP.OTP);
       startCooldown();
@@ -133,7 +134,10 @@ export default function ForgotPasswordPage() {
 
   const handleOtpPaste = (e) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, OTP_LENGTH);
     if (!pasted) return;
 
     const newOtp = [...otp];
@@ -161,12 +165,13 @@ export default function ForgotPasswordPage() {
 
     setIsLoading(true);
     try {
-      // TODO: Replace with real backend call when endpoint is ready:
-      // const data = await apiFetch("/user/verify-reset-otp", "POST", {
-      //   body: { email, otp: otpString },
-      // });
-      // if (!data.success) { setError(data.message); return; }
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const data = await apiFetch("/email/reset-password-verify-otp", "POST", {
+        body: { email, otp: otpString },
+      });
+      if (!data.success) {
+        setError(data.error || data.message);
+        return;
+      }
 
       setStep(STEP.NEW_PASSWORD);
     } catch (err) {
@@ -183,8 +188,17 @@ export default function ForgotPasswordPage() {
     setError("");
 
     try {
-      // TODO: Replace with real backend call
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const data = await apiFetch("/email/reset-password-resend-otp", "POST", {
+        body: {
+          email,
+        },
+      });
+
+      if (!data.success) {
+        setError(data.error || data.message);
+        return;
+      }
+
       setOtp(Array(OTP_LENGTH).fill(""));
       startCooldown();
     } catch (err) {
@@ -214,13 +228,14 @@ export default function ForgotPasswordPage() {
 
     setIsLoading(true);
     try {
-      // TODO: Replace with real backend call when endpoint is ready:
-      // const data = await apiFetch("/user/reset-password", "POST", {
-      //   body: { email, otp: otp.join(""), newPassword },
-      // });
-      // if (!data.success) { setError(data.message); return; }
-      await new Promise((resolve) => setTimeout(resolve, 1400));
-
+      const data = await apiFetch("/user/reset-password", "POST", {
+        body: { email, newPassword },
+      });
+      if (!data.success) {
+        setError(data.error || data.message);
+        return;
+      }
+      
       setStep(STEP.SUCCESS);
     } catch (err) {
       setError("Password reset failed. Please try again.");
@@ -231,7 +246,13 @@ export default function ForgotPasswordPage() {
 
   /* ── Progress indicator ────────────────────────────────── */
   const stepIndex =
-    step === STEP.EMAIL ? 0 : step === STEP.OTP ? 1 : step === STEP.NEW_PASSWORD ? 2 : 3;
+    step === STEP.EMAIL
+      ? 0
+      : step === STEP.OTP
+        ? 1
+        : step === STEP.NEW_PASSWORD
+          ? 2
+          : 3;
 
   return (
     <AuthLayout>
@@ -284,10 +305,15 @@ export default function ForgotPasswordPage() {
 
                 <form onSubmit={handleSendOtp} className="forgot-form">
                   <div className="forgot-email-field">
-                    <label className="forgot-email-label" htmlFor="forgot-email">
+                    <label
+                      className="forgot-email-label"
+                      htmlFor="forgot-email"
+                    >
                       Email Address
                     </label>
-                    <div className={`forgot-email-box ${email ? "has-value" : ""}`}>
+                    <div
+                      className={`forgot-email-box ${email ? "has-value" : ""}`}
+                    >
                       <div className="forgot-email-icon-wrap">
                         <Mail size={18} />
                       </div>
@@ -325,7 +351,11 @@ export default function ForgotPasswordPage() {
                     </motion.div>
                   )}
 
-                  <button type="submit" className="forgot-button" disabled={isLoading}>
+                  <button
+                    type="submit"
+                    className="forgot-button"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <span className="loading-spinner">Sending…</span>
                     ) : (
@@ -397,7 +427,11 @@ export default function ForgotPasswordPage() {
                     </motion.div>
                   )}
 
-                  <button type="submit" className="forgot-button" disabled={isLoading}>
+                  <button
+                    type="submit"
+                    className="forgot-button"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <span className="loading-spinner">Verifying…</span>
                     ) : (
@@ -417,7 +451,10 @@ export default function ForgotPasswordPage() {
                     onClick={handleResendOtp}
                     disabled={cooldown > 0 || isLoading}
                   >
-                    <RefreshCw size={14} className={isLoading ? "spin-icon" : ""} />
+                    <RefreshCw
+                      size={14}
+                      className={isLoading ? "spin-icon" : ""}
+                    />
                     {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend OTP"}
                   </button>
                 </div>
@@ -479,7 +516,11 @@ export default function ForgotPasswordPage() {
                         onClick={() => setShowPassword(!showPassword)}
                         tabIndex={-1}
                       >
-                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        {showPassword ? (
+                          <EyeOff size={16} />
+                        ) : (
+                          <Eye size={16} />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -509,11 +550,15 @@ export default function ForgotPasswordPage() {
 
                   {/* Password strength hints */}
                   <div className="password-rules">
-                    <div className={`password-rule ${newPassword.length >= 6 ? "met" : ""}`}>
+                    <div
+                      className={`password-rule ${newPassword.length >= 6 ? "met" : ""}`}
+                    >
                       <CheckCircle2 size={12} />
                       <span>At least 6 characters</span>
                     </div>
-                    <div className={`password-rule ${newPassword && newPassword === confirmPassword ? "met" : ""}`}>
+                    <div
+                      className={`password-rule ${newPassword && newPassword === confirmPassword ? "met" : ""}`}
+                    >
                       <CheckCircle2 size={12} />
                       <span>Passwords match</span>
                     </div>
@@ -529,7 +574,11 @@ export default function ForgotPasswordPage() {
                     </motion.div>
                   )}
 
-                  <button type="submit" className="forgot-button" disabled={isLoading}>
+                  <button
+                    type="submit"
+                    className="forgot-button"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <span className="loading-spinner">Resetting…</span>
                     ) : (
@@ -566,8 +615,8 @@ export default function ForgotPasswordPage() {
                   </div>
                   <h1 className="forgot-title">Password Reset!</h1>
                   <p className="forgot-subtitle">
-                    Your password has been changed successfully. You can now sign
-                    in with your new password.
+                    Your password has been changed successfully. You can now
+                    sign in with your new password.
                   </p>
                 </div>
 
