@@ -20,7 +20,11 @@ transporter.verify((error, success) => {
     }
 });
 
-export const sendVerificationEmail = async (email, otp) => {
+export const sendVerificationEmail = async (
+    email,
+    otp,
+    message = "Thank you for signing up! Please verify your email address using the OTP below:"
+) => {
     try {
         const htmlContent = `
 <!DOCTYPE html>
@@ -91,7 +95,7 @@ export const sendVerificationEmail = async (email, otp) => {
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="color: #C8D2DC; font-size: 15px; line-height: 1.7; padding-bottom: 30px;">
-                    Thank you for signing up! Please verify your email address using the OTP below:
+                  ${message}
                   </td>
                 </tr>
               </table>
