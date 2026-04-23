@@ -102,6 +102,15 @@ select,
 textarea {
   min-width: 0;
 }
+/* Hide default browser password reveal icons (e.g. Edge) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+input[type="password"]::-webkit-reveal,
+input[type="password"]::-webkit-clear-button {
+  display: none;
+}
 .glass-card,
 .glass {
   max-width: 100%;
