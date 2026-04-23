@@ -249,7 +249,11 @@ emailRouter.post("/reset-password-send-otp", async (req, res) => {
             otpExpiry,
         });
 
-        await sendVerificationEmail(email, otp);
+        await sendVerificationEmail(
+            email,
+            otp,
+            "Reset your password using the OTP below:"
+        );
 
         return sendSuccess(
             res,
@@ -302,7 +306,11 @@ emailRouter.post("/reset-password-resend-otp", async (req, res) => {
             otpExpiry,
         });
 
-        await sendVerificationEmail(email, otp);
+        await sendVerificationEmail(
+            email,
+            otp,
+            "Reset your password using the OTP below:"
+        );
 
         return sendSuccess(
             res,
@@ -399,6 +407,5 @@ emailRouter.post("/reset-password-verify-otp", async (req, res) => {
         );
     }
 });
-
 
 export default emailRouter;
