@@ -121,7 +121,7 @@ function AppLayout() {
   return (
     <>
       <ScrollToTop />
-      <FloatingActions />
+      {!isAdminPage && <FloatingActions />}
       <AnimatePresence initial={false}>
         {!isAdminPage && <Header key="header" />}
       </AnimatePresence>

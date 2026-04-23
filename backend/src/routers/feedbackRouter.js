@@ -22,6 +22,18 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
             );
         }
 
+        const existingFeedback = await Feedback.findOne({
+            $or: [{ username: req.user.username }, { email: req.user.email }],
+        });
+
+        if (existingFeedback) {
+            return sendError(
+                res,
+                "You already have an active feedback. Please update your existing feedback instead.",
+                STATUS_CODES.BAD_REQUEST
+            );
+        }
+
         await Feedback.create({
             user: req.user._id,
             username: req.user.username,
@@ -44,6 +56,8 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
             meta: { name: req.user.username, preview },
         });
 
+        io.emit("feedback_list_updated");
+
         sendSuccess(res, "Feedback sent successfully", STATUS_CODES.SUCCESS, {
             username: req.user.username,
             email: req.user.email,
@@ -54,6 +68,25 @@ feedbackRouter.post("/send", authMiddleware, async (req, res) => {
             "Error in sending feedback",
             STATUS_CODES.SERVER_ERROR,
             err
+        );
+    }
+});
+
+feedbackRouter.get("/me", authMiddleware, async (req, res) => {
+    try {
+        const feedback = await Feedback.findOne({
+            $or: [{ username: req.user.username }, { email: req.user.email }],
+        });
+        
+        sendSuccess(res, "Feedback fetched successfully", STATUS_CODES.SUCCESS, {
+            feedback,
+        });
+    } catch (err) {
+        sendError(
+            res,
+            "Error fetching feedback",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
         );
     }
 });
@@ -94,6 +127,7 @@ feedbackRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
             const deleteFeedback = await Feedback.deleteOne({ _id: id });
 
             if (deleteFeedback.deletedCount != 0) {
+                io.emit("feedback_list_updated");
                 return sendSuccess(
                     res,
                     "Feedback deleted successfully",

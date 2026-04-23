@@ -6,9 +6,12 @@ import {
   User,
   Clock,
   CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { getFeedback, deleteFeedback } from "../../../data/feedback";
+import { socket } from "../../../api/socket";
 import ConfirmModal from "../ConfirmModal";
+import "./FeedbackTab.css";
 
 export default function FeedbackTab() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -32,12 +35,17 @@ export default function FeedbackTab() {
     // Update timestamps periodically
     const interval = setInterval(() => setNow(Date.now()), 60000);
 
+    // Listen for local window events
     window.addEventListener("feedbackUpdated", handleFeedbackUpdate);
-    window.addEventListener("storage", handleFeedbackUpdate); // in case added from same browser different tab
+    window.addEventListener("storage", handleFeedbackUpdate);
+
+    // Listen for real-time socket events
+    socket.on("feedback_list_updated", handleFeedbackUpdate);
 
     return () => {
       window.removeEventListener("feedbackUpdated", handleFeedbackUpdate);
       window.removeEventListener("storage", handleFeedbackUpdate);
+      socket.off("feedback_list_updated", handleFeedbackUpdate);
       clearInterval(interval);
     };
   }, []);
@@ -68,30 +76,18 @@ export default function FeedbackTab() {
 
   if (feedbacks.length === 0) {
     return (
-      <div
-        className="admin-empty-state"
-        style={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div className="admin-empty-icon" style={{ marginBottom: "1rem" }}>
-          <CheckCircle2 size={48} />
+      <div className="fb-tab-empty">
+        <div className="fb-tab-empty-icon">
+          <CheckCircle2 size={44} />
         </div>
-        <h2 className="admin-empty-title">Inbox Zero</h2>
-        <p className="admin-empty-sub">No feedback messages to display.</p>
+        <h2 className="fb-tab-empty-title">Inbox Zero</h2>
+        <p className="fb-tab-empty-sub">No feedback messages to display.</p>
       </div>
     );
   }
 
   return (
-    <div
-      className="admin-analytics-section animate-slideUp"
-      style={{ padding: "2rem", height: "100%", overflowY: "auto" }}
-    >
+    <div className="fb-tab animate-slideUp">
       <ConfirmModal
         open={!!confirmDeleteId}
         title="Delete Feedback"
@@ -100,114 +96,46 @@ export default function FeedbackTab() {
         onConfirm={executeDelete}
         onCancel={() => setConfirmDeleteId(null)}
       />
-      <h2 className="admin-departments-title" style={{ marginBottom: "2rem" }}>
-        User_Feedback
-        <MessageSquare
-          size={18}
-          style={{
-            display: "inline",
-            marginLeft: "0.5rem",
-            color: "var(--color-vault-lavender)",
-          }}
-        />
-      </h2>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div className="fb-tab-header">
+        <h2 className="fb-tab-title">
+          <MessageSquare size={18} />
+          User Feedback
+        </h2>
+        <span className="fb-tab-count">{feedbacks.length}</span>
+      </div>
+
+      <div className="fb-tab-list">
         {feedbacks.map((item) => (
-          <div
-            key={item._id}
-            className="glass-card"
-            style={{ padding: "1.5rem", position: "relative" }}
-          >
-            <button
-              onClick={() => handleDelete(item._id)}
-              className="admin-dept-card-delete"
-              title="Delete feedback"
-              style={{
-                position: "absolute",
-                top: "1rem",
-                right: "1rem",
-                opacity: 1,
-                zIndex: 10,
-                background: "rgba(248, 113, 113, 0.1)",
-                border: "1px solid rgba(248, 113, 113, 0.3)",
-                color: "var(--color-vault-danger)",
-                padding: "0.4rem",
-                borderRadius: "0.25rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Trash2 size={14} />
-            </button>
-
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "1rem",
-                marginBottom: "1rem",
-                paddingRight: "3rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  color: "var(--color-vault-light)",
-                }}
-              >
-                <User size={14} color="var(--color-vault-steel)" />
-                <strong>{item.username}</strong>
-              </div>
-              {item.email && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    color: "var(--color-vault-lavender)",
-                  }}
-                >
-                  <Mail size={14} color="var(--color-vault-steel)" />
-                  <a
-                    href={`mailto:${item.email}`}
-                    style={{ color: "inherit", textDecoration: "none" }}
-                  >
+          <div key={item._id} className="fb-card glass-card">
+            <div className="fb-card-top">
+              <div className="fb-card-meta">
+                <div className="fb-card-user">
+                  <User size={14} />
+                  <strong>{item.username}</strong>
+                </div>
+                {item.email && (
+                  <a href={`mailto:${item.email}`} className="fb-card-email">
+                    <Mail size={13} />
                     {item.email}
                   </a>
-                </div>
-              )}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  color: "var(--color-vault-steel)",
-                  fontSize: "0.85rem",
-                  marginLeft: "auto",
-                }}
-              >
-                <Clock size={12} />
-                {getTimeAgo(item.createdAt)}
+                )}
+              </div>
+              <div className="fb-card-actions">
+                <span className="fb-card-time">
+                  <Clock size={12} />
+                  {getTimeAgo(item.createdAt)}
+                </span>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="fb-card-delete"
+                  title="Delete feedback"
+                >
+                  <Trash2 size={14} />
+                </button>
               </div>
             </div>
-
-            <div
-              style={{
-                background: "rgba(0, 20, 40, 0.3)",
-                padding: "1rem",
-                borderRadius: "0.5rem",
-                border: "1px solid rgba(175, 179, 247, 0.1)",
-                color: "var(--color-vault-light)",
-                fontFamily: "var(--font-primary)",
-                lineHeight: 1.6,
-                whiteSpace: "pre-wrap",
-              }}
-            >
+            <div className="fb-card-message">
               {item.message}
             </div>
           </div>
