@@ -5,6 +5,7 @@ import userRouter from "./userRouter.js";
 import healthRouter from "./healthRouter.js";
 import feedbackRouter from "./feedbackRouter.js";
 import emailRouter from "./emailRouter.js";
+import departmentRouter from "./departmentRouter.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/user", userRouter);
 router.use("/health", healthRouter);
 router.use("/feedback", feedbackRouter);
 router.use("/email", emailRouter);
+router.use("/department", departmentRouter);
 
 export default router;
