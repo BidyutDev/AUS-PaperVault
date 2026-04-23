@@ -33,7 +33,7 @@
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  padding: 0rem 0.5rem;
+  padding: 0 1.5rem;
   transition: all 0.3s ease;
 }
 
@@ -52,7 +52,7 @@
 .header-inner {
   display: flex;
   align-items: center;
-  padding: 0.6rem 0;
+  padding: 0.6rem 0.2rem;
   gap: 1.5rem;
   flex-wrap: wrap;
   justify-content: space-between;
