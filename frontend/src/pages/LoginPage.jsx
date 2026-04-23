@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate, useLocation, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Mail, ArrowRight, Lock } from "lucide-react";
+import { Mail, ArrowRight, Lock, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import AuthLayout from "../components/AuthLayout/AuthLayout";
 import "./LoginPage.css";
@@ -12,9 +12,24 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login, isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleKeyDown = (e, nextRef) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (nextRef && nextRef.current) {
+        nextRef.current.focus();
+      } else {
+        handleSubmit(e);
+      }
+    }
+  };
 
   // If already logged in, redirect to intended page or home
   if (isLoggedIn) {
@@ -96,7 +111,9 @@ export default function LoginPage() {
                   placeholder="your@email.com or username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, passwordRef)}
                   disabled={isLoading}
+                  ref={emailRef}
                 />
               </div>
             </div>
@@ -107,13 +124,23 @@ export default function LoginPage() {
               <div className="input-wrapper">
                 <Lock size={18} className="input-icon" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="form-input"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, null)}
                   disabled={isLoading}
+                  ref={passwordRef}
                 />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
               <div className="password-label-row">
                 <Link to="/reset-password" className="forgot-password-link">
