@@ -33,7 +33,7 @@
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  padding: 0rem;
+  padding: 0rem 0.5rem;
   transition: all 0.3s ease;
 }
 
