@@ -7,20 +7,20 @@ import feedbackPdf from "../FEEDBACK.pdf";
  * replace `feedbackPdf` with the constructed URL.
  */
 export default function ReviewPreview({ selected }) {
-  // TODO: When backend adds a file-serving route, use:
   //   const previewUrl = `${API_BASE}/files/view/${selected?._id}`;
-  const previewUrl = feedbackPdf;
+  const previewUrl = `http://localhost:3000/uploads${selected.path.split("uploads")[1]}`;
 
   return (
     <div className="admin-preview-area">
       <div className="admin-preview-embed">
         <iframe
           src={previewUrl}
-          title={`Preview: ${selected?.originalName || selected?.fileName || "Document"}`}
+          title={`Preview: ${selected?.fileName}`}
           className="admin-preview-iframe"
         />
         <div className="admin-preview-overlay-label">
-          [ DOCUMENT_PREVIEW :: {selected?.originalName || selected?.fileName || "FEEDBACK.pdf"} ]
+          [ DOCUMENT_PREVIEW ::{" "}
+          {selected?.originalName || selected?.fileName || "FEEDBACK.pdf"} ]
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@ export default function useReviewQueue() {
       });
 
       if (res.success) {
-        setPendingFiles(res.data?.pendingFiles ?? []);
+        setPendingFiles(res.pendingFiles ?? []);
       } else {
         setError(res.message || "Failed to fetch pending files");
         setPendingFiles([]);
@@ -104,7 +104,7 @@ export default function useReviewQueue() {
         const token = localStorage.getItem("access_token");
         const res = await apiFetch(`/files/update/${fileId}`, "PUT", {
           headers: { Authorization: `Bearer ${token}` },
-          body: JSON.stringify(data),
+          body: data,
         });
 
         if (res.success) {

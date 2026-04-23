@@ -5,5 +5,4 @@ export const uploadSchema = z.object({
     semester: z.string(),
     subject: z.string(),
     year: z.string(),
-    file : z.any()
 });

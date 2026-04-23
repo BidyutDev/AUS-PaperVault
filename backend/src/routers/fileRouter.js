@@ -32,7 +32,17 @@ fileRouter.post(
                     error
                 );
             }
-            const newFile = await File.create({}); // will change it too
+            const newFile = await File.create({
+                department: data.department,
+                semester: data.semester,
+                year: data.year,
+                subject: data.subject,
+                uploadedBy: req.user._id,
+                path: req.file.path,
+                fileName: req.file.filename,
+                fileSize: req.file.size,
+                mimeType: req.file.mimetype,
+            });
 
             // Emits notification over web sockets globally
             io.emit("admin_realtime_notification", {
@@ -42,8 +52,8 @@ fileRouter.post(
                 body: `A paper was submitted for review — ${req.file.originalname}.`,
                 linkTab: "review",
                 meta: {
-                    fileName: req.file.originalname,
-                    ...data
+                    fileName: newFile.fileName,
+                    ...data,
                 },
             });
 
@@ -52,11 +62,10 @@ fileRouter.post(
                 "File uploaded successfully",
                 STATUS_CODES.CREATED,
                 {
-                    fileName: req.file.filename,
-                    originalName: req.file.originalname,
-                    fileSize: req.file.size,
-                    mimeType: req.file.mimetype,
-                    path: req.file.path,
+                    fileName: newFile.fileName,
+                    fileSize: newFile.fileSize,
+                    mimeType: newFile.mimeType,
+                    path: newFile.path,
                     ...data,
                 }
             );

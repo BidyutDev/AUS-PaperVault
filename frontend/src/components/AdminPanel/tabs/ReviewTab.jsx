@@ -34,37 +34,19 @@ export default function ReviewTab({ currentAdmin, allDepartments, semestersData 
     }
   }, [pendingFiles.length, selectedIndex]);
 
-  /* ── Demo fallback when queue is empty ────────────────── */
-  const DEMO_FILE = {
-    _id: "demo_feedback_pdf",
-    subject: "Feedback Form",
-    department: allDepartments[0]?.id || "general",
-    semester: "1",
-    year: new Date().getFullYear().toString(),
-    originalName: "FEEDBACK.pdf",
-    fileName: "FEEDBACK.pdf",
-    fileSize: 175000,
-    mimeType: "application/pdf",
-    uploadedBy: "System",
-    createdAt: new Date().toISOString(),
-  };
 
-  const files = pendingFiles.length > 0 ? pendingFiles : [DEMO_FILE];
-  const isDemo = pendingFiles.length === 0;
+  const files = pendingFiles.length > 0 ? pendingFiles : [];
   const selected = files[selectedIndex] || null;
 
   const handleApprove = async (fileId) => {
-    if (isDemo) return; // Don't call API for demo entry
     await approveFile(fileId);
   };
 
   const handleReject = async (fileId) => {
-    if (isDemo) return;
     await rejectFile(fileId);
   };
 
   const handleUpdateTags = async (fileId, data) => {
-    if (isDemo) return;
     await updateFileTags(fileId, data);
   };
 

@@ -29,6 +29,7 @@ app.use(
     })
 );
 app.use(cookieParser());
+app.use('/uploads', express.static('uploads'));
 
 app.use("/api/v1", router);
 
