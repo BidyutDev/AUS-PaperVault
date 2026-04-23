@@ -20,6 +20,8 @@
   --color-vault-overlay-rgb: 18, 21, 28;
   --color-vault-lavender-rgb: 175, 179, 247;
   --color-vault-danger-rgb: 248, 113, 113;
+  --color-vault-warning-rgb: 251, 191, 36;
+  --color-vault-success-rgb: 74, 222, 128;
   --color-vault-white-rgb: 255, 255, 255;
   --color-vault-black-rgb: 0, 0, 0;
   --color-vault-glow: rgba(var(--color-vault-lavender-rgb), 0.3);
@@ -54,6 +56,8 @@
   --color-vault-overlay-rgb: 241, 245, 249;
   --color-vault-lavender-rgb: 79, 70, 229;
   --color-vault-danger-rgb: 220, 38, 38;
+  --color-vault-warning-rgb: 217, 119, 6;
+  --color-vault-success-rgb: 22, 163, 74;
   --color-vault-white-rgb: 0, 0, 0; /* Inverted for light mode */
   --color-vault-black-rgb: 255, 255, 255; /* Inverted for light mode */
   --color-vault-white-rgb: 30, 41, 59; /* Dark slate for subtle borders/highlights on light bg */

@@ -2024,8 +2024,8 @@ select.admin-form-input option {
 
 .confirm-modal-confirm--danger {
   color: var(--color-vault-text);
-  background: rgba(var(--color-vault-danger-rgb), 0.2);
-  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.4);
+  background: rgba(var(--color-vault-danger-rgb), 0.3);
+  border: 1px solid rgba(var(--color-vault-danger-rgb), 0.6);
 }
 
 .confirm-modal-confirm--danger:hover {
@@ -2036,8 +2036,8 @@ select.admin-form-input option {
 
 .confirm-modal-confirm--warning {
   color: var(--color-vault-text);
-  background: rgba(var(--color-vault-warning-rgb), 0.2);
-  border: 1px solid rgba(var(--color-vault-warning-rgb), 0.4);
+  background: rgba(var(--color-vault-warning-rgb), 0.3);
+  border: 1px solid rgba(var(--color-vault-warning-rgb), 0.6);
 }
 
 .confirm-modal-confirm--warning:hover {

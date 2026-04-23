@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   MessageSquare,
   Trash2,
   Mail,
   User,
   Clock,
-  CheckCircle2,
-  AlertCircle,
+  Inbox,
+  Search,
+  Filter,
+  ArrowUpDown,
 } from "lucide-react";
 import { getFeedback, deleteFeedback } from "../../../data/feedback";
 import { socket } from "../../../api/socket";
@@ -16,10 +18,12 @@ import "./FeedbackTab.css";
 export default function FeedbackTab() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [now, setNow] = useState(Date.now());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest"); // "newest" or "oldest"
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
-      const data = await getFeedback() || [];
+      const data = (await getFeedback()) || [];
       setFeedbacks(data);
     };
 
@@ -32,14 +36,10 @@ export default function FeedbackTab() {
       setFeedbacks(feedbackList);
     };
 
-    // Update timestamps periodically
     const interval = setInterval(() => setNow(Date.now()), 60000);
 
-    // Listen for local window events
     window.addEventListener("feedbackUpdated", handleFeedbackUpdate);
     window.addEventListener("storage", handleFeedbackUpdate);
-
-    // Listen for real-time socket events
     socket.on("feedback_list_updated", handleFeedbackUpdate);
 
     return () => {
@@ -74,14 +74,38 @@ export default function FeedbackTab() {
     }
   };
 
+  // Filter and Sort Logic
+  const filteredFeedbacks = useMemo(() => {
+    let result = feedbacks.filter((item) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        item.username?.toLowerCase().includes(query) ||
+        item.email?.toLowerCase().includes(query) ||
+        item.message?.toLowerCase().includes(query)
+      );
+    });
+
+    return result.sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return sortOrder === "newest" ? timeB - timeA : timeA - timeB;
+    });
+  }, [feedbacks, searchQuery, sortOrder]);
+
   if (feedbacks.length === 0) {
     return (
-      <div className="fb-tab-empty">
-        <div className="fb-tab-empty-icon">
-          <CheckCircle2 size={44} />
+      <div className="fb-tab-empty-container">
+        <div className="fb-tab-empty">
+          <div className="fb-tab-empty-glow" />
+          <div className="fb-tab-empty-icon">
+            <Inbox size={40} strokeWidth={1.5} />
+          </div>
+          <h2 className="fb-tab-empty-title">Inbox Zero</h2>
+          <p className="fb-tab-empty-sub">
+            No feedback messages yet. New submissions will appear here in
+            real-time.
+          </p>
         </div>
-        <h2 className="fb-tab-empty-title">Inbox Zero</h2>
-        <p className="fb-tab-empty-sub">No feedback messages to display.</p>
       </div>
     );
   }
@@ -98,48 +122,82 @@ export default function FeedbackTab() {
       />
 
       <div className="fb-tab-header">
-        <h2 className="fb-tab-title">
-          <MessageSquare size={18} />
-          User Feedback
-        </h2>
-        <span className="fb-tab-count">{feedbacks.length}</span>
+        <div className="fb-tab-header-left">
+          <h2 className="fb-tab-title">
+            <MessageSquare size={18} />
+            User Feedback
+          </h2>
+          <span className="fb-tab-count">{feedbacks.length}</span>
+        </div>
+
+        <div className="fb-tab-controls">
+          <div className="fb-search-box">
+            <Search size={14} className="fb-search-icon" />
+            <input
+              type="text"
+              placeholder="Search feedback..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="fb-search-input"
+            />
+          </div>
+          <button 
+            className="fb-sort-btn"
+            onClick={() => setSortOrder(prev => prev === "newest" ? "oldest" : "newest")}
+            title={`Sort by: ${sortOrder === "newest" ? "Newest" : "Oldest"}`}
+          >
+            <ArrowUpDown size={14} />
+            <span className="fb-sort-text">{sortOrder === "newest" ? "Newest" : "Oldest"}</span>
+          </button>
+        </div>
       </div>
 
       <div className="fb-tab-list">
-        {feedbacks.map((item) => (
-          <div key={item._id} className="fb-card glass-card">
-            <div className="fb-card-top">
-              <div className="fb-card-meta">
-                <div className="fb-card-user">
-                  <User size={14} />
-                  <strong>{item.username}</strong>
+        {filteredFeedbacks.length > 0 ? (
+          filteredFeedbacks.map((item, index) => (
+            <div
+              key={item._id}
+              className="fb-card"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              <div className="fb-card-top">
+                <div className="fb-card-meta">
+                  <div className="fb-card-avatar">
+                    {item.username?.charAt(0).toUpperCase() || "?"}
+                  </div>
+                  <div className="fb-card-info">
+                    <strong className="fb-card-username">{item.username}</strong>
+                    {item.email && (
+                      <a href={`mailto:${item.email}`} className="fb-card-email">
+                        <Mail size={11} />
+                        {item.email}
+                      </a>
+                    )}
+                  </div>
                 </div>
-                {item.email && (
-                  <a href={`mailto:${item.email}`} className="fb-card-email">
-                    <Mail size={13} />
-                    {item.email}
-                  </a>
-                )}
+                <div className="fb-card-actions">
+                  <span className="fb-card-time">
+                    <Clock size={11} />
+                    {getTimeAgo(item.createdAt)}
+                  </span>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="fb-card-delete"
+                    title="Delete feedback"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </div>
               </div>
-              <div className="fb-card-actions">
-                <span className="fb-card-time">
-                  <Clock size={12} />
-                  {getTimeAgo(item.createdAt)}
-                </span>
-                <button
-                  onClick={() => handleDelete(item._id)}
-                  className="fb-card-delete"
-                  title="Delete feedback"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
+              <div className="fb-card-message">{item.message}</div>
             </div>
-            <div className="fb-card-message">
-              {item.message}
-            </div>
+          ))
+        ) : (
+          <div className="fb-no-results">
+            <Filter size={24} />
+            <p>No results found for "{searchQuery}"</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
