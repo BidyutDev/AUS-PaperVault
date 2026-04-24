@@ -29,6 +29,7 @@ const FeedbackPage = lazy(() => import("./pages/FeedbackPage"));
 const BookmarksPage = lazy(() => import("./pages/BookmarksPage"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const DonatePage = lazy(() => import("./pages/DonatePage"));
+const DeleteAccountPage = lazy(() => import("./pages/DeleteAccountPage"));
 
 function PageSkeleton() {
   return (
@@ -145,6 +146,7 @@ function AppLayout() {
               <Route path="/bookmarks" element={<BookmarksPage />} />
               <Route path="/reset-password" element={<ForgotPasswordPage />} />
               <Route path="/donate" element={<DonatePage />} />
+              <Route path="/delete-account" element={<DeleteAccountPage />} />
             </Routes>
           </Suspense>
         </AnimatePresence>

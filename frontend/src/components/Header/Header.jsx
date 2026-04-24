@@ -14,6 +14,7 @@ import {
   User as UserIcon,
   Users,
   X,
+  Trash2,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -187,22 +188,38 @@ export default function Header() {
                         <UserIcon size={16} />
                         <div className="user-details">
                           <div className="user-name-box">
-                            <p className="user-name">Username:{user.username}</p>
+                            <p className="user-name">
+                              <span className="user-label">Username: </span>
+                              <span className="user-value">{user.username}</span>
+                            </p>
                           </div>
                           <div className="user-email-box">
-                            <p className="user-email">Email:{user.email}</p>
+                            <p className="user-email">
+                              <span className="user-label">Email: </span>
+                              <span className="user-value">{user.email}</span>
+                            </p>
                           </div>
                           <div className="user-role-box">
-                            <p className="user-role-subpara">Role:
+                            <p className="user-role-subpara">
+                              <span className="user-label">Role: </span>
                               <span className="user-role">{user.role}</span>
                             </p>
                           </div>
                           <div className="user-status-box">
+                            <div className="status-dot"></div>
                             <p className="user-name-small">Logged in</p>
                           </div>
                         </div>
                       </div>
                       <hr className="dropdown-divider" />
+                      <Link
+                        to="/delete-account"
+                        className="logout-btn delete-acc-link"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <Trash2 size={16} />
+                        Delete Account
+                      </Link>
                       <button
                         className="logout-btn"
                         onClick={() => {
@@ -299,6 +316,14 @@ export default function Header() {
                     <UserIcon size={16} />
                     <span>{user.username}</span>
                   </div>
+                  <Link
+                    to="/delete-account"
+                    className="mobile-action-btn logout-item"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <Trash2 size={16} />
+                    <span>Delete Account</span>
+                  </Link>
                   <button
                     className="mobile-action-btn logout-item"
                     onClick={() => {

@@ -1,0 +1,254 @@
+/* Layout handled by AuthLayout */
+.delete-acc-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+}
+.delete-acc-card {
+  background: rgba(var(--color-vault-white-rgb), 0.03);
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid rgba(var(--color-vault-white-rgb), 0.15);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background-clip: padding-box;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 0 1px rgba(var(--color-vault-white-rgb), 0.05);
+  width: 100%;
+  animation: slideUp 0.6s ease-out;
+}
+.delete-acc-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+.delete-acc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.2),
+    rgba(248, 113, 113, 0.1)
+  );
+  border: 1px solid rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.3);
+  border-radius: 0.75rem;
+  margin: 0 auto 0.75rem;
+  color: #f87171;
+}
+.delete-acc-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-vault-text);
+  margin-bottom: 0.3rem;
+}
+.delete-acc-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: #fca5a5;
+  margin: 0;
+  line-height: 1.4;
+}
+.delete-acc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Modifying existing Auth components logic for Danger Theme */
+.delete-acc-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.2),
+    rgba(248, 113, 113, 0.1)
+  );
+  border: 1px solid rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.4);
+  border-radius: 0.5rem;
+  color: #f87171;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+.delete-acc-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.3),
+    rgba(248, 113, 113, 0.2)
+  );
+  border-color: rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.6);
+  box-shadow: 0 0 20px rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.25);
+  transform: translateY(-2px);
+}
+.delete-acc-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+.delete-acc-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
+  border-radius: 0.5rem;
+  color: rgba(var(--color-vault-lavender-rgb), 0.8);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  margin-top: -0.5rem;
+}
+.cancel-button:hover:not(:disabled) {
+  background: rgba(var(--color-vault-lavender-rgb), 0.1);
+  color: var(--color-vault-lavender);
+}
+
+/* Modal Overlay */
+.delete-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.delete-confirm-modal {
+  background: var(--color-vault-darker, #0d0f18);
+  border: 1px solid rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.3);
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.1);
+  position: relative;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--color-vault-gray);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-vault-light);
+}
+
+.confirm-modal-icon {
+  width: 72px;
+  height: 72px;
+  background: rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f87171;
+  margin: 0 auto 1.5rem;
+  border: 2px solid rgba(var(--color-vault-danger-rgb, 248, 113, 113), 0.2);
+}
+
+.delete-confirm-modal h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--color-vault-text);
+  margin-bottom: 1rem;
+}
+
+.delete-confirm-modal p {
+  color: var(--color-vault-gray);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.delete-confirm-modal strong {
+  color: var(--color-vault-light);
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-cancel-btn,
+.modal-delete-btn {
+  flex: 1;
+  padding: 0.85rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-vault-light);
+}
+
+.modal-cancel-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-delete-btn {
+  background: #f87171;
+  border: 1px solid #ef4444;
+  color: #7f1d1d;
+}
+
+.modal-delete-btn:hover:not(:disabled) {
+  background: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+}
+
+.modal-cancel-btn:disabled,
+.modal-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

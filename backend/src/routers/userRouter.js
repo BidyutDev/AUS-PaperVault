@@ -271,7 +271,7 @@ userRouter.post("/delete", authMiddleware, async (req, res) => {
         if (!isValid) {
             return sendError(res, "Invalid password", STATUS_CODES.FORBIDDEN);
         }
-        await user.deleteOne();
+        const userDelete = await User.deleteOne({ _id: user._id });
 
         if (userDelete.deletedCount > 0) {
             return sendSuccess(

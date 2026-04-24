@@ -363,7 +363,7 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(10, 12, 16, 0.8);
+  background: rgba(10, 12, 16, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
@@ -376,117 +376,97 @@
   width: 100%;
   max-width: 900px;
   height: 85vh;
-  background: rgba(var(--color-vault-card-alt-rgb), 0.7);
-  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
-  border-radius: 16px;
+  position: relative;
+  background: #000;
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.25);
+  border-radius: 8px;
   box-shadow: 
-    0 25px 50px -12px rgba(var(--color-vault-black-rgb), 0.8),
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
     0 0 40px rgba(var(--color-vault-lavender-rgb), 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.preview-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 1.5rem;
-  background: rgba(var(--color-vault-card-rgb), 0.9);
-  border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
-}
-
-.preview-modal-header h3 {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-vault-text);
-  letter-spacing: 0.05em;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-.preview-modal-close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: rgba(var(--color-vault-white-rgb), 0.05);
-  border: 1px solid rgba(var(--color-vault-white-rgb), 0.1);
-  border-radius: 50%;
-  color: var(--color-vault-gray);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-.preview-modal-close:hover {
-  background: rgba(255, 100, 100, 0.1);
-  color: #ff8080;
-  border-color: rgba(255, 100, 100, 0.3);
-  transform: rotate(90deg);
-}
-
 .preview-modal-body {
   flex: 1;
   width: 100%;
   height: 100%;
-  background: var(--color-vault-text);
+  position: relative;
 }
 
 .preview-iframe {
   width: 100%;
   height: 100%;
   border: none;
-  background: var(--color-vault-text);
+  background: #000;
+}
+
+.admin-preview-overlay-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.6rem 1rem;
+  background: rgba(12, 14, 22, 0.85);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-vault-gray);
+  text-align: center;
+  border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
+  pointer-events: none;
+}
+
+.absolute-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: rgba(12, 14, 22, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: var(--color-vault-gray);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.absolute-close:hover {
+  background: rgba(248, 113, 113, 0.15);
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.3);
+  transform: rotate(90deg) scale(1.05);
 }
 
 /* ───── Responsive: Preview Modal ───── */
 @media (max-width: 640px) {
   .preview-modal-overlay {
-    padding: 0.5rem;
+    padding: 0;
   }
 
   .preview-modal-content {
-    height: 92vh;
-    border-radius: 10px;
+    height: 100vh;
+    border-radius: 0;
+    max-width: 100%;
+    border: none;
   }
 
-  .preview-modal-header {
-    padding: 0.85rem 1rem;
-  }
-
-  .preview-modal-header h3 {
-    font-size: 0.8rem;
-  }
-
-  .mock-pdf-page {
-    padding: 1.5rem;
-    min-height: 600px;
-  }
-
-  .mock-pdf-header h2 {
-    font-size: 1rem;
-  }
-
-  .mock-pdf-header h3 {
-    font-size: 0.9rem;
-  }
-
-  .mock-pdf-meta {
-    font-size: 0.8rem;
-  }
-
-  .mock-pdf-content {
-    font-size: 0.85rem;
-  }
-
-  .mock-pdf-watermark {
-    font-size: 2.5rem;
+  .absolute-close {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 42px;
+    height: 42px;
+    background: rgba(0, 0, 0, 0.9);
   }
 }
 
