@@ -68,7 +68,7 @@ export default function NotificationsTab() {
       
       const resData = await response.json();
       if (resData.success) {
-        return resData.data.imageUrl;
+        return resData.imageUrl;
       } else {
         throw new Error(resData.message || "Image upload failed");
       }
