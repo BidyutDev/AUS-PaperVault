@@ -253,4 +253,38 @@ userRouter.post("/reset-password", async (req, res) => {
     }
 });
 
+userRouter.post("/delete", authMiddleware, async (req, res) => {
+    try {
+        const { password } = req.body;
+
+        if (!password) {
+            return sendError(
+                res,
+                "Password is required",
+                STATUS_CODES.BAD_REQUEST
+            );
+        }
+
+        const user = await User.findOne({ email: req.user.email });
+
+        const isValid = await user.comparePassword(password);
+        if (!isValid) {
+            return sendError(res, "Invalid password", STATUS_CODES.FORBIDDEN);
+        }
+        await user.deleteOne();
+
+        if (userDelete.deletedCount > 0) {
+            return sendSuccess(
+                res,
+                "Account deleted successfully",
+                STATUS_CODES.SUCCESS
+            );
+        }
+        sendError(res, "No user found", STATUS_CODES.NOT_FOUND);
+    } catch (err) {
+        console.log(err);
+        sendError(res, "Error in deleting account");
+    }
+});
+
 export default userRouter;

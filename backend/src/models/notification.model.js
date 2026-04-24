@@ -30,6 +30,11 @@ const notificationSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        expireAt: {
+            type: Date,
+            default: Date.now,
+            expires: 7 * 24 * 60 * 60,
+        },
     },
     {
         timestamps: true,
