@@ -2,20 +2,13 @@ import { Bell, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNotifications } from "../../context/NotificationContext";
 import "./FloatingActions.css";
 
 export default function FloatingActions() {
   const navigate = useNavigate();
-  const [showNotificationIndicator, setShowNotificationIndicator] = useState(true);
+  const { unreadCount, togglePopup } = useNotifications();
   const [isHovered, setIsHovered] = useState(null);
-
-  // Simple effect to toggle notification indicator for demonstration of intelligence/animations
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowNotificationIndicator(prev => !prev);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   const actions = [
     {
@@ -23,11 +16,8 @@ export default function FloatingActions() {
       icon: Bell,
       label: "Updates",
       color: "var(--color-vault-lavender)",
-      hasIndicator: showNotificationIndicator,
-      onClick: () => {
-        setShowNotificationIndicator(false);
-        // Add functionality here
-      }
+      hasIndicator: unreadCount > 0,
+      onClick: togglePopup
     },
     {
       id: "donate",
@@ -71,7 +61,7 @@ export default function FloatingActions() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="floating-action-btn glass-card"
+              className={`floating-action-btn glass-card ${action.hasIndicator && action.id === "notifications" ? "notification-blinking" : ""}`}
               onClick={action.onClick}
               style={{
                 "--action-color": action.color,

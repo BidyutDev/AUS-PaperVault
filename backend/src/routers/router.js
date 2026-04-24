@@ -6,6 +6,7 @@ import healthRouter from "./healthRouter.js";
 import feedbackRouter from "./feedbackRouter.js";
 import emailRouter from "./emailRouter.js";
 import departmentRouter from "./departmentRouter.js";
+import notificationRouter from "./notificationRouter.js";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/health", healthRouter);
 router.use("/feedback", feedbackRouter);
 router.use("/email", emailRouter);
 router.use("/department", departmentRouter);
+router.use("/notifications", notificationRouter);
 
 export default router;

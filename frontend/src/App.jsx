@@ -9,9 +9,11 @@ import { AnimatePresence } from "framer-motion";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import "overlayscrollbars/overlayscrollbars.css";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { NotificationProvider } from "./context/NotificationContext";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import FloatingActions from "./components/FloatingActions/FloatingActions";
+import NotificationsPopup from "./components/NotificationsPopup/NotificationsPopup";
 
 // Eager loaded for instant LCP
 import HomePage from "./pages/HomePage";
@@ -124,6 +126,7 @@ function AppLayout() {
     <>
       <ScrollToTop />
       {!isAdminPage && <FloatingActions />}
+      <NotificationsPopup />
       <AnimatePresence initial={false}>
         {!isAdminPage && <Header key="header" />}
       </AnimatePresence>
@@ -172,9 +175,11 @@ export default function App() {
       style={{ height: "100vh", width: "100%" }}
     >
       <AuthProvider>
-        <Router>
-          <AppLayout />
-        </Router>
+        <NotificationProvider>
+          <Router>
+            <AppLayout />
+          </Router>
+        </NotificationProvider>
       </AuthProvider>
     </OverlayScrollbarsComponent>
   );

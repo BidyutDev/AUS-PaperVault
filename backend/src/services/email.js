@@ -222,4 +222,66 @@ export const sendWelcomeEmail = async (email, username) => {
     }
 };
 
+export const sendGlobalNotificationEmail = async (emails, notification) => {
+    try {
+        const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; background-color: #0A0C10; color: #C8D2DC; padding: 20px; }
+        .card { background-color: #12151c; border-radius: 12px; border: 1px solid #1E2532; max-width: 600px; margin: 0 auto; overflow: hidden; }
+        .header { background: linear-gradient(90deg, #61DAFB, #AFB3F7); height: 4px; }
+        .content { padding: 30px; }
+        h1 { color: #ffffff; font-size: 24px; margin-top: 0; }
+        p { line-height: 1.6; }
+        .img-container { margin: 20px 0; text-align: center; }
+        .img-container img { max-width: 100%; border-radius: 8px; border: 1px solid #2a3441; }
+        .btn { display: inline-block; padding: 12px 24px; background-color: #61DAFB; color: #0A0C10; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 20px; }
+        .footer { padding: 20px; text-align: center; font-size: 12px; color: #7A93AC; border-top: 1px solid #1E2532; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header"></div>
+        <div class="content">
+            <p style="color: #AFB3F7; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">New Update from AUS PaperVault</p>
+            <h1>${notification.title}</h1>
+            <p>${notification.message}</p>
+            
+            ${notification.imageUrl ? `
+            <div class="img-container">
+                <img src="${notification.imageUrl}" alt="Notification Image">
+            </div>
+            ` : ""}
+            
+            ${notification.link ? `
+            <a href="${notification.link}" class="btn">View Details</a>
+            ` : ""}
+        </div>
+        <div class="footer">
+            &copy; ${new Date().getFullYear()} AUS PaperVault. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+        `;
+
+        const mailOptions = {
+            from: `"AUS PaperVault" <${GMAIL_USER}>`,
+            bcc: emails, // Use BCC to hide user emails from each other
+            subject: `Update: ${notification.title} - AUS PaperVault`,
+            html: htmlContent,
+            text: `${notification.title}\n\n${notification.message}\n\nView more at: ${notification.link || "AUS PaperVault"}`,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Global notification email sent:", info.messageId);
+        return true;
+    } catch (error) {
+        console.error("Error sending global notification email:", error);
+        throw error;
+    }
+};
+
 export default transporter;

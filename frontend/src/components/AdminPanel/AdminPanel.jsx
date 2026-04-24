@@ -13,6 +13,7 @@ import {
   Book,
   MessageSquare,
   Users as UsersIcon,
+  Bell,
   Sun,
   Moon,
 } from "lucide-react";
@@ -29,6 +30,7 @@ import AnalyticsTab from "./tabs/AnalyticsTab";
 import CatalogTab from "./tabs/CatalogTab";
 import FeedbackTab from "./tabs/FeedbackTab";
 import StaffTab from "./tabs/StaffTab";
+import NotificationsTab from "./tabs/NotificationsTab";
 import AdminNotificationsBell from "./AdminNotificationsBell";
 
 export default function AdminPanel() {
@@ -55,8 +57,8 @@ export default function AdminPanel() {
     const normalizedRole = role.toLowerCase().replace(/\s+/g, "_");
 
     const roleAccess = {
-      super_admin: ["review", "departments", "analytics", "catalog", "feedback", "staff"],
-      moderator: ["review", "departments", "catalog", "feedback"],
+      super_admin: ["review", "departments", "analytics", "catalog", "feedback", "staff", "notifications"],
+      moderator: ["review", "departments", "catalog", "feedback", "notifications"],
       reviewer: ["review"],
       member: [], // Members have zero access to admin panels
     };
@@ -187,6 +189,15 @@ export default function AdminPanel() {
             Staff_Management
           </button>
         )}
+        {hasAccessToTab(currentAdmin?.role, "notifications") && (
+          <button
+            className={`admin-tab-btn ${adminTab === "notifications" ? "active" : ""}`}
+            onClick={() => setAdminTab("notifications")}
+          >
+            <Bell size={14} />
+            System_Broadcast
+          </button>
+        )}
       </div>
 
       <div className="admin-body">
@@ -216,6 +227,9 @@ export default function AdminPanel() {
         )}
         {adminTab === "staff" && (
           <StaffTab />
+        )}
+        {adminTab === "notifications" && (
+          <NotificationsTab />
         )}
       </div>
     </div>

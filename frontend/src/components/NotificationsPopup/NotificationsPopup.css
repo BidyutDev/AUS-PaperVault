@@ -1,0 +1,203 @@
+.notifications-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+}
+
+.notifications-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  max-height: 85vh;
+  background: var(--color-vault-bg-card);
+  border: 1px solid var(--color-vault-border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2001;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.notifications-popup-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-vault-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.notif-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--color-vault-white);
+  letter-spacing: 1px;
+}
+
+.notif-header-icon {
+  color: var(--color-vault-lavender);
+}
+
+.notif-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-vault-steel);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-close-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-vault-white);
+}
+
+.notifications-popup-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.notif-empty-state {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--color-vault-steel);
+}
+
+.notif-empty-icon {
+  margin-bottom: 1rem;
+  opacity: 0.2;
+}
+
+.notif-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-vault-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s;
+}
+
+.notif-card:hover {
+  border-color: var(--color-vault-lavender);
+  background: rgba(175, 179, 247, 0.05);
+}
+
+.notif-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.notif-type-tag {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.notif-type-tag.info { background: rgba(97, 218, 251, 0.1); color: #61DAFB; border: 1px solid rgba(97, 218, 251, 0.2); }
+.notif-type-tag.alert { background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); }
+.notif-type-tag.announcement { background: rgba(175, 179, 247, 0.1); color: #afb3f7; border: 1px solid rgba(175, 179, 247, 0.2); }
+.notif-type-tag.maintenance { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.2); }
+
+.notif-date {
+  font-size: 0.8rem;
+  color: var(--color-vault-steel);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.notif-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--color-vault-white);
+  margin-bottom: 0.75rem;
+}
+
+.notif-message {
+  font-size: 0.95rem;
+  color: var(--color-vault-gray);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.notif-image-wrap {
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-vault-border);
+}
+
+.notif-image-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.notif-link-btn {
+  margin-top: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--color-vault-lavender);
+  color: var(--color-vault-bg);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.notif-link-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.notifications-popup-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-vault-border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-vault-steel);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* Animations */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.notification-blinking {
+  animation: blink 1.5s infinite ease-in-out;
+}
+
+@media (max-width: 600px) {
+  .notifications-popup {
+    width: 95%;
+    max-height: 90vh;
+  }
+}
