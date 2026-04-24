@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { addDepartment, deleteDepartment, getDepartments } from "../../../data/departments";
+import {
+  addDepartment,
+  deleteDepartment,
+  getDepartments,
+} from "../../../data/departments";
 import { notifySuperAdminEvent } from "../../../data/adminNotifications";
 import ConfirmModal from "../ConfirmModal";
 import DepartmentsHeader from "./departments/DepartmentsHeader";
 import DepartmentsAddForm from "./departments/DepartmentsAddForm";
 import DepartmentsEditForm from "./departments/DepartmentsEditForm";
 import DepartmentsList from "./departments/DepartmentsList";
+import { apiFetch } from "../../../api/api";
 
 export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
   const [showAddDeptForm, setShowAddDeptForm] = useState(false);
@@ -53,10 +58,10 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
         color: newDeptForm.color,
         semesterCount,
       });
-      if(!success) {
-        throw new Error("Error in adding department")
+      if (!success) {
+        throw new Error("Error in adding department");
       }
-      const depts = await getDepartments()
+      const depts = await getDepartments();
       setAllDepartments(depts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
@@ -83,7 +88,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
   };
 
   const handleEditDepartment = (dept) => {
-    setEditingDeptId(dept.id);
+    setEditingDeptId(dept._id);
     setEditDeptForm({
       name: dept.name,
       shortName: dept.shortName,
@@ -94,7 +99,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     setDeptError("");
   };
 
-  const handleSaveEditDepartment = (e) => {
+  const handleSaveEditDepartment = async (e) => {
     e.preventDefault();
     setDeptError("");
     setDeptSuccess("");
@@ -109,25 +114,25 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     }
 
     try {
-      const updatedDepts = allDepartments.map((dept) => {
-        if (dept.id === editingDeptId) {
-          return {
-            ...dept,
-            name: editDeptForm.name,
-            shortName: editDeptForm.shortName.toUpperCase(),
-            color: editDeptForm.color,
-            semesterCount: parseInt(editDeptForm.semesters) || 8,
-          };
-        }
-        return dept;
+      const res = apiFetch(`/department/update/${editingDeptId}`, "PUT", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: {
+          fullName: editDeptForm.name,
+          shortName: editDeptForm.shortName.toUpperCase(),
+          color: editDeptForm.color,
+          semesterCount: parseInt(editDeptForm.semesters) || 8,
+        },
       });
+
+      const updatedDepts = await getDepartments();
 
       const serializeDepts = updatedDepts.map((dept) => ({
         ...dept,
         iconName: dept.icon?.name || "Monitor",
       }));
 
-      localStorage.setItem("aus_vault_departments", JSON.stringify(serializeDepts));
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
@@ -164,14 +169,15 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
     setConfirmDelete(dept);
   };
 
-  const executeDeleteDepartment = () => {
+  const executeDeleteDepartment = async () => {
     const dept = confirmDelete;
     if (!dept) return;
     setConfirmDelete(null);
 
     try {
-      deleteDepartment(dept.id);
-      setAllDepartments(getDepartments());
+      deleteDepartment(dept._id);
+      const depts = await getDepartments();
+      setAllDepartments(depts);
       window.dispatchEvent(new Event("departmentsUpdated"));
       notifySuperAdminEvent({
         title: "Department removed",
@@ -192,15 +198,19 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
       <ConfirmModal
         open={!!confirmDelete}
         title="Delete Department"
-        message={confirmDelete ? `Are you sure you want to permanently delete "${confirmDelete.name}" (${confirmDelete.shortName})? All associated data will be lost. This action cannot be undone.` : ""}
+        message={
+          confirmDelete
+            ? `Are you sure you want to permanently delete "${confirmDelete.name}" (${confirmDelete.shortName})? All associated data will be lost. This action cannot be undone.`
+            : ""
+        }
         confirmLabel="Yes, Delete"
         onConfirm={executeDeleteDepartment}
         onCancel={() => setConfirmDelete(null)}
       />
-      
-      <DepartmentsHeader 
-        showAddDeptForm={showAddDeptForm} 
-        setShowAddDeptForm={setShowAddDeptForm} 
+
+      <DepartmentsHeader
+        showAddDeptForm={showAddDeptForm}
+        setShowAddDeptForm={setShowAddDeptForm}
       />
 
       {showAddDeptForm && (

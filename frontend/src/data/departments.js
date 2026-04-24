@@ -98,7 +98,7 @@ export async function addDepartment(newDept) {
     }
     const semesters = {};
     for (let i = 1; i <= newDept.semesterCount; i++) {
-      semesters[i] = [];
+      semesters[String(i)] = [];
     }
     const res = await apiFetch("/department/add", "POST", {
       headers: {
@@ -107,7 +107,7 @@ export async function addDepartment(newDept) {
       body: {
         fullName: newDept.fullName,
         shortName: newDept.shortName,
-        semesters: semesters || {},
+        semesters: semesters,
         color: newDept.color || "#000",
         iconName: newDept.iconName || "Monitor", // Default to Monitor
         years: [],

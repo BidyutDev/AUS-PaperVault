@@ -21,8 +21,8 @@ export default function DepartmentsList({
               <h4 className="admin-dept-card-name">{dept.name}</h4>
               <p className="admin-dept-card-code">{dept.shortName}</p>
               <div className="admin-dept-card-meta">
-                <small>{dept.semesterCount || 8} Semesters</small>
-                <small>{dept.yearsCount || 5} Years</small>
+                <small>{Object.keys(dept.semesters).length} Semesters</small>
+                <small>{dept.years.length} Years</small>
               </div>
             </div>
             <button
