@@ -5,7 +5,7 @@ import { Lock, AlertTriangle, Eye, EyeOff, Trash2, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AuthLayout from "../components/AuthLayout/AuthLayout";
 import "./DeleteAccountPage.css";
-import { API_URL } from "../api/api";
+import { BASE_URL } from "../api/api";
 
 export default function DeleteAccountPage() {
   const [password, setPassword] = useState("");
@@ -43,7 +43,7 @@ export default function DeleteAccountPage() {
     setError("");
 
     try {
-      const response = await fetch(`${API_URL}/users/delete`, {
+      const response = await fetch(`${BASE_URL}/users/delete`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
