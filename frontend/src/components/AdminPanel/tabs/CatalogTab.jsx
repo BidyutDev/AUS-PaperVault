@@ -16,7 +16,9 @@ export default function CatalogTab({
   semestersData,
   approvedPapers,
   allPapers,
+  currentAdmin,
 }) {
+  const canDelete = currentAdmin?.role === "Super Admin";
   const [catalogTab, setCatalogTab] = useState("subjects"); // 'subjects' | 'semesters' | 'papers'
   const [selectedCatalogDept, setSelectedCatalogDept] = useState(null);
   const [selectedCatalogSemester, setSelectedCatalogSemester] = useState(null);
@@ -328,6 +330,7 @@ export default function CatalogTab({
           handleEditSubject={handleEditSubject}
           setConfirmAction={setConfirmAction}
           handleAddSubject={handleAddSubject}
+          canDelete={canDelete}
         />
       )}
 
@@ -338,6 +341,7 @@ export default function CatalogTab({
           setNewSemester={setNewSemester}
           handleAddSemester={handleAddSemester}
           handleDeleteSemester={handleDeleteSemester}
+          canDelete={canDelete}
         />
       )}
 
@@ -353,6 +357,7 @@ export default function CatalogTab({
           semestersData={semestersData}
           allPapers={allPapers}
           handleDeletePaper={handleDeletePaper}
+          canDelete={canDelete}
         />
       )}
     </div>

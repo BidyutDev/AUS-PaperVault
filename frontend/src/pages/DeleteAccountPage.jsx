@@ -43,7 +43,7 @@ export default function DeleteAccountPage() {
     setError("");
 
     try {
-      const response = await fetch(`${BASE_URL}/users/delete`, {
+      const response = await fetch(`${BASE_URL}/user/delete`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

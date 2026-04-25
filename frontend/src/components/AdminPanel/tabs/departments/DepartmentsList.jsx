@@ -4,6 +4,7 @@ export default function DepartmentsList({
   allDepartments,
   handleEditDepartment,
   handleDeleteDepartment,
+  canDelete = true,
 }) {
   return (
     <div className="admin-departments-list-container">
@@ -32,13 +33,15 @@ export default function DepartmentsList({
             >
               <Edit2 size={14} />
             </button>
-            <button
-              className="admin-dept-card-delete"
-              onClick={() => handleDeleteDepartment(dept)}
-              title="Delete department"
-            >
-              <Trash2 size={14} />
-            </button>
+            {canDelete && (
+              <button
+                className="admin-dept-card-delete"
+                onClick={() => handleDeleteDepartment(dept)}
+                title="Delete department"
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
           </div>
         ))}
       </div>

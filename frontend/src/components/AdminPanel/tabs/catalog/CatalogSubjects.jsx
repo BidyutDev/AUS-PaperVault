@@ -17,6 +17,7 @@ export default function CatalogSubjects({
   handleEditSubject,
   setConfirmAction,
   handleAddSubject,
+  canDelete = true,
 }) {
   return (
     <div className="admin-catalog-subjects-grid">
@@ -233,29 +234,31 @@ export default function CatalogSubjects({
                           >
                             <Edit size={14} />
                           </button>
-                          <button
-                            onClick={() => {
-                              setConfirmAction({
-                                type: "subject",
-                                title: "Delete Subject",
-                                message: `Are you sure you want to delete subject "${subject}"? This action cannot be undone.`,
-                                payload: {
-                                  deptId: selectedCatalogDept,
-                                  semester: selectedCatalogSemester,
-                                  subjectName: subject,
-                                },
-                              });
-                            }}
-                            style={{
-                              backgroundColor: "transparent",
-                              border: "none",
-                              color: "#f87171",
-                              cursor: "pointer",
-                              padding: "0.25rem",
-                            }}
-                          >
-                            <Trash2 size={14} />
-                          </button>
+                          {canDelete && (
+                            <button
+                              onClick={() => {
+                                setConfirmAction({
+                                  type: "subject",
+                                  title: "Delete Subject",
+                                  message: `Are you sure you want to delete subject "${subject}"? This action cannot be undone.`,
+                                  payload: {
+                                    deptId: selectedCatalogDept,
+                                    semester: selectedCatalogSemester,
+                                    subjectName: subject,
+                                  },
+                                });
+                              }}
+                              style={{
+                                backgroundColor: "transparent",
+                                border: "none",
+                                color: "#f87171",
+                                cursor: "pointer",
+                                padding: "0.25rem",
+                              }}
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          )}
                         </>
                       )}
                     </div>

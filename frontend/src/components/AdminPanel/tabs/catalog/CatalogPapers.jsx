@@ -12,6 +12,7 @@ export default function CatalogPapers({
   semestersData,
   allPapers,
   handleDeletePaper,
+  canDelete = true,
 }) {
   return (
     <div className="glass-card" style={{ padding: "1.5rem" }}>
@@ -95,9 +96,11 @@ export default function CatalogPapers({
                     <div style={{ fontWeight: "500", marginBottom: "0.25rem" }}>{paper.subject}</div>
                     <div style={{ color: "var(--color-vault-steel)", fontSize: "0.8rem" }}>Year {paper.year}</div>
                   </div>
-                  <button onClick={() => handleDeletePaper(paper.id)} style={{ backgroundColor: "transparent", border: "none", color: "#f87171", cursor: "pointer", padding: "0.5rem", display: "flex", alignItems: "center" }}>
-                    <Trash2 size={16} />
-                  </button>
+                  {canDelete && (
+                    <button onClick={() => handleDeletePaper(paper.id)} style={{ backgroundColor: "transparent", border: "none", color: "#f87171", cursor: "pointer", padding: "0.5rem", display: "flex", alignItems: "center" }}>
+                      <Trash2 size={16} />
+                    </button>
+                  )}
                 </div>
               ))
             );

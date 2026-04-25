@@ -245,9 +245,9 @@ export const sendGlobalNotificationEmail = async (emails, notification) => {
     <div class="card">
         <div class="header"></div>
         <div class="content">
-            <p style="color: #AFB3F7; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">New Update from AUS PaperVault</p>
+            <p style="color: #AFB3F7; font-size: 20px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;"><span style="color: #C0322F">Announcement</span> from AUS PaperVault</p>
             <h1>${notification.title}</h1>
-            <p>${notification.message}</p>
+            <p style="font-size: 10px;">${notification.message}</p>
             
             ${notification.imageUrl ? `
             <div class="img-container">

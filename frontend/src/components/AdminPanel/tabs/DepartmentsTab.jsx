@@ -12,7 +12,8 @@ import DepartmentsEditForm from "./departments/DepartmentsEditForm";
 import DepartmentsList from "./departments/DepartmentsList";
 import { apiFetch } from "../../../api/api";
 
-export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
+export default function DepartmentsTab({ allDepartments, setAllDepartments, currentAdmin }) {
+  const canDelete = currentAdmin?.role === "Super Admin";
   const [showAddDeptForm, setShowAddDeptForm] = useState(false);
   const [editingDeptId, setEditingDeptId] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -240,6 +241,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments }) {
         allDepartments={allDepartments}
         handleEditDepartment={handleEditDepartment}
         handleDeleteDepartment={handleDeleteDepartment}
+        canDelete={canDelete}
       />
     </div>
   );
