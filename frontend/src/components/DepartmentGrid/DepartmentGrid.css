@@ -419,6 +419,13 @@
   background: linear-gradient(135deg, var(--card-accent, var(--color-vault-lavender)) 0%, rgba(var(--color-vault-white-rgb), 0.2) 50%, var(--card-accent, var(--color-vault-lavender)) 100%);
 }
 
+.dept-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
 .dept-card-icon {
   width: 44px;
   height: 44px;
@@ -427,7 +434,7 @@
   justify-content: center;
   background: rgba(var(--color-vault-lavender-rgb), 0.06);
   border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
-  margin-bottom: 1rem;
+  border-radius: 10px;
   transition: all 0.3s ease;
 }
 
@@ -443,21 +450,31 @@
 }
 
 .dept-card-short {
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  letter-spacing: 0.15em;
+  font-weight: 700;
+  color: var(--color-vault-darker);
+  background: var(--color-vault-lavender);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-vault-gray);
-  margin-bottom: 0.25rem;
 }
 
 .dept-card-name {
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-vault-text);
-  line-height: 1.3;
-  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   transition: color 0.3s ease;
 }
 

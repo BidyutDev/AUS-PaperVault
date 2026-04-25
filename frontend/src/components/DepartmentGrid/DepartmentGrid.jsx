@@ -211,10 +211,12 @@ export default function DepartmentGrid() {
                     height: "100%", // Ensure link inside tilt takes full height
                   }}
                 >
-                  <div className="dept-card-icon" style={{ color: dept.color }}>
-                    <Icon />
+                  <div className="dept-card-header">
+                    <div className="dept-card-icon" style={{ color: dept.color }}>
+                      <Icon />
+                    </div>
+                    <div className="dept-card-short">{dept.shortName}</div>
                   </div>
-                  <div className="dept-card-short">{dept.shortName}</div>
                   <div className="dept-card-name">{dept.name}</div>
                   <div className="dept-card-meta">
                     <div className="dept-card-papers">

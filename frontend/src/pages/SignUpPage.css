@@ -475,6 +475,46 @@
   gap: 1.5rem;
 }
 
+/* ───── OTP Inputs ───── */
+.otp-input-group {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.otp-input {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-vault-text);
+  background: rgba(var(--color-vault-white-rgb), 0.03);
+  border: 1.5px solid rgba(var(--color-vault-lavender-rgb), 0.2);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.25s ease;
+  caret-color: var(--color-vault-lavender);
+}
+
+.otp-input:focus {
+  border-color: var(--color-vault-lavender);
+  box-shadow: 0 0 0 3px rgba(var(--color-vault-lavender-rgb), 0.12);
+  background: rgba(var(--color-vault-lavender-rgb), 0.05);
+}
+
+.otp-input.filled {
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.45);
+  background: rgba(var(--color-vault-lavender-rgb), 0.06);
+}
+
+.otp-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .verification-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -485,48 +525,88 @@
   .verification-actions {
     grid-template-columns: 1fr;
   }
+  .otp-input {
+    width: 38px;
+    height: 46px;
+    font-size: 1rem;
+  }
+  .otp-input-group {
+    gap: 0.35rem;
+  }
 }
 
-.btn-cyber {
-  padding: 0.75rem;
-  background: rgba(var(--color-vault-lavender-rgb), 0.05);
-  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.2);
-  color: var(--color-vault-text);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: var(--font-heading);
+.btn-verify-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(var(--color-vault-white-rgb), 0.03);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.25);
+  color: rgba(var(--color-vault-lavender-rgb), 0.8);
+  border-radius: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.8rem;
-}
-
-.btn-cyber:hover {
-  background: rgba(var(--color-vault-lavender-rgb), 0.1);
-}
-
-.btn-cyber-solid {
-  padding: 0.75rem;
-  background: var(--color-vault-lavender);
-  border: 1px solid transparent;
-  color: var(--color-vault-darker);
-  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.8rem;
+  transition: all 0.3s ease;
 }
 
-.btn-cyber-solid:hover:not(:disabled) {
-  background: rgba(var(--color-vault-lavender-rgb), 0.9);
-  box-shadow: 0 0 15px rgba(var(--color-vault-lavender-rgb), 0.4);
+.btn-verify-cancel:hover:not(:disabled) {
+  background: rgba(var(--color-vault-lavender-rgb), 0.08);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.4);
+  color: var(--color-vault-lavender);
 }
 
-.btn-cyber-solid:disabled {
+.btn-verify-cancel:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-verify-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-vault-lavender-rgb), 0.25),
+    rgba(146, 188, 234, 0.15)
+  );
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.4);
+  border-radius: 0.5rem;
+  color: var(--color-vault-text);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-verify-submit:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-vault-lavender-rgb), 0.35),
+    rgba(146, 188, 234, 0.25)
+  );
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.6);
+  box-shadow: 0 0 15px rgba(var(--color-vault-lavender-rgb), 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-verify-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-verify-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(80%);
 }
 
 .text-center {

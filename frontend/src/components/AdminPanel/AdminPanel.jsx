@@ -165,15 +165,6 @@ export default function AdminPanel() {
             Manage_Departments
           </button>
         )}
-        {hasAccessToTab(currentAdmin?.role, "analytics") && (
-          <button
-            className={`admin-tab-btn ${adminTab === "analytics" ? "active" : ""}`}
-            onClick={() => setAdminTab("analytics")}
-          >
-            <BarChart3 size={14} />
-            Vault_Analytics
-          </button>
-        )}
         {hasAccessToTab(currentAdmin?.role, "catalog") && (
           <button
             className={`admin-tab-btn ${adminTab === "catalog" ? "active" : ""}`}
@@ -208,6 +199,15 @@ export default function AdminPanel() {
           >
             <Bell size={14} />
             System_Broadcast
+          </button>
+        )}
+        {hasAccessToTab(currentAdmin?.role, "analytics") && (
+          <button
+            className={`admin-tab-btn ${adminTab === "analytics" ? "active" : ""}`}
+            onClick={() => setAdminTab("analytics")}
+          >
+            <BarChart3 size={14} />
+            Vault_Analytics
           </button>
         )}
       </div>

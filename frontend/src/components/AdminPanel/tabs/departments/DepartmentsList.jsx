@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit2 } from "lucide-react";
 
 export default function DepartmentsList({
   allDepartments,
@@ -30,7 +30,7 @@ export default function DepartmentsList({
               onClick={() => handleEditDepartment(dept)}
               title="Edit department"
             >
-              ✎
+              <Edit2 size={14} />
             </button>
             <button
               className="admin-dept-card-delete"

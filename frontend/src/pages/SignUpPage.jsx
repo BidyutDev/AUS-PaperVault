@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -35,8 +35,10 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState(Array(6).fill(""));
   const [isSendingCode, setIsSendingCode] = useState(false);
+  
+  const otpRefs = useRef([]);
 
   const { signup } = useAuth();
   const navigate = useNavigate();
@@ -69,6 +71,48 @@ export default function SignUpPage() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+  };
+
+  const handleOtpChange = (index, value) => {
+    // Only accept digits
+    if (value && !/^\d$/.test(value)) return;
+
+    const newOtp = [...verificationCode];
+    newOtp[index] = value;
+    setVerificationCode(newOtp);
+    if (errors.verify) setErrors((prev) => ({ ...prev, verify: null }));
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      otpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !verificationCode[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
+    if (!pasted) return;
+
+    const newOtp = [...verificationCode];
+    for (let i = 0; i < pasted.length; i++) {
+      newOtp[i] = pasted[i];
+    }
+    setVerificationCode(newOtp);
+    if (errors.verify) setErrors((prev) => ({ ...prev, verify: null }));
+
+    // Focus the next empty slot or last
+    const nextEmpty = newOtp.findIndex((v) => !v);
+    const focusIdx = nextEmpty === -1 ? 5 : nextEmpty;
+    otpRefs.current[focusIdx]?.focus();
   };
 
   const validateForm = () => {
@@ -153,7 +197,8 @@ export default function SignUpPage() {
   const handleVerifyEmail = async (e) => {
     e.preventDefault();
 
-    if (verificationCode.length < 6) {
+    const otpString = verificationCode.join("");
+    if (otpString.length < 6) {
       setErrors({ verify: "Please enter a valid 6-digit verification code." });
       return;
     }
@@ -165,7 +210,7 @@ export default function SignUpPage() {
         body: {
           username: formData.username.trim(),
           email: formData.email.trim(),
-          otp: verificationCode,
+          otp: otpString,
         },
       });
       if (verifyOtp.success) {
@@ -529,22 +574,25 @@ export default function SignUpPage() {
               <strong>{formData.email || "your email"}</strong>.
             </p>
 
-            <form onSubmit={handleVerifyEmail} className="verification-form">
-              <div className="form-group">
-                <input
-                  type="text"
-                  placeholder="Enter 6-digit code"
-                  className="form-input text-center"
-                  style={{ fontSize: "1.25rem", letterSpacing: "0.25em" }}
-                  maxLength={6}
-                  value={verificationCode}
-                  onChange={(e) => {
-                    setVerificationCode(e.target.value.replace(/\D/g, ""));
-                    if (errors.verify) setErrors({ ...errors, verify: null });
-                  }}
-                  autoFocus
-                />
-                {errors.verify && (
+            <form onSubmit={handleVerifyEmail} className="verification-form forgot-form">
+              <div className="otp-input-group" onPaste={handleOtpPaste}>
+                {verificationCode.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={(el) => (otpRefs.current[i] = el)}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    className={`otp-input ${digit ? "filled" : ""}`}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(i, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                    disabled={isLoading}
+                    autoFocus={i === 0}
+                  />
+                ))}
+              </div>
+              {errors.verify && (
                   <span
                     className="error-text text-center"
                     style={{ marginTop: "0.5rem", display: "block" }}
@@ -552,12 +600,11 @@ export default function SignUpPage() {
                     {errors.verify}
                   </span>
                 )}
-              </div>
 
               <div className="verification-actions">
                 <button
                   type="button"
-                  className="btn-cyber"
+                  className="btn-verify-cancel"
                   onClick={() => setShowVerificationModal(false)}
                   disabled={isLoading}
                 >
@@ -565,10 +612,10 @@ export default function SignUpPage() {
                 </button>
                 <button
                   type="submit"
-                  className="btn-cyber-solid"
+                  className="btn-verify-submit"
                   disabled={
                     isLoading || 
-                    verificationCode.length < 6 || 
+                    verificationCode.join("").length < 6 || 
                     (errors.verify && (
                       errors.verify.toLowerCase().includes("too many") ||
                       errors.verify.toLowerCase().includes("expired") ||
@@ -576,7 +623,14 @@ export default function SignUpPage() {
                     ))
                   }
                 >
-                  {isLoading ? "Verifying..." : "Verify & Sign Up"}
+                  {isLoading ? (
+                    <span className="loading-spinner">Verifying…</span>
+                  ) : (
+                    <>
+                      <span>Verify & Sign Up</span>
+                      <ArrowRight size={16} />
+                    </>
+                  )}
                 </button>
               </div>
 

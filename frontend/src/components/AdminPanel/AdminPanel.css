@@ -1549,26 +1549,28 @@ select.admin-form-input option {
 
 .admin-departments-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
   flex: 1;
+  align-items: start;
+  align-content: start;
 }
 
 .admin-dept-card {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem;
+  flex-direction: column;
+  padding: 1.25rem 1.25rem 1.25rem 1.75rem;
   background: linear-gradient(
     145deg,
     rgba(var(--color-vault-card-rgb), 0.7),
     rgba(var(--color-vault-dark-rgb), 0.85)
   );
   border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.3s ease;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .admin-dept-card:hover {
@@ -1578,66 +1580,78 @@ select.admin-form-input option {
     rgba(var(--color-vault-dark-rgb), 1)
   );
   border-color: rgba(var(--color-vault-lavender-rgb), 0.25);
-  box-shadow: 0 8px 24px rgba(var(--color-vault-lavender-rgb), 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 15px rgba(var(--color-vault-lavender-rgb), 0.1);
   transform: translateY(-4px);
 }
 
 .admin-dept-card-color {
-  width: 6px;
-  height: 60px;
-  border-radius: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
   transition: width 0.3s ease;
 }
 
 .admin-dept-card:hover .admin-dept-card-color {
-  width: 8px;
+  width: 6px;
 }
 
 .admin-dept-card-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.6rem;
 }
 
 .admin-dept-card-name {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-vault-text);
   margin: 0;
+  line-height: 1.4;
+  padding-right: 2rem; /* Make room for edit button */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .admin-dept-card-code {
+  display: inline-block;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--color-vault-lavender);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-vault-darker);
+  background: var(--color-vault-lavender);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
   margin: 0;
-  letter-spacing: 0.05em;
-}
-
-.admin-dept-card-id {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--color-vault-gray);
-  opacity: 0.6;
+  letter-spacing: 0.08em;
+  width: fit-content;
 }
 
 .admin-dept-card-meta {
   display: flex;
-  gap: 0.8rem;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
 }
 
 .admin-dept-card-meta small {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   color: var(--color-vault-gray);
-  opacity: 0.7;
+  opacity: 0.8;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
 }
 
 .admin-dept-card-edit {
