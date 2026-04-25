@@ -20,7 +20,7 @@ import { notifyPaperUpload } from "../../data/adminNotifications";
 import "./UploadForm.css";
 
 export default function UploadForm() {
-  const departments = useDepartments();
+  const { departments, loading: deptLoading } = useDepartments();
   const semesters = useSemesters();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();

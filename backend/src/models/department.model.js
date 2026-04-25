@@ -10,15 +10,20 @@ const departmentSchema = new mongoose.Schema({
         required: [true, "Shortname is required"],
     },
     semesters: {
-        type: Number,
-        required: [true, "Number of semesters is required"],
+        type: Map,
+        of: [String],
     },
     color: {
         type: String,
         default: "#000",
     },
+    iconName: {
+        type: String,
+        default: "Monitor",
+        enum: ["Monitor", "Cpu", "Zap", "Cog", "Building2", "Atom", "FlaskConical", "Calculator", "BookOpen", "Languages", "Landmark", "TrendingUp", "Briefcase", "Leaf", "Microscope"],
+    },
     years: {
-        type: Number,
+        type: [Number],
         required: [true, "Number of years is required"],
     },
 });

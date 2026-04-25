@@ -44,7 +44,19 @@ export default function AdminPanel() {
     
   const authenticated = !!currentAdmin;
 
-  const [allDepartments, setAllDepartments] = useState(() => getDepartments());
+  const [allDepartments, setAllDepartments] = useState([]);
+  useEffect(() => {
+    const getDepts = async () => {
+      try{
+        const depts = await getDepartments();
+        setAllDepartments(depts || [])
+      }catch {
+        setAllDepartments([])
+      }
+    }
+    getDepts();
+    
+  },[])
   const semestersData = useSemesters();
   const approvedPapers = useApprovedPapers();
   const allPapers = useAllPapers();

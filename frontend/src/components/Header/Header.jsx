@@ -28,7 +28,7 @@ import "./Header.css";
 import logoAus from "./aus-logo.png";
 
 export default function Header() {
-  const departments = useDepartments();
+  const { departments } = useDepartments();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);

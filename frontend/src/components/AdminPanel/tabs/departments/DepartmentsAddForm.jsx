@@ -58,24 +58,9 @@ export default function DepartmentsAddForm({
               setNewDeptForm({ ...newDeptForm, semesters: e.target.value })
             }
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((s) => (
               <option key={s} value={s}>
                 {s} Semester{s > 1 ? "s" : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="admin-form-group">
-          <label className="admin-form-label">Years of Question Papers</label>
-          <select
-            className="admin-form-input"
-            value={newDeptForm.years}
-            onChange={(e) => setNewDeptForm({ ...newDeptForm, years: e.target.value })}
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 10].map((y) => (
-              <option key={y} value={y}>
-                {y} Year{y > 1 ? "s" : ""}
               </option>
             ))}
           </select>

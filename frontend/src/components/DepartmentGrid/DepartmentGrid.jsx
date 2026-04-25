@@ -6,7 +6,7 @@ import { useAllPapers, useDepartments } from "../../hooks/useDepartments";
 import "./DepartmentGrid.css";
 
 export default function DepartmentGrid() {
-  const departments = useDepartments();
+  const { departments, loading, error } = useDepartments();
   const allPapers = useAllPapers();
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -22,7 +22,7 @@ export default function DepartmentGrid() {
     return (
       dept.name.toLowerCase().includes(q) ||
       dept.shortName.toLowerCase().includes(q) ||
-      dept.id.toLowerCase().includes(q)
+      (dept.id && dept.id.toLowerCase().includes(q))
     );
   });
 
@@ -46,7 +46,7 @@ export default function DepartmentGrid() {
         e.preventDefault();
         const dept = filteredDepartments[highlightedIndex];
         if (dept) {
-          navigate(`/department/${dept.id}`);
+          navigate(`/department/${dept.id || dept.shortName?.toLowerCase()}`);
           setSearchQuery("");
           inputRef.current?.blur();
         }

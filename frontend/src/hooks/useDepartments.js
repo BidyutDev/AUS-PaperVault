@@ -1,78 +1,90 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getDepartments, SEMESTERS } from "../data/departments";
 import { getApprovedPapers, getAllPapers } from "../data/mockPapers";
 
 /**
- * Custom hook to use departments with reactive updates
- * Automatically refetches departments when they change in localStorage
- * @returns {Array} Array of department objects with live updates
+ * Custom hook to fetch and manage departments from backend API
+ * Automatically refetches departments when they change
+ * @returns {Object} { departments: Array, loading: boolean, error: string|null }
  */
 export function useDepartments() {
-  const [departments, setDepartments] = useState(() => getDepartments());
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Listen for storage changes (from other tabs/windows or the admin panel)
+  // Function to fetch departments from API
+  const fetchDepartments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const depts = await getDepartments();
+      setDepartments(depts || []);
+    } catch (err) {
+      console.error("Error fetching departments:", err);
+      setError(err.message || "Failed to fetch departments");
+      setDepartments([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial fetch on mount
   useEffect(() => {
-    const handleStorageChange = () => {
-      setDepartments(getDepartments());
-    };
+    fetchDepartments();
+  }, []);
 
+  // Listen for department updates from other components
+  useEffect(() => {
     const handleDepartmentsUpdate = () => {
-      setDepartments(getDepartments());
+      fetchDepartments();
     };
 
-    // Listen to storage changes from other components/tabs
-    window.addEventListener("storage", handleStorageChange);
-    // Listen to custom event from admin panel (same-tab updates)
     window.addEventListener("departmentsUpdated", handleDepartmentsUpdate);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("departmentsUpdated", handleDepartmentsUpdate);
     };
   }, []);
 
-  return departments;
+  return { departments, loading, error };
 }
 
 /**
- * Get a specific department by slug with reactive updates
- * @param {string} deptId - Department slug to find
- * @returns {Object|null} Department object or null if not found
+ * Get a specific department by ID with reactive updates
+ * @param {string} deptId - Department ID to find
+ * @returns {Object|null|undefined} Department object, null if not found, or undefined if loading
  */
 export function useDepartment(deptId) {
-  const allDepartments = useDepartments();
-  return allDepartments.find((d) => d.id === deptId) || null;
+  const { departments, loading } = useDepartments();
+  
+  // Return undefined while loading so component can show loading state
+  if (loading) return undefined;
+  
+  // Try to find by _id or id or shortName
+  return departments.find((d) => 
+    d._id === deptId || 
+    d.id === deptId || 
+    d.shortName?.toLowerCase() === deptId?.toLowerCase()
+  ) || null;
 }
 
 /**
  * Custom hook to use semesters with reactive updates
- * Automatically refetches semesters when they change in localStorage
+ * Automatically refetches semesters when they change
  * @returns {Array} Array of semester numbers with live updates
  */
 export function useSemesters() {
-  const [semesters, setSemesters] = useState(() => {
-    const stored = localStorage.getItem("aus_vault_semesters");
-    return stored ? JSON.parse(stored) : SEMESTERS;
-  });
+  const [semesters, setSemesters] = useState(() => SEMESTERS);
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      const stored = localStorage.getItem("aus_vault_semesters");
-      setSemesters(stored ? JSON.parse(stored) : SEMESTERS);
-    };
-
     const handleSemestersUpdate = () => {
-      const stored = localStorage.getItem("aus_vault_semesters");
-      setSemesters(stored ? JSON.parse(stored) : SEMESTERS);
+      setSemesters(SEMESTERS);
     };
 
-    // Listen to storage changes from other tabs/windows
-    window.addEventListener("storage", handleStorageChange);
     // Listen to custom event from admin panel (same-tab updates)
     window.addEventListener("semestersUpdated", handleSemestersUpdate);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("semestersUpdated", handleSemestersUpdate);
     };
   }, []);
@@ -82,7 +94,7 @@ export function useSemesters() {
 
 /**
  * Custom hook to use approved papers with reactive updates
- * Automatically refetches papers when they change in localStorage
+ * Automatically refetches papers when they change
  * @returns {Array} Array of approved question papers with live updates
  */
 export function useApprovedPapers() {

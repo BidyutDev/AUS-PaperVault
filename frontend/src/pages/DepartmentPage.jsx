@@ -24,6 +24,35 @@ export default function DepartmentPage() {
 
   const department = useDepartment(deptId);
 
+  // Loading state
+  if (department === undefined) {
+    return (
+      <motion.div
+        className="page-enter"
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        <div
+          className="container-vault"
+          style={{ padding: "4rem 1rem", textAlign: "center" }}
+        >
+          <h1
+            style={{
+              fontFamily: "var(--font-heading)",
+              color: "var(--color-vault-text)",
+              marginBottom: "1rem",
+            }}
+          >
+            Loading Department...
+          </h1>
+        </div>
+      </motion.div>
+    );
+  }
+
   if (!department) {
     return (
       <motion.div
