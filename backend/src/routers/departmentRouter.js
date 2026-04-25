@@ -199,10 +199,10 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
         }
 
         if (action == "delete") {
-            const subjectIndex = Object.entries(dept.semesters)[
+            const subjectIndex = Object.fromEntries(dept.semesters)[
                 data.semester
             ].indexOf(data.subject);
-            const ret = Object.entries(dept.semesters)[data.semester].splice(
+            const ret = Object.fromEntries(dept.semesters)[data.semester].splice(
                 subjectIndex,
                 1
             );
