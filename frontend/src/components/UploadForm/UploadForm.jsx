@@ -266,7 +266,7 @@ export default function UploadForm() {
           >
             <option value="">Select Department</option>
             {departments.map((dept) => (
-              <option key={dept.id} value={dept.id}>
+              <option key={dept.fullName} value={dept.shortName}>
                 {dept.name}
               </option>
             ))}

@@ -165,7 +165,7 @@ export default function SearchModal({ isOpen, onClose }) {
                       const currentIdx = idx++;
                       return (
                         <div
-                          key={`dept-${dept.id}`}
+                          key={`dept-${dept.shortName}`}
                           className={`search-result-item ${currentIdx === focusIndex ? "focused" : ""}`}
                           onClick={() => handleSelect(dept, "dept")}
                           onMouseEnter={() => setFocusIndex(currentIdx)}

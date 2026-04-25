@@ -64,10 +64,7 @@ departmentRouter.get("/list", async (req, res) => {
 
 departmentRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
     try {
-        if (
-            req.user.role == ROLES.SUPER_ADMIN ||
-            req.user.role == ROLES.MODERATOR
-        ) {
+        if (req.user.role == ROLES.SUPER_ADMIN) {
             const { id } = req.params;
             const department = await Department.findByIdAndDelete(id);
 
@@ -163,7 +160,11 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
 });
 
 departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
-    if (![ROLES.MODERATOR, ROLES.SUPER_ADMIN].includes(req.user.role)) {
+    const { action } = req.params;
+    if (
+        ![ROLES.MODERATOR, ROLES.SUPER_ADMIN].includes(req.user.role) ||
+        (req.user.role == ROLES.MODERATOR && action == "delete")
+    ) {
         return sendError(
             res,
             "Only a super admin or a moderator can add or delete subject",
@@ -171,7 +172,6 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
         );
     }
 
-    const { action } = req.params;
     if (action != "add" && action != "delete" && action != "edit") {
         return sendError(
             res,
@@ -243,7 +243,8 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
                 );
             }
 
-            Object.fromEntries(dept.semesters)[data.semester][subjectIndex] = data.newSubject;
+            Object.fromEntries(dept.semesters)[data.semester][subjectIndex] =
+                data.newSubject;
 
             await dept.save();
             sendSuccess(

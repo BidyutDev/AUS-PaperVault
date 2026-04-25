@@ -77,10 +77,15 @@ feedbackRouter.get("/me", authMiddleware, async (req, res) => {
         const feedback = await Feedback.findOne({
             $or: [{ username: req.user.username }, { email: req.user.email }],
         });
-        
-        sendSuccess(res, "Feedback fetched successfully", STATUS_CODES.SUCCESS, {
-            feedback,
-        });
+
+        sendSuccess(
+            res,
+            "Feedback fetched successfully",
+            STATUS_CODES.SUCCESS,
+            {
+                feedback,
+            }
+        );
     } catch (err) {
         sendError(
             res,
@@ -119,10 +124,7 @@ feedbackRouter.get("/list", authMiddleware, async (req, res) => {
 
 feedbackRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
     try {
-        if (
-            req.user.role == ROLES.SUPER_ADMIN ||
-            req.user.role == ROLES.MODERATOR
-        ) {
+        if (req.user.role == ROLES.SUPER_ADMIN) {
             const { id } = req.params;
             const deleteFeedback = await Feedback.deleteOne({ _id: id });
 

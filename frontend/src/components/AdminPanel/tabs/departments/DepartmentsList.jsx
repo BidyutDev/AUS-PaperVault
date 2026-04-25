@@ -12,7 +12,7 @@ export default function DepartmentsList({
       </h3>
       <div className="admin-departments-grid">
         {allDepartments.map((dept) => (
-          <div key={dept.id} className="admin-dept-card">
+          <div key={dept._id} className="admin-dept-card">
             <div
               className="admin-dept-card-color"
               style={{ backgroundColor: dept.color }}

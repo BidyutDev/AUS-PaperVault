@@ -33,7 +33,7 @@ export default function CatalogPapers({
           >
             <option value="">Select Department...</option>
             {allDepartments.map((dept) => (
-              <option key={dept.id} value={dept.id}>{dept.shortName} - {dept.name}</option>
+              <option key={dept.fullName} value={dept.shortName}>{dept.shortName} - {dept.name}</option>
             ))}
           </select>
         </div>
