@@ -52,7 +52,7 @@ export default function CatalogTab({
           subject: subjectName,
         }
       });
-      if(!res.sucess) {
+      if(!res.success) {
         setDeptError(res.message || res.error);
         return;
       }
@@ -90,7 +90,7 @@ export default function CatalogTab({
           subject: subjectName,
         }
       });
-      if(!res.sucess) {
+      if(!res.success) {
         setDeptError(res.message || res.error);
         return;
       }
@@ -118,39 +118,36 @@ export default function CatalogTab({
     setEditingSubjectName(oldName);
   };
 
-  const handleUpdateSubject = (deptId, semester, oldName, newName) => {
+  const handleUpdateSubject = async (deptId, semester, oldName, newName) => {
     if (!newName.trim() || newName === oldName) {
       setEditingSubject(null);
       return;
     }
 
     try {
-      const updatedDepts = allDepartments.map((dept) => {
-        if (dept.id === deptId) {
-          const updatedDept = { ...dept, semesters: { ...dept.semesters } };
-          if (updatedDept.semesters[semester]) {
-            updatedDept.semesters[semester] = updatedDept.semesters[semester].map((s) =>
-              s === oldName ? newName : s,
-            );
-          }
-          return updatedDept;
+      const res = await apiFetch("/department/subject/edit" , "POST" , {
+        headers: {
+          authorization : `Bearer ${localStorage.getItem("access_token")}`
+        },
+        body: {
+          deptId,
+          semester: String(semester),
+          subject: oldName,
+          newSubject: newName
         }
-        return dept;
       });
-
-      const serializeDepts = updatedDepts.map((dept) => ({
-        ...dept,
-        iconName: dept.icon?.name || "Monitor",
-      }));
-
-      localStorage.setItem("aus_vault_departments", JSON.stringify(serializeDepts));
+      if(!res.success) {
+        setDeptError(res.message || res.error);
+        return;
+      }
+      
+      const updatedDepts = await getDepartments();
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
 
-      const dnameRen = allDepartments.find((d) => d.id === deptId)?.name || deptId;
       notifySuperAdminEvent({
         title: "Catalog: subject renamed",
-        body: `In ${dnameRen}, semester ${semester}: "${oldName}" → "${newName}".`,
+        body: `In ${res.department.fullName}, semester ${semester}: "${oldName}" → "${newName}".`,
         linkTab: "catalog",
         type: "catalog",
       });
