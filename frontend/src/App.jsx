@@ -8,6 +8,7 @@ import { useEffect, Suspense, lazy } from "react";
 import { AnimatePresence } from "framer-motion";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import "overlayscrollbars/overlayscrollbars.css";
+import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import Header from "./components/Header/Header";
@@ -183,6 +184,7 @@ export default function App() {
           </Router>
         </NotificationProvider>
       </AuthProvider>
+      <Analytics />
     </OverlayScrollbarsComponent>
   );
 }
