@@ -5,6 +5,7 @@ import { sendError, sendSuccess } from "../utils/apiResponse.js";
 import Department from "../models/department.model.js";
 import {
     departmentSchema,
+    departmentSemesterSchema,
     departmentSubjectSchema,
     departmentUpdateSchema,
 } from "../types/departmentSchema.js";
@@ -47,7 +48,20 @@ departmentRouter.post("/add", authMiddleware, async (req, res) => {
 
 departmentRouter.get("/list", async (req, res) => {
     try {
-        const departments = await Department.find({});
+        let departments;
+        const { id } = req.query;
+        if (id) {
+            departments = await Department.findById(id);
+            if (!departments) {
+                return sendError(
+                    res,
+                    "Department with id doesnot exist",
+                    STATUS_CODES.NOT_FOUND
+                );
+            }
+        } else {
+            departments = await Department.find({});
+        }
         sendSuccess(
             res,
             "Departments fetched successfully",
@@ -265,4 +279,70 @@ departmentRouter.post("/subject/:action", authMiddleware, async (req, res) => {
     }
 });
 
+departmentRouter.post("/semester/:action", authMiddleware, async (req, res) => {
+    const { action } = req.params;
+    if (
+        ![ROLES.MODERATOR, ROLES.SUPER_ADMIN].includes(req.user.role) ||
+        (req.user.role == ROLES.MODERATOR && action == "delete")
+    ) {
+        return sendError(
+            res,
+            "Only a super admin or a moderator can add or delete subject",
+            STATUS_CODES.UNAUTHORIZED
+        );
+    }
+
+    if (action != "add" && action != "delete") {
+        return sendError(
+            res,
+            "Invalid action in the params",
+            STATUS_CODES.BAD_REQUEST
+        );
+    }
+    try {
+        const { success, data, error } = departmentSemesterSchema.safeParse(
+            req.body
+        );
+
+        if (!success) {
+            return sendError(res, error.message, STATUS_CODES.BAD_REQUEST);
+        }
+
+        const dept = await Department.findById(data.deptId);
+        if (!dept) {
+            return sendError(
+                res,
+                "No department found with the id",
+                STATUS_CODES.NOT_FOUND
+            );
+        }
+        if (action == "add") {
+            dept.semesters.set(data.semester, []);
+            await dept.save();
+            sendSuccess(
+                res,
+                `Semester ${data.semester} added successfully`,
+                STATUS_CODES.SUCCESS
+            );
+        } else if (action == "delete") {
+            const ret = dept.semesters.delete(data.semester);
+            if (!ret) {
+                return sendError(
+                    res,
+                    "Semester doesnt exist",
+                    STATUS_CODES.NOT_FOUND
+                );
+            }
+            await dept.save();
+            sendSuccess(
+                res,
+                `Semester ${data.semester} deleted successfully`,
+                STATUS_CODES.SUCCESS
+            );
+        }
+    } catch (err) {
+        console.log(err);
+        sendError(res, `Error in semester ${action}`);
+    }
+});
 export default departmentRouter;

@@ -22,4 +22,9 @@ export const departmentSubjectSchema = z.object({
     semester: z.enum(["1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "10" , "11" , "12" , "13" , "14" , "15"]),
     subject: z.string(),
     newSubject: z.string().optional(),
+});
+
+export const departmentSemesterSchema = z.object({
+    deptId: z.string(),
+    semester: z.string(),
 })
