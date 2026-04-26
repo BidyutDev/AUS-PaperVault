@@ -7,7 +7,7 @@ import ReviewPreview from "./review/ReviewPreview";
 import ReviewActionBar from "./review/ReviewActionBar";
 import ReviewFeedbackToast from "./review/ReviewFeedbackToast";
 
-export default function ReviewTab({ currentAdmin, allDepartments, semestersData }) {
+export default function ReviewTab({ currentAdmin, allDepartments }) {
   const [now, setNow] = useState(() => Date.now());
   const [selectedIndex, setSelectedIndex] = useState(0);
 

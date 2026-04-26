@@ -1,5 +1,5 @@
 import { CheckCircle2, Edit, Plus, Trash2, X } from "lucide-react";
-import { getSubjectsForSemester, SEMESTERS } from "../../../../data/departments";
+import { getSubjectsForSemester } from "../../../../data/departments";
 
 export default function CatalogSubjects({
   allDepartments,
@@ -78,31 +78,34 @@ export default function CatalogSubjects({
               marginBottom: "2rem",
             }}
           >
-            {SEMESTERS.map((sem) => (
-              <button
-                key={sem}
-                onClick={() => setSelectedCatalogSemester(sem)}
-                style={{
-                  padding: "0.5rem",
-                  backgroundColor:
-                    selectedCatalogSemester === sem
-                      ? "rgba(175, 179, 247, 0.2)"
-                      : "transparent",
-                  border:
-                    selectedCatalogSemester === sem
-                      ? "1px solid rgba(175, 179, 247, 0.5)"
-                      : "1px solid rgba(175, 179, 247, 0.2)",
-                  color: "#e6edf3",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  fontSize: "0.875rem",
-                  fontWeight: "500",
-                }}
-              >
-                Sem_{sem}
-              </button>
-            ))}
+            {Object.keys(allDepartments.find((d) => d._id === selectedCatalogDept)?.semesters || {})
+              .map(Number)
+              .sort((a, b) => a - b)
+              .map((sem) => (
+                <button
+                  key={sem}
+                  onClick={() => setSelectedCatalogSemester(sem)}
+                  style={{
+                    padding: "0.5rem",
+                    backgroundColor:
+                      selectedCatalogSemester === sem
+                        ? "rgba(175, 179, 247, 0.2)"
+                        : "transparent",
+                    border:
+                      selectedCatalogSemester === sem
+                        ? "1px solid rgba(175, 179, 247, 0.5)"
+                        : "1px solid rgba(175, 179, 247, 0.2)",
+                    color: "#e6edf3",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                  }}
+                >
+                  Sem_{sem}
+                </button>
+              ))}
           </div>
 
           {selectedCatalogSemester && (

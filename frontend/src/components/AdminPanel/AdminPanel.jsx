@@ -20,7 +20,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { getDepartments } from "../../data/departments";
-import { useSemesters, useApprovedPapers, useAllPapers } from "../../hooks/useDepartments";
+import { useApprovedPapers, useAllPapers } from "../../hooks/useDepartments";
 import "./AdminPanel.css";
 
 // Import Tabs
@@ -57,7 +57,6 @@ export default function AdminPanel() {
     getDepts();
     
   },[])
-  const semestersData = useSemesters();
   const approvedPapers = useApprovedPapers();
   const allPapers = useAllPapers();
 
@@ -214,7 +213,7 @@ export default function AdminPanel() {
 
       <div className="admin-body">
         {adminTab === "review" && (
-          <ReviewTab currentAdmin={currentAdmin} allDepartments={allDepartments} semestersData={semestersData} />
+          <ReviewTab currentAdmin={currentAdmin} allDepartments={allDepartments} />
         )}
         {adminTab === "departments" && (
           <DepartmentsTab
@@ -229,7 +228,6 @@ export default function AdminPanel() {
           <CatalogTab
             allDepartments={allDepartments}
             setAllDepartments={setAllDepartments}
-            semestersData={semestersData}
             approvedPapers={approvedPapers}
             allPapers={allPapers}
           />

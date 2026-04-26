@@ -43,7 +43,6 @@ export const AVAILABLE_ICONS = Object.keys(ICON_MAP);
 // show their own unique subject lists.
 
 export const YEARS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
-export const SEMESTERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 // Helper function to add icon to department from API
 // Converts iconName string from backend to actual icon component
