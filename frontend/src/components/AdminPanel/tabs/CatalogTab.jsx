@@ -13,7 +13,6 @@ import getDepartments from "../../../data/departments";
 export default function CatalogTab({
   allDepartments,
   setAllDepartments,
-  semestersData,
   approvedPapers,
   allPapers,
   currentAdmin,
@@ -22,6 +21,7 @@ export default function CatalogTab({
   const [catalogTab, setCatalogTab] = useState("subjects"); // 'subjects' | 'semesters' | 'papers'
   const [selectedCatalogDept, setSelectedCatalogDept] = useState(null);
   const [selectedCatalogSemester, setSelectedCatalogSemester] = useState(null);
+  const [selectedSemesterDept, setSelectedSemesterDept] = useState(null); // For semester management
   const [newSubjectName, setNewSubjectName] = useState("");
   const [editingSubject, setEditingSubject] = useState(null); // {deptId, semester, oldName}
   const [editingSubjectName, setEditingSubjectName] = useState("");
@@ -164,24 +164,48 @@ export default function CatalogTab({
     }
   };
 
-  const handleAddSemester = (semNum) => {
+  const handleAddSemester = async (semNum) => {
+    if (!selectedSemesterDept) {
+      setDeptError("Please select a department first");
+      setTimeout(() => setDeptError(""), 3000);
+      return;
+    }
+
     const sem = parseInt(semNum);
-    if (!sem || sem < 1 || sem > 16 || semestersData.includes(sem)) {
-      setDeptError("Invalid semester or already exists (1-16)");
+    if (!sem || sem < 1 || sem > 16) {
+      setDeptError("Invalid semester (1-16)");
       setTimeout(() => setDeptError(""), 3000);
       return;
     }
 
     try {
-      const updatedSemesters = [...semestersData, sem].sort((a, b) => a - b);
-      localStorage.setItem("aus_vault_semesters", JSON.stringify(updatedSemesters));
+      const res = await apiFetch("/department/semester/add", "POST", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("access_token")}`
+        },
+        body: {
+          deptId: selectedSemesterDept,
+          semester: String(sem),
+        }
+      });
+
+      if (!res.success) {
+        setDeptError(res.message || res.error);
+        setTimeout(() => setDeptError(""), 3000);
+        return;
+      }
+
+      const updatedDepts = await getDepartments();
+      setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("semestersUpdated"));
+      
       notifySuperAdminEvent({
         title: "Catalog: semester added",
-        body: `Semester ${sem} is now available across the vault.`,
+        body: `Semester ${sem} added successfully.`,
         linkTab: "catalog",
         type: "catalog",
       });
+
       setDeptSuccess(`Semester ${sem} added successfully! ✓`);
       setNewSemester("");
       setTimeout(() => setDeptSuccess(""), 3000);
@@ -200,12 +224,33 @@ export default function CatalogTab({
     });
   };
 
-  const executeDeleteSemester = (semester) => {
+  const executeDeleteSemester = async (semester) => {
+    if (!selectedSemesterDept) {
+      setDeptError("Please select a department first");
+      setTimeout(() => setDeptError(""), 3000);
+      return;
+    }
 
     try {
-      const updatedSemesters = semestersData.filter((s) => s !== semester);
-      localStorage.setItem("aus_vault_semesters", JSON.stringify(updatedSemesters));
+      const res = await apiFetch("/department/semester/delete", "POST", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("access_token")}`
+        },
+        body: {
+          deptId: selectedSemesterDept,
+          semester: String(semester)
+        }
+      });
+      if (!res.success) {
+        setDeptError(res.message || res.error);
+        setTimeout(() => setDeptError(""), 3000);
+        return;
+      }
+
+      const updatedDepts = await getDepartments();
+      setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("semestersUpdated"));
+      
       notifySuperAdminEvent({
         title: "Catalog: semester removed",
         body: `Semester ${semester} was removed from the catalog.`,
@@ -335,14 +380,42 @@ export default function CatalogTab({
       )}
 
       {catalogTab === "semesters" && (
-        <CatalogSemesters
-          semestersData={semestersData}
-          newSemester={newSemester}
-          setNewSemester={setNewSemester}
-          handleAddSemester={handleAddSemester}
-          handleDeleteSemester={handleDeleteSemester}
-          canDelete={canDelete}
-        />
+        <>
+          <div className="glass-card" style={{ padding: "1.5rem", marginBottom: "2rem" }}>
+            <h4 style={{ fontSize: "0.875rem", color: "var(--color-vault-steel)", marginBottom: "1rem" }}>
+              Select Department
+            </h4>
+            <select
+              value={selectedSemesterDept || ""}
+              onChange={(e) => setSelectedSemesterDept(e.target.value || null)}
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                backgroundColor: "rgba(22, 26, 34, 0.5)",
+                border: "1px solid rgba(175, 179, 247, 0.2)",
+                borderRadius: "6px",
+                color: "#e6edf3",
+                fontSize: "0.875rem",
+              }}
+            >
+              <option value="">-- Select a Department --</option>
+              {allDepartments.map((dept) => (
+                <option key={dept._id} value={dept._id}>
+                  {dept.fullName} ({dept.shortName})
+                </option>
+              ))}
+            </select>
+          </div>
+          {selectedSemesterDept && (
+            <CatalogSemesters
+              semestersData={Object.keys(allDepartments.find(d => d._id === selectedSemesterDept)?.semesters || {}).map(Number).sort((a, b) => a - b)}
+              newSemester={newSemester}
+              setNewSemester={setNewSemester}
+              handleAddSemester={handleAddSemester}
+              handleDeleteSemester={handleDeleteSemester}
+            />
+          )}
+        </>
       )}
 
       {catalogTab === "papers" && (
@@ -354,7 +427,7 @@ export default function CatalogTab({
           papersSubject={papersSubject}
           setPapersSubject={setPapersSubject}
           allDepartments={allDepartments}
-          semestersData={semestersData}
+          semestersData={papersDept ? Object.keys(allDepartments.find(d => d._id === papersDept)?.semesters || {}).map(Number).sort((a, b) => a - b) : []}
           allPapers={allPapers}
           handleDeletePaper={handleDeletePaper}
           canDelete={canDelete}

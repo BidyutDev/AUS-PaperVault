@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { getDepartments, SEMESTERS } from "../data/departments";
+import { getDepartments } from "../data/departments";
 import { getApprovedPapers, getAllPapers } from "../data/mockPapers";
+import { apiFetch } from "../api/api";
 
 /**
  * Custom hook to fetch and manage departments from backend API
@@ -71,23 +72,46 @@ export function useDepartment(deptId) {
 /**
  * Custom hook to use semesters with reactive updates
  * Automatically refetches semesters when they change
+ * @param {string} deptId - Department ID to fetch semesters for (required)
  * @returns {Array} Array of semester numbers with live updates
  */
-export function useSemesters() {
-  const [semesters, setSemesters] = useState(() => SEMESTERS);
+export function useSemesters(deptId) {
+  const [semesters, setSemesters] = useState([]);
+
+  const fetchSemesters = async () => {
+    if (!deptId) return;
+
+    try {
+      const res = await apiFetch(`/department/list/${deptId}`, "GET");
+      if (res.success && res.departments) {
+        // Convert semester object keys to array of numbers
+        const semesterKeys = Object.keys(res.departments.semesters || {});
+        const semesterArray = semesterKeys.map(s => parseInt(s)).sort((a, b) => a - b);
+        setSemesters(semesterArray);
+      } else {
+        setSemesters([]);
+      }
+    } catch (err) {
+      console.error("Error fetching semesters:", err);
+      setSemesters([]);
+    }
+  };
 
   useEffect(() => {
+    fetchSemesters();
+  }, [deptId]);
+
+  // Listen to semestersUpdated event to refetch
+  useEffect(() => {
     const handleSemestersUpdate = () => {
-      setSemesters(SEMESTERS);
+      fetchSemesters();
     };
 
-    // Listen to custom event from admin panel (same-tab updates)
     window.addEventListener("semestersUpdated", handleSemestersUpdate);
-
     return () => {
       window.removeEventListener("semestersUpdated", handleSemestersUpdate);
     };
-  }, []);
+  }, [deptId]);
 
   return semesters;
 }
