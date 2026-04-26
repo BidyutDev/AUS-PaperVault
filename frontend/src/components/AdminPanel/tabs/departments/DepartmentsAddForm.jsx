@@ -1,4 +1,5 @@
 import { AlertTriangle, CheckCircle2, Upload, X } from "lucide-react";
+import IconPicker from "./IconPicker";
 
 export default function DepartmentsAddForm({
   handleAddDepartment,
@@ -66,6 +67,13 @@ export default function DepartmentsAddForm({
           </select>
         </div>
 
+        {/* Icon Picker */}
+        <IconPicker
+          selectedIcon={newDeptForm.iconName}
+          onSelect={(iconName) => setNewDeptForm({ ...newDeptForm, iconName })}
+          departmentName={newDeptForm.name}
+        />
+
         {deptError && (
           <div className="admin-form-error">
             <AlertTriangle size={12} />
@@ -95,7 +103,7 @@ export default function DepartmentsAddForm({
                 shortName: "",
                 color: "#92bcea",
                 semesters: 8,
-                years: 5,
+                iconName: "",
               });
               setDeptError("");
             }}

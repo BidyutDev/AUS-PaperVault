@@ -2,7 +2,7 @@ import { useSemesters, useAllPapers } from '../../hooks/useDepartments';
 import './SemesterSelector.css';
 
 export default function SemesterSelector({ departmentId, selectedSemester, onSelect }) {
-  const semesters = useSemesters();
+  const semesters = useSemesters(departmentId);
   const allPapers = useAllPapers();
 
   return (

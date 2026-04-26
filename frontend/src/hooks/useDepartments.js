@@ -82,7 +82,7 @@ export function useSemesters(deptId) {
     if (!deptId) return;
 
     try {
-      const res = await apiFetch(`/department/list/${deptId}`, "GET");
+      const res = await apiFetch(`/department/list?id=${deptId}`, "GET");
       if (res.success && res.departments) {
         // Convert semester object keys to array of numbers
         const semesterKeys = Object.keys(res.departments.semesters || {});

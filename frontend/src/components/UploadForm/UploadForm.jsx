@@ -21,7 +21,7 @@ import "./UploadForm.css";
 
 export default function UploadForm() {
   const { departments, loading: deptLoading } = useDepartments();
-  const semesters = useSemesters();
+  const [semesters , setSemesters] = useState([]);
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [department, setDepartment] = useState("");
@@ -39,7 +39,7 @@ export default function UploadForm() {
   const fileRef = useRef();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  const selectedDept = departments.find((d) => d.id === department);
+  const selectedDept = departments.find((d) => d.fullName === department);
   const subjects =
     selectedDept && semester
       ? getSubjectsForSemester(selectedDept, parseInt(semester))
@@ -266,8 +266,8 @@ export default function UploadForm() {
           >
             <option value="">Select Department</option>
             {departments.map((dept) => (
-              <option key={dept.fullName} value={dept.shortName}>
-                {dept.name}
+              <option key={dept._id} value={dept.fullName} onClick={() => {setSemesters(Object.keys(dept.semesters))}}>
+                {dept.fullName}
               </option>
             ))}
           </select>
