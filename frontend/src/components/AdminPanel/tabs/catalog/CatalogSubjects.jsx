@@ -52,7 +52,7 @@ export default function CatalogSubjects({
         >
           <option value="">Select Department...</option>
           {allDepartments.map((dept) => (
-            <option key={dept.fullName} value={dept.shortName}>
+            <option key={dept.fullName} value={dept._id}>
               {dept.shortName} - {dept.name}
             </option>
           ))}
