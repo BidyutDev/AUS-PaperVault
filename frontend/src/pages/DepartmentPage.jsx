@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDepartment } from "../hooks/useDepartments";
 import { getSubjectsForSemester } from "../data/departments";
@@ -8,6 +8,7 @@ import SubjectSelector from "../components/SubjectSelector/SubjectSelector";
 import YearSelector from "../components/YearSelector/YearSelector";
 import PaperList from "../components/PaperList/PaperList";
 import { motion } from "framer-motion";
+import { useRecentActivity } from "../hooks/useRecentActivity";
 import "./DepartmentPage.css";
 
 const pageVariants = {
@@ -23,6 +24,20 @@ export default function DepartmentPage() {
   const [selectedYear, setSelectedYear] = useState(null);
 
   const department = useDepartment(deptId);
+  const { addActivity } = useRecentActivity();
+
+  // Track department visit
+  useEffect(() => {
+    if (department) {
+      addActivity({
+        type: "department",
+        departmentName: department.name,
+        departmentShort: department.shortName,
+        departmentId: deptId,
+        color: department.color,
+      });
+    }
+  }, [department?.name]);
 
   // Loading state
   if (department === undefined) {
@@ -151,6 +166,18 @@ export default function DepartmentPage() {
               onSelect={(subject) => {
                 setSelectedSubject(subject);
                 setSelectedYear(null); // reset year when subject changes
+                // Track subject view in recent activity
+                if (subject) {
+                  addActivity({
+                    type: "subject",
+                    departmentName: department.name,
+                    departmentShort: department.shortName,
+                    departmentId: deptId,
+                    subject,
+                    semester: selectedSemester,
+                    color: department.color,
+                  });
+                }
               }}
             />
           </div>

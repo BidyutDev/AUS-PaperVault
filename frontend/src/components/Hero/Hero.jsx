@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, Clock } from "lucide-react";
+import RecentActivity from "../RecentActivity/RecentActivity";
 import "./Hero.css";
 
 export default function Hero() {
+  const [showActivity, setShowActivity] = useState(false);
+
   const scrollToDepartments = (e) => {
     e.preventDefault();
     const el = document.getElementById("departments");
@@ -53,6 +57,14 @@ export default function Hero() {
                 <ArrowRight size={16} />
                 Upload Paper
               </Link>
+              <button
+                onClick={() => setShowActivity(true)}
+                className="btn-cyber"
+                id="recent-activity-btn"
+              >
+                <Clock size={16} />
+                Recent Activity
+              </button>
             </div>
           </div>
 
@@ -89,6 +101,9 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Recent Activity Modal */}
+      <RecentActivity open={showActivity} onClose={() => setShowActivity(false)} />
     </section>
   );
 }
