@@ -132,7 +132,7 @@ function AppLayout() {
       <AnimatePresence initial={false}>
         {!isAdminPage && <Header key="header" />}
       </AnimatePresence>
-      <main style={{ minHeight: (isAuthPage || isAdminPage) ? "100vh" : "calc(100vh - 160px)" }}>
+      <main style={{ minHeight: (isAuthPage || isAdminPage) ? "100vh" : "calc(100vh - 160px)", position: "relative", zIndex: 10 }}>
         <AnimatePresence mode="wait">
           <Suspense fallback={<PageSkeleton />}>
             <Routes location={location} key={location.pathname}>

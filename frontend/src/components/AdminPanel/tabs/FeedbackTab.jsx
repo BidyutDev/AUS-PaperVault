@@ -15,7 +15,8 @@ import { socket } from "../../../api/socket";
 import ConfirmModal from "../ConfirmModal";
 import "./FeedbackTab.css";
 
-export default function FeedbackTab() {
+export default function FeedbackTab({ currentAdmin }) {
+  const canDelete = currentAdmin?.role === "Super Admin";
   const [feedbacks, setFeedbacks] = useState([]);
   const [now, setNow] = useState(Date.now());
   const [searchQuery, setSearchQuery] = useState("");
@@ -180,13 +181,15 @@ export default function FeedbackTab() {
                     <Clock size={11} />
                     {getTimeAgo(item.createdAt)}
                   </span>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="fb-card-delete"
-                    title="Delete feedback"
-                  >
-                    <Trash2 size={13} />
-                  </button>
+                  {canDelete && (
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="fb-card-delete"
+                      title="Delete feedback"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="fb-card-message">{item.message}</div>

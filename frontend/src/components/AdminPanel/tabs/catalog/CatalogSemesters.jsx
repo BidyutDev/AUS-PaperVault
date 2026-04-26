@@ -6,6 +6,7 @@ export default function CatalogSemesters({
   setNewSemester,
   handleAddSemester,
   handleDeleteSemester,
+  canDelete = true,
 }) {
   return (
     <div className="glass-card" style={{ padding: "1.5rem" }}>
@@ -37,20 +38,22 @@ export default function CatalogSemesters({
             }}
           >
             <span>Semester {sem}</span>
-            <button
-              onClick={() => handleDeleteSemester(sem)}
-              style={{
-                backgroundColor: "transparent",
-                border: "none",
-                color: "#f87171",
-                cursor: "pointer",
-                padding: "0.25rem",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Trash2 size={14} />
-            </button>
+            {canDelete && (
+              <button
+                onClick={() => handleDeleteSemester(sem)}
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "#f87171",
+                  cursor: "pointer",
+                  padding: "0.25rem",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
           </div>
         ))}
       </div>

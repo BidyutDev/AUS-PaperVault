@@ -219,6 +219,7 @@ export default function AdminPanel() {
           <DepartmentsTab
             allDepartments={allDepartments}
             setAllDepartments={setAllDepartments}
+            currentAdmin={currentAdmin}
           />
         )}
         {adminTab === "analytics" && (
@@ -230,10 +231,11 @@ export default function AdminPanel() {
             setAllDepartments={setAllDepartments}
             approvedPapers={approvedPapers}
             allPapers={allPapers}
+            currentAdmin={currentAdmin}
           />
         )}
         {adminTab === "feedback" && (
-          <FeedbackTab />
+          <FeedbackTab currentAdmin={currentAdmin} />
         )}
         {adminTab === "staff" && (
           <StaffTab />
