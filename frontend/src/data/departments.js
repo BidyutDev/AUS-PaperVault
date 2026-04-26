@@ -14,30 +14,145 @@ import {
   Briefcase,
   Leaf,
   Microscope,
+  GraduationCap,
+  Scale,
+  Stethoscope,
+  Globe,
+  PenTool,
+  Music,
+  Palette,
+  HeartPulse,
+  Bug,
+  Mountain,
+  Newspaper,
+  ScrollText,
+  Workflow,
+  Database,
+  Radio,
+  ShieldCheck,
+  Users,
+  Wrench,
+  Sigma,
+  Dna,
+  TreePine,
+  Fish,
+  Gem,
 } from "lucide-react";
 import { apiFetch } from "../api/api";
 
 // Icon mapping for converting icon names to components
 const ICON_MAP = {
-  Monitor,
-  Cpu,
-  Zap,
-  Cog,
-  Building2,
-  Atom,
-  FlaskConical,
-  Calculator,
-  BookOpen,
-  Languages,
-  Landmark,
-  TrendingUp,
-  Briefcase,
-  Leaf,
-  Microscope,
+  Monitor,       // Computer Science
+  Cpu,           // Electronics / IT
+  Zap,           // Electrical Engineering
+  Cog,           // Mechanical Engineering
+  Building2,     // Civil Engineering
+  Atom,          // Physics
+  FlaskConical,  // Chemistry
+  Calculator,    // Mathematics
+  BookOpen,      // Education / General Studies
+  Languages,     // Linguistics / Language Departments
+  Landmark,      // Political Science / History
+  TrendingUp,    // Economics / Commerce
+  Briefcase,     // Business Administration / MBA
+  Leaf,          // Botany / Environmental Science
+  Microscope,    // Zoology / Life Sciences
+  GraduationCap, // Education / Academic Affairs
+  Scale,         // Law
+  Stethoscope,   // Pharmacy / Medical Sciences
+  Globe,         // Geography
+  PenTool,       // English / Literature / Fine Arts
+  Music,         // Performing Arts / Music
+  Palette,       // Visual Arts / Design
+  HeartPulse,    // Biotechnology / Biomedical
+  Bug,           // Entomology / Applied Biology
+  Mountain,      // Geology / Earth Sciences
+  Newspaper,     // Mass Communication / Journalism
+  ScrollText,    // Sanskrit / Hindi / Classical Languages
+  Workflow,      // Management Studies
+  Database,      // Information Technology
+  Radio,         // Electronics & Communication
+  ShieldCheck,   // Defence Studies
+  Users,         // Sociology / Social Work
+  Wrench,        // Applied Engineering
+  Sigma,         // Statistics
+  Dna,           // Genetics / Molecular Biology
+  TreePine,      // Forestry / Ecology
+  Fish,          // Aquaculture / Marine Biology
+  Gem,           // Material Science
 };
 
 // Export list of available icon names for forms/selection
 export const AVAILABLE_ICONS = Object.keys(ICON_MAP);
+
+// Export the ICON_MAP itself for the icon picker
+export { ICON_MAP };
+
+/**
+ * Predefined icon suggestions for common Assam University departments.
+ * Maps lowercase keywords found in department names to the best-fit icon.
+ * Used by the admin icon picker to auto-suggest an icon.
+ */
+export const DEPARTMENT_ICON_PRESETS = {
+  "computer science": "Monitor",
+  "cse": "Monitor",
+  "information technology": "Database",
+  "it": "Database",
+  "electronics": "Cpu",
+  "ece": "Radio",
+  "electrical": "Zap",
+  "eee": "Zap",
+  "mechanical": "Cog",
+  "civil": "Building2",
+  "physics": "Atom",
+  "chemistry": "FlaskConical",
+  "mathematics": "Calculator",
+  "statistics": "Sigma",
+  "english": "PenTool",
+  "hindi": "ScrollText",
+  "sanskrit": "ScrollText",
+  "bengali": "Languages",
+  "assamese": "Languages",
+  "linguistics": "Languages",
+  "education": "GraduationCap",
+  "law": "Scale",
+  "political science": "Landmark",
+  "history": "Landmark",
+  "economics": "TrendingUp",
+  "commerce": "TrendingUp",
+  "business": "Briefcase",
+  "mba": "Briefcase",
+  "management": "Workflow",
+  "botany": "Leaf",
+  "zoology": "Microscope",
+  "life science": "Microscope",
+  "biotechnology": "HeartPulse",
+  "biotech": "HeartPulse",
+  "pharmacy": "Stethoscope",
+  "geography": "Globe",
+  "geology": "Mountain",
+  "earth science": "Mountain",
+  "environmental": "TreePine",
+  "ecology": "TreePine",
+  "forestry": "TreePine",
+  "mass communication": "Newspaper",
+  "journalism": "Newspaper",
+  "sociology": "Users",
+  "social work": "Users",
+  "anthropology": "Users",
+  "music": "Music",
+  "fine arts": "Palette",
+  "visual arts": "Palette",
+  "performing arts": "Music",
+  "defence": "ShieldCheck",
+  "molecular biology": "Dna",
+  "genetics": "Dna",
+  "aquaculture": "Fish",
+  "marine": "Fish",
+  "material science": "Gem",
+  "applied": "Wrench",
+  "entomology": "Bug",
+};
 
 // Subjects are organized per semester so that different semesters
 // show their own unique subject lists.

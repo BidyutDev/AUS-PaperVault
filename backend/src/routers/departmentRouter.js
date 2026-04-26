@@ -132,6 +132,7 @@ departmentRouter.put("/update/:id", authMiddleware, async (req, res) => {
                 fullName: data.fullName || currentDept.fullName,
                 shortName: data.shortName || currentDept.shortName,
                 color: data.color || currentDept.color,
+                iconName: data.iconName || currentDept.iconName,
             };
 
             // Only update semesters if they're empty or if semesterCount is being explicitly set

@@ -1,4 +1,5 @@
 import { AlertTriangle, CheckCircle2, Upload, X } from "lucide-react";
+import IconPicker from "./IconPicker";
 
 export default function DepartmentsEditForm({
   handleSaveEditDepartment,
@@ -62,6 +63,13 @@ export default function DepartmentsEditForm({
             ))}
           </select>
         </div>
+
+        {/* Icon Picker */}
+        <IconPicker
+          selectedIcon={editDeptForm.iconName}
+          onSelect={(iconName) => setEditDeptForm({ ...editDeptForm, iconName })}
+          departmentName={editDeptForm.name}
+        />
 
         {deptError && (
           <div className="admin-form-error">

@@ -26,6 +26,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
     shortName: "",
     color: "#92bcea",
     semesters: 8,
+    iconName: "",
   });
 
   const [editDeptForm, setEditDeptForm] = useState({
@@ -33,6 +34,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
     shortName: "",
     color: "#92bcea",
     semesters: 8,
+    iconName: "",
   });
 
   const handleAddDepartment = async (e) => {
@@ -58,6 +60,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
         shortName: newDeptForm.shortName.toUpperCase(),
         color: newDeptForm.color,
         semesterCount,
+        iconName: newDeptForm.iconName,
       });
       if (!success) {
         throw new Error("Error in adding department");
@@ -78,6 +81,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
         shortName: "",
         color: "#92bcea",
         semesters: 8,
+        iconName: "",
       });
       setShowAddDeptForm(false);
       setDeptSuccess("Department added successfully! ✓");
@@ -95,6 +99,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
       shortName: dept.shortName,
       color: dept.color,
       semesters: dept.semesterCount || 8,
+      iconName: dept.iconName || "",
     });
     setShowEditForm(true);
     setDeptError("");
@@ -124,15 +129,11 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
           shortName: editDeptForm.shortName.toUpperCase(),
           color: editDeptForm.color,
           semesterCount: parseInt(editDeptForm.semesters) || 8,
+          iconName: editDeptForm.iconName,
         },
       });
 
       const updatedDepts = await getDepartments();
-
-      const serializeDepts = updatedDepts.map((dept) => ({
-        ...dept,
-        iconName: dept.icon?.name || "Monitor",
-      }));
 
       setAllDepartments(updatedDepts);
       window.dispatchEvent(new Event("departmentsUpdated"));
@@ -162,6 +163,7 @@ export default function DepartmentsTab({ allDepartments, setAllDepartments, curr
       shortName: "",
       color: "#92bcea",
       semesters: 8,
+      iconName: "",
     });
     setDeptError("");
   };
