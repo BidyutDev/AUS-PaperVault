@@ -6,6 +6,7 @@ import { STATUS_CODES } from "../utils/statusCodes.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import File from "../models/file.model.js";
 import { io } from "../index.js";
+import Department from "../models/department.model.js";
 
 const fileRouter = Router();
 
@@ -44,7 +45,10 @@ fileRouter.post(
                 mimeType: req.file.mimetype,
                 isAnonymous: data.isAnonymous === "true",
             });
-
+            await Department.findOneAndUpdate(
+                { fullName: data.department },
+                { $addToSet: { years: data.year } }
+            )
             // Emits notification over web sockets globally
             io.emit("admin_realtime_notification", {
                 audience: "all_staff",
