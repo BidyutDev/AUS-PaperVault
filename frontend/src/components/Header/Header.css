@@ -724,3 +724,60 @@
 .mobile-auth-wrapper .signup-item {
   background: rgba(var(--color-vault-lavender-rgb), 0.1);
 }
+
+/* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .header {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom-color: rgba(100, 116, 139, 0.15);
+}
+
+[data-theme="light"] .user-dropdown {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(100, 116, 139, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .user-label {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] .user-value {
+  color: #1e293b;
+}
+
+[data-theme="light"] .user-name-box,
+[data-theme="light"] .user-email-box,
+[data-theme="light"] .user-role-box {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(100, 116, 139, 0.15);
+}
+
+[data-theme="light"] .user-name-box:hover,
+[data-theme="light"] .user-email-box:hover,
+[data-theme="light"] .user-role-box:hover {
+  background: rgba(67, 56, 202, 0.04);
+  border-color: rgba(67, 56, 202, 0.2);
+}
+
+[data-theme="light"] .logout-btn {
+  color: #dc2626;
+}
+
+[data-theme="light"] .logout-btn:hover {
+  background: rgba(220, 38, 38, 0.06);
+  color: #b91c1c;
+}
+
+[data-theme="light"] .dropdown-divider {
+  border-top-color: rgba(100, 116, 139, 0.12);
+}
+
+[data-theme="light"] .nav-link {
+  color: #374151;
+}
+
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link.active {
+  color: var(--color-vault-lavender);
+  background: rgba(67, 56, 202, 0.06);
+}
