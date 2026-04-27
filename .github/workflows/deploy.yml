@@ -21,6 +21,11 @@ jobs:
       - name: Debug Tailscale
         run: tailscale status
 
+      - name: Add SSH known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 100.100.44.102 >> ~/.ssh/known_hosts
+
       - name: Deploy via SSH over Tailscale
         uses: appleboy/ssh-action@v1
         with:
