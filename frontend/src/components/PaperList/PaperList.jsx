@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { FileText, Download, FolderOpen, Eye, X, Bookmark, BookmarkCheck, User } from "lucide-react";
+import { FileText, Download, FolderOpen, Eye, Bookmark, BookmarkCheck, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import { getDepartments, YEARS } from "../../data/departments";
@@ -238,7 +238,18 @@ export default function PaperList({
                   <button
                     className="paper-card-download"
                     title="Quick Look preview"
-                    onClick={() => setPreviewPaper(paper)}
+                    onClick={() => {
+                      // On mobile, open PDF directly in new tab (iframe PDF preview doesn't work)
+                      const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+                      if (isMobile) {
+                        const url = getPreviewUrl(paper);
+                        if (url && url !== fallbackPdf) {
+                          window.open(url, '_blank');
+                        }
+                      } else {
+                        setPreviewPaper(paper);
+                      }
+                    }}
                   >
                     <Eye size={14} />
                     <span className="paper-btn-label">Preview</span>
@@ -277,12 +288,6 @@ export default function PaperList({
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <button
-                  className="preview-modal-close absolute-close"
-                  onClick={() => setPreviewPaper(null)}
-                >
-                  <X size={18} />
-                </button>
                 <div className="preview-modal-body">
                   {previewBlobUrl ? (
                     <iframe
