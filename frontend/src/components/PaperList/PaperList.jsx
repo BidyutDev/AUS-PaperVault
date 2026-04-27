@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { FileText, Download, FolderOpen, Eye, X, Bookmark, BookmarkCheck, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,6 +19,7 @@ export default function PaperList({
 }) {
   const [internalYear, setInternalYear] = useState(null);
   const [previewPaper, setPreviewPaper] = useState(null);
+  const [previewBlobUrl, setPreviewBlobUrl] = useState(null);
   const allPapers = useAllPapers();
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const { getDownloadCount, incrementDownload } = useDownloads();
@@ -73,6 +74,45 @@ export default function PaperList({
     return fallbackPdf;
   };
 
+  // Fetch PDF as blob to bypass ngrok interstitial page in iframes
+  useEffect(() => {
+    if (!previewPaper) {
+      if (previewBlobUrl) {
+        URL.revokeObjectURL(previewBlobUrl);
+        setPreviewBlobUrl(null);
+      }
+      return;
+    }
+
+    let cancelled = false;
+    const url = getPreviewUrl(previewPaper);
+    if (!url || url === fallbackPdf) {
+      setPreviewBlobUrl(fallbackPdf);
+      return;
+    }
+
+    fetch(url, {
+      headers: { "ngrok-skip-browser-warning": "true" },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch PDF");
+        return res.blob();
+      })
+      .then((blob) => {
+        if (!cancelled) {
+          const blobUrl = URL.createObjectURL(blob);
+          setPreviewBlobUrl(blobUrl);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setPreviewBlobUrl(url); // fallback to direct URL
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [previewPaper]);
+
   const handleDownload = async (paper) => {
     incrementDownload(paper.id);
     
@@ -83,7 +123,9 @@ export default function PaperList({
 
     try {
       // Fetch the file as a blob to force download instead of browser opening it
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: { "ngrok-skip-browser-warning": "true" },
+      });
       if (!response.ok) throw new Error("Network response was not ok");
       const blob = await response.blob();
       
@@ -242,11 +284,17 @@ export default function PaperList({
                   <X size={18} />
                 </button>
                 <div className="preview-modal-body">
-                  <iframe
-                    src={getPreviewUrl(previewPaper)}
-                    title="PDF Preview"
-                    className="preview-iframe"
-                  />
+                  {previewBlobUrl ? (
+                    <iframe
+                      src={previewBlobUrl}
+                      title="PDF Preview"
+                      className="preview-iframe"
+                    />
+                  ) : (
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--color-vault-steel)" }}>
+                      Loading preview...
+                    </div>
+                  )}
                   <div className="admin-preview-overlay-label">
                     [ DOCUMENT_PREVIEW :: {previewPaper.fileName || `${previewPaper.subject} Paper`} ]
                   </div>
