@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getDepartments } from "../data/departments";
-import { getApprovedPapers, getAllPapers } from "../data/mockPapers";
+
 import { apiFetch } from "../api/api";
 
 /**
@@ -122,15 +122,30 @@ export function useSemesters(deptId) {
  * @returns {Array} Array of approved question papers with live updates
  */
 export function useApprovedPapers() {
-  const [papers, setPapers] = useState(() => getApprovedPapers());
+  const [papers, setPapers] = useState([]);
 
   useEffect(() => {
+    const fetchPapers = async () => {
+      try {
+        const res = await apiFetch("/files/list", "GET");
+        if (res.success && res.papers) {
+          setPapers(res.papers);
+        } else {
+          setPapers([]);
+        }
+      } catch (err) {
+        console.error("Error fetching approved papers:", err);
+      }
+    };
+
+    fetchPapers();
+
     const handleStorageChange = () => {
-      setPapers(getApprovedPapers());
+      fetchPapers();
     };
 
     const handlePapersUpdate = () => {
-      setPapers(getApprovedPapers());
+      fetchPapers();
     };
 
     // Listen to storage changes from other tabs/windows
@@ -153,19 +168,7 @@ export function useApprovedPapers() {
  * @returns {Array} Array of all active question papers with live updates
  */
 export function useAllPapers() {
-  const [papers, setPapers] = useState(() => getAllPapers());
-
-  useEffect(() => {
-    const refresh = () => setPapers(getAllPapers());
-
-    window.addEventListener("storage", refresh);
-    window.addEventListener("papersUpdated", refresh);
-
-    return () => {
-      window.removeEventListener("storage", refresh);
-      window.removeEventListener("papersUpdated", refresh);
-    };
-  }, []);
-
+  // Now identical to useApprovedPapers since we only use real approved papers
+  const papers = useApprovedPapers();
   return papers;
 }

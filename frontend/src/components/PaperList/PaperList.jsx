@@ -4,7 +4,7 @@ import { FileText, Download, FolderOpen, Eye, X, Bookmark, BookmarkCheck, User }
 import { motion, AnimatePresence } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import { getDepartments, YEARS } from "../../data/departments";
-import { useAllPapers } from "../../hooks/useDepartments";
+import { useAllPapers, useDepartments } from "../../hooks/useDepartments";
 import { useBookmarks } from "../../hooks/useBookmarks";
 import { useDownloads } from "../../hooks/useDownloads";
 import fallbackPdf from "../AdminPanel/tabs/FEEDBACK.pdf";
@@ -23,16 +23,31 @@ export default function PaperList({
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const { getDownloadCount, incrementDownload } = useDownloads();
 
+  const { departments } = useDepartments();
+  const currentDept = departments.find(d => 
+    d.id === departmentId || 
+    d._id === departmentId || 
+    d.shortName?.toLowerCase() === departmentId?.toLowerCase()
+  );
+
   // Use prop if provided, otherwise use internal state
   const selectedYear =
     propSelectedYear !== undefined ? propSelectedYear : internalYear;
 
   const filtered = propPapers || allPapers.filter(
-    (p) =>
-      p.department === departmentId &&
-      p.subject === subject &&
-      p.semester === semester &&
-      (selectedYear ? p.year === selectedYear : true),
+    (p) => {
+      const matchDept = currentDept ? (
+        p.department === currentDept.id || 
+        p.department === currentDept.fullName || 
+        p.department === currentDept.shortName || 
+        p.department === currentDept._id
+      ) : p.department === departmentId;
+
+      return matchDept &&
+        p.subject === subject &&
+        String(p.semester) === String(semester) &&
+        (selectedYear ? String(p.year) === String(selectedYear) : true);
+    }
   );
 
   // Only show year tabs if selectedYear prop is not provided (for backward compatibility)

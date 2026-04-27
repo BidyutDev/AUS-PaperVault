@@ -152,7 +152,13 @@ export default function DepartmentGrid() {
                   </div>
                   {filteredDepartments.map((dept, index) => {
                     const Icon = dept.icon;
-                    const paperCount = allPapers.filter(p => p.department === dept.id).length;
+                    const paperCount = allPapers.filter(
+                      p => 
+                        p.department === dept.id || 
+                        p.department === dept.fullName || 
+                        p.department === dept.shortName || 
+                        p.department === dept._id
+                    ).length;
                     return (
                       <Link
                         to={`/department/${dept.shortName}`}
@@ -250,7 +256,13 @@ export default function DepartmentGrid() {
         <div className="dept-grid">
           {filteredDepartments.map((dept, index) => {
             const Icon = dept.icon;
-            const paperCount = allPapers.filter(p => p.department === dept.id).length;
+            const paperCount = allPapers.filter(
+              p => 
+                p.department === dept.id || 
+                p.department === dept.fullName || 
+                p.department === dept.shortName || 
+                p.department === dept._id
+            ).length;
             return (
               <Tilt
                 key={dept._id}

@@ -1,5 +1,5 @@
 import { Calendar } from "lucide-react";
-import { useAllPapers } from "../../hooks/useDepartments";
+import { useAllPapers, useDepartments } from "../../hooks/useDepartments";
 import "./YearSelector.css";
 
 export default function YearSelector({
@@ -10,17 +10,26 @@ export default function YearSelector({
   onSelect,
 }) {
   const allPapers = useAllPapers();
+  const { departments } = useDepartments();
+  const currentDept = departments.find(d => 
+    d.id === departmentId || 
+    d._id === departmentId || 
+    d.shortName?.toLowerCase() === departmentId?.toLowerCase()
+  );
 
   // Get unique years for this subject/semester/department combination
   const availableYears = [
     ...new Set(
       allPapers
-        .filter(
-          (p) =>
-            p.department === departmentId &&
-            p.subject === subject &&
-            p.semester === semester,
-        )
+        .filter((p) => {
+          const matchDept = currentDept ? (
+            p.department === currentDept.id || 
+            p.department === currentDept.fullName || 
+            p.department === currentDept.shortName || 
+            p.department === currentDept._id
+          ) : p.department === departmentId;
+          return matchDept && p.subject === subject && String(p.semester) === String(semester);
+        })
         .map((p) => p.year),
     ),
   ].sort((a, b) => b - a); // Sort descending (newest first)

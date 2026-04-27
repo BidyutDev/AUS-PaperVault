@@ -21,12 +21,16 @@ export function getTimeAgo(timestamp, now = Date.now()) {
 
 /** Resolve a department slug to its full name. */
 export function getDeptName(deptId, allDepartments = []) {
-  const dept = allDepartments.find((d) => d.id === deptId);
+  const dept = allDepartments.find(
+    (d) => d.id === deptId || d.fullName === deptId || d.shortName === deptId || d._id === deptId
+  );
   return dept ? dept.name : deptId || "Unknown";
 }
 
 /** Resolve a department slug to its short code. */
 export function getDeptShort(deptId, allDepartments = []) {
-  const dept = allDepartments.find((d) => d.id === deptId);
+  const dept = allDepartments.find(
+    (d) => d.id === deptId || d.fullName === deptId || d.shortName === deptId || d._id === deptId
+  );
   return dept ? dept.shortName : String(deptId || "").toUpperCase();
 }

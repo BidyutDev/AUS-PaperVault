@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { queueIdLabel, getDeptName, getDeptShort } from "./reviewUtils";
 import { Pencil, Check, X, Loader2 } from "lucide-react";
 
-/**
- * Header bar above the preview showing file metadata and review context.
- */
+
 export default function ReviewHeader({ selected, currentAdmin, allDepartments, onUpdateTags }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({ department: "", semester: "", year: "" });
@@ -119,7 +117,12 @@ export default function ReviewHeader({ selected, currentAdmin, allDepartments, o
         <div className="admin-review-meta-item">
           <span className="admin-review-meta-label">Uploaded_By</span>
           <span className="admin-review-meta-value">
-            {selected.uploadedBy || "Anonymous"}
+            {selected.isAnonymous ? "Anonymous" : 
+              (selected.uploadedBy 
+                ? (typeof selected.uploadedBy === 'object' 
+                    ? (selected.uploadedBy.username || `${selected.uploadedBy.firstName || ''} ${selected.uploadedBy.lastName || ''}`.trim())
+                    : selected.uploadedBy) 
+                : "Anonymous")}
           </span>
         </div>
         <div className="admin-review-meta-item">

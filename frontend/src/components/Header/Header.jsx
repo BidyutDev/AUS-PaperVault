@@ -21,14 +21,15 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
-import { getTotalPaperCount } from "../../data/mockPapers";
-import { useDepartments } from "../../hooks/useDepartments";
+
+import { useDepartments, useAllPapers } from "../../hooks/useDepartments";
 import SearchModal from "../SearchModal/SearchModal";
 import "./Header.css";
 import logoAus from "../Logo/aus-logo1.png";
 
 export default function Header() {
   const { departments } = useDepartments();
+  const allPapers = useAllPapers();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -37,7 +38,7 @@ export default function Header() {
   const userMenuRef = useRef(null);
   const location = useLocation();
 
-  const totalPapers = getTotalPaperCount();
+  const totalPapers = allPapers.length;
   const totalDepts = departments.length;
 
   const isActive = (path) => location.pathname === path;

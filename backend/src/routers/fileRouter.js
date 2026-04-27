@@ -128,7 +128,7 @@ fileRouter.get("/pending", authMiddleware, async (req, res) => {
     try {
         // I have to add something here more but not adding right now coz i have to check it with the frontend
 
-        const pendingFiles = await File.find({ isApproved: false });
+        const pendingFiles = await File.find({ isApproved: false }).populate("uploadedBy", "firstName lastName username").lean();
         sendSuccess(
             res,
             "Pending files fetched successfully",
@@ -137,6 +137,49 @@ fileRouter.get("/pending", authMiddleware, async (req, res) => {
                 pendingFiles,
             }
         ); // might the data part will get changed
+    } catch (err) {
+        console.log(err);
+        sendError(
+            res,
+            "Error in server",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
+    }
+});
+
+fileRouter.get("/list", async (req, res) => {
+    try {
+        const approvedFiles = await File.find({ isApproved: true })
+            .populate("uploadedBy", "firstName lastName username")
+            .lean();
+        
+        // Format the files to match the frontend expectations
+        const formattedFiles = approvedFiles.map(f => ({
+            id: f._id,
+            department: f.department,
+            semester: f.semester,
+            year: f.year,
+            subject: f.subject,
+            fileName: f.fileName,
+            fileSize: f.fileSize,
+            mimeType: f.mimeType,
+            path: f.path,
+            isApproved: f.isApproved,
+            isAnonymous: f.isAnonymous,
+            uploaderName: f.isAnonymous ? "Anonymous" : 
+                (f.uploadedBy ? (f.uploadedBy.username || `${f.uploadedBy.firstName} ${f.uploadedBy.lastName}`) : "Admin"),
+            createdAt: f.createdAt,
+        }));
+
+        sendSuccess(
+            res,
+            "Approved files fetched successfully",
+            STATUS_CODES.SUCCESS,
+            {
+                papers: formattedFiles,
+            }
+        );
     } catch (err) {
         console.log(err);
         sendError(
@@ -179,6 +222,29 @@ fileRouter.put("/update/:id", authMiddleware, async (req, res) => {
     }
 });
 
+fileRouter.delete("/delete/:id", authMiddleware, async (req, res) => {
+    try {
+        const { id: fileId } = req.params;
+        const file = await File.findById(fileId);
+
+        if (!file) {
+            return sendError(res, "File not found", STATUS_CODES.NOT_FOUND);
+        }
+
+        await file.deleteOne();
+
+        sendSuccess(res, "File deleted successfully", STATUS_CODES.SUCCESS);
+    } catch (err) {
+        console.error("Delete error:", err);
+        sendError(
+            res,
+            "Error in server",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
+    }
+});
+
 // ─── Analytics Aggregation ──────────────────────────────────
 fileRouter.get("/analytics", authMiddleware, async (req, res) => {
     try {
@@ -212,7 +278,7 @@ fileRouter.get("/analytics", authMiddleware, async (req, res) => {
 
         // Map aggregation results to department shortNames
         const departmentStats = departments.map((dept) => {
-            const match = deptAgg.find((d) => d._id === dept.shortName);
+            const match = deptAgg.find((d) => d._id === dept.fullName || d._id === dept.shortName);
             return {
                 name: dept.shortName,
                 fullName: dept.fullName,

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Book } from "lucide-react";
-import { deleteMockPaper } from "../../../data/mockPapers";
 import { notifySuperAdminEvent } from "../../../data/adminNotifications";
 import ConfirmModal from "../ConfirmModal";
 import CatalogNav from "./catalog/CatalogNav";
@@ -275,16 +274,20 @@ export default function CatalogTab({
     });
   };
 
-  const executeDeletePaper = (paperId) => {
-
+  const executeDeletePaper = async (paperId) => {
     try {
       const paperMeta = allPapers.find((p) => p.id === paperId);
-      const isMock = !approvedPapers.some((p) => p.id === paperId);
-      if (isMock) {
-        deleteMockPaper(paperId);
-      } else {
-        const updatedPapers = approvedPapers.filter((p) => p.id !== paperId);
-        localStorage.setItem("approvedPapers", JSON.stringify(updatedPapers));
+      
+      const res = await apiFetch(`/files/delete/${paperId}`, "DELETE", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("access_token")}`
+        }
+      });
+
+      if (!res.success) {
+        setDeptError(res.message || res.error || "Failed to delete paper");
+        setTimeout(() => setDeptError(""), 3000);
+        return;
       }
 
       window.dispatchEvent(new Event("papersUpdated"));

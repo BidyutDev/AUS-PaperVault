@@ -5,7 +5,7 @@ import { Search, FileText, Building2, ArrowRight, FolderOpen } from "lucide-reac
 import { motion, AnimatePresence } from "framer-motion";
 import Fuse from "fuse.js";
 import { getDepartments } from "../../data/departments";
-import { getAllPapers } from "../../data/mockPapers";
+import { useAllPapers } from "../../hooks/useDepartments";
 import "./SearchModal.css";
 
 export default function SearchModal({ isOpen, onClose }) {
@@ -14,11 +14,12 @@ export default function SearchModal({ isOpen, onClose }) {
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
   const navigate = useNavigate();
+  const allPapers = useAllPapers();
 
   // Build search indices
   const { fuseDepts, fusePapers } = useMemo(() => {
     const departments = getDepartments();
-    const papers = getAllPapers();
+    const papers = allPapers;
 
     const fuseDepts = new Fuse(departments, {
       keys: ["name", "shortName", "id"],
@@ -31,7 +32,7 @@ export default function SearchModal({ isOpen, onClose }) {
     });
 
     return { fuseDepts, fusePapers };
-  }, [isOpen]); // Rebuild when opening so it catches new papers
+  }, [isOpen, allPapers]); // Rebuild when opening or when papers data changes
 
   // Search results
   const results = useMemo(() => {

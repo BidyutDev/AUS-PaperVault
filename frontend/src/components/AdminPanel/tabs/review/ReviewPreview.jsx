@@ -1,7 +1,19 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL.replace("/api/v1", "");
 
 export default function ReviewPreview({ selected }) {
-  const previewUrl = `${BASE_URL}/uploads${selected.path.split("uploads")[1]}`;
+  const getPreviewUrl = () => {
+    if (!selected?.path) return "";
+    const normalizedPath = selected.path.replace(/\\/g, "/");
+    const uploadsIndex = normalizedPath.indexOf("uploads");
+    if (uploadsIndex !== -1) {
+      const pathAfterUploads = normalizedPath.substring(uploadsIndex + 7);
+      const formattedPath = pathAfterUploads.startsWith("/") ? pathAfterUploads : `/${pathAfterUploads}`;
+      return `${BASE_URL}/uploads${formattedPath}`;
+    }
+    return `${BASE_URL}/${normalizedPath}`;
+  };
+
+  const previewUrl = getPreviewUrl();
 
   return (
     <div className="admin-preview-area">
