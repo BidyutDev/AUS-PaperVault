@@ -19,15 +19,11 @@ jobs:
 
       - name: Wait for network
         run: sleep 15
-        
+
       - name: Deploy via SSH over Tailscale
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /home/xenondotjs/AUS-PaperVault/
-            git pull upstream main
-            cd backend/
-            npm i
+        run: |
+          ssh -o "StrictHostKeyChecking no" ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 
+          cd /home/xenondotjs/AUS-PaperVault/
+          git pull upstream main
+          cd backend/
+          npm i
