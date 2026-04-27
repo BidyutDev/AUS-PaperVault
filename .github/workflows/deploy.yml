@@ -29,6 +29,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /home/xenondotjs/AUS-PaperVault/
-            git pull origin main
+            git pull upstream main
             cd backend/
             npm i
