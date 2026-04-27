@@ -238,13 +238,22 @@ export default function PaperList({
                   <button
                     className="paper-card-download"
                     title="Quick Look preview"
-                    onClick={() => {
-                      // On mobile, open PDF directly in new tab (iframe PDF preview doesn't work)
+                    onClick={async () => {
+                      // On mobile, fetch PDF as blob and open in new tab (iframe doesn't work + ngrok blocks direct URLs)
                       const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
                       if (isMobile) {
                         const url = getPreviewUrl(paper);
                         if (url && url !== fallbackPdf) {
-                          window.open(url, '_blank');
+                          try {
+                            const res = await fetch(url, {
+                              headers: { "ngrok-skip-browser-warning": "true" },
+                            });
+                            const blob = await res.blob();
+                            const blobUrl = URL.createObjectURL(blob);
+                            window.open(blobUrl, '_blank');
+                          } catch {
+                            window.open(url, '_blank');
+                          }
                         }
                       } else {
                         setPreviewPaper(paper);
