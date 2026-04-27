@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import {
   Clock,
@@ -51,7 +52,7 @@ export default function RecentActivity({ open, onClose }) {
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       className="ra-overlay"
       ref={overlayRef}
@@ -158,6 +159,7 @@ export default function RecentActivity({ open, onClose }) {
           </span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
