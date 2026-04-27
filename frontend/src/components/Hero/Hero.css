@@ -258,3 +258,36 @@
 .hero-float-card-bar.short {
   width: 60%;
 }
+
+/* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .hero-title-accent {
+  text-shadow: none;
+  color: var(--color-vault-lavender);
+}
+
+[data-theme="light"] .hero-subtitle {
+  color: #475569;
+}
+
+[data-theme="light"] .hero-badge {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.2);
+}
+
+[data-theme="light"] .hero-float-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(100, 116, 139, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .hero-float-card-label {
+  color: #475569;
+}
+
+[data-theme="light"] .hero-vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(248, 250, 252, 0.6) 100%);
+}
+
+[data-theme="light"] .hero-orb {
+  opacity: 0.08;
+}
