@@ -154,3 +154,29 @@
   color: var(--color-vault-gray);
   opacity: 0.5;
 }
+
+/* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .footer {
+  background: rgba(255, 255, 255, 0.95);
+  border-top-color: rgba(100, 116, 139, 0.12);
+}
+
+[data-theme="light"] .footer::before {
+  background: linear-gradient(90deg, transparent, rgba(67, 56, 202, 0.2), transparent);
+}
+
+[data-theme="light"] .footer-desc {
+  color: #475569;
+}
+
+[data-theme="light"] .footer-links-col a {
+  color: #475569;
+}
+
+[data-theme="light"] .footer-copy {
+  color: #475569;
+}
+
+[data-theme="light"] .footer-bottom {
+  border-top-color: rgba(100, 116, 139, 0.08);
+}

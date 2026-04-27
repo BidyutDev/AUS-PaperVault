@@ -65,7 +65,7 @@ export default function FloatingActions() {
               onClick={action.onClick}
               style={{
                 "--action-color": action.color,
-                "--action-color-rgb": action.color === "var(--color-vault-danger)" ? "248, 113, 113" : "175, 179, 247"
+                "--action-color-rgb": action.color === "var(--color-vault-danger)" ? "var(--color-vault-danger-rgb)" : "var(--color-vault-lavender-rgb)"
               }}
             >
               <Icon size={18} className={`floating-icon ${isActive ? 'active' : ''}`} />

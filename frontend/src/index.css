@@ -41,39 +41,32 @@
   --color-vault-dark: #f8fafc;
   --color-vault-darker: #f1f5f9;
   --color-vault-card: #ffffff;
-  --color-vault-gray: #64748b;
-  --color-vault-steel: #94a3b8;
-  --color-vault-gray: #475569;
-  --color-vault-steel: #64748b;
-  --color-vault-blue: #3b82f6;
-  --color-vault-lavender: #4f46e5;
-  --color-vault-neon: #6366f1;
+  --color-vault-gray: #374151;  /* Darkened from #475569 for better contrast */
+  --color-vault-steel: #4b5563; /* Darkened from #64748b for better contrast */
+  --color-vault-blue: #2563eb;  /* Slightly deeper blue for readability */
+  --color-vault-lavender: #4338ca; /* Deeper indigo for better contrast on white */
+  --color-vault-neon: #4f46e5;
   --color-vault-dark-rgb: 248, 250, 252;
   --color-vault-darker-rgb: 241, 245, 249;
   --color-vault-card-rgb: 255, 255, 255;
   --color-vault-card-alt-rgb: 248, 250, 252;
-  --color-vault-overlay-rgb: 255, 255, 255;
   --color-vault-overlay-rgb: 241, 245, 249;
-  --color-vault-lavender-rgb: 79, 70, 229;
+  --color-vault-lavender-rgb: 67, 56, 202; /* Matches --color-vault-lavender */
   --color-vault-danger-rgb: 220, 38, 38;
   --color-vault-warning-rgb: 217, 119, 6;
   --color-vault-success-rgb: 22, 163, 74;
-  --color-vault-white-rgb: 0, 0, 0; /* Inverted for light mode */
-  --color-vault-black-rgb: 255, 255, 255; /* Inverted for light mode */
   --color-vault-white-rgb: 30, 41, 59; /* Dark slate for subtle borders/highlights on light bg */
-  --color-vault-black-rgb: 0, 0, 0; /* Keep black as black for shadows in light mode */
-  --color-vault-glow: rgba(79, 70, 229, 0.2);
-  --color-vault-border: rgba(148, 163, 184, 0.3);
-  --color-vault-glass: rgba(var(--color-vault-white-rgb), 0.85);
-  --color-vault-glass-light: rgba(var(--color-vault-white-rgb), 0.6);
-  --color-vault-border: rgba(148, 163, 184, 0.35);
-  --color-vault-glass: rgba(255, 255, 255, 0.85);
-  --color-vault-glass-light: rgba(255, 255, 255, 0.6);
-  --color-vault-success: #16a34a;
-  --color-vault-online: #0891b2;
+  --color-vault-black-rgb: 0, 0, 0;    /* Keep black as black for shadows in light mode */
+  --color-vault-glow: rgba(67, 56, 202, 0.2);
+  --color-vault-border: rgba(100, 116, 139, 0.35); /* Darker border for visibility */
+  --color-vault-glass: rgba(255, 255, 255, 0.92);
+  --color-vault-glass-light: rgba(255, 255, 255, 0.7);
+  --color-vault-success: #15803d; /* Deeper green */
+  --color-vault-online: #0e7490;
   --color-vault-danger: #dc2626;
-  --color-vault-warning: #d97706;
-  --color-vault-text: #334155;
+  --color-vault-warning: #b45309; /* Deeper amber */
+  --color-vault-text: #1e293b; /* Much darker text — was #334155 */
+  --color-vault-light: #1e293b; /* Ensure --color-vault-light is defined in light mode */
 }
 /* ───── Base Reset ───── */
 *, *::before, *::after {
@@ -483,27 +476,64 @@ input[type="password"]::-webkit-clear-button {
    ═══════════════════════════════════════════════════════════ */
 [data-theme="light"] .neon-text {
   text-shadow: none;
+  color: var(--color-vault-lavender);
 }
 [data-theme="light"] .neon-border {
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.08),
-    0 0 8px rgba(79, 70, 229, 0.1);
+    0 1px 4px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(67, 56, 202, 0.12);
 }
 [data-theme="light"] .neon-glow {
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    0 0 16px rgba(79, 70, 229, 0.08);
+    0 2px 10px rgba(0, 0, 0, 0.1),
+    0 0 16px rgba(67, 56, 202, 0.1);
 }
-[data-theme="light"] .btn-cyber-solid:hover {
-  background: #4338ca;
+[data-theme="light"] .btn-cyber {
+  color: var(--color-vault-lavender);
+  border-color: rgba(67, 56, 202, 0.4);
+  background: rgba(67, 56, 202, 0.06);
+}
+[data-theme="light"] .btn-cyber:hover {
+  background: rgba(67, 56, 202, 0.12);
+  border-color: rgba(67, 56, 202, 0.6);
+}
+[data-theme="light"] .btn-cyber-solid {
+  background: var(--color-vault-lavender);
+  color: #ffffff;
+}
+[data-theme="light"] .btn-cyber-solid:hover:not(:disabled) {
+  background: #3730a3;
+  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.35);
+}
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(100, 116, 139, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 [data-theme="light"] .glass-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 12px rgba(79, 70, 229, 0.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1), 0 0 12px rgba(67, 56, 202, 0.08);
+  border-color: rgba(67, 56, 202, 0.3);
 }
 [data-theme="light"] .input-cyber,
 [data-theme="light"] .select-cyber {
-  background: rgba(248, 250, 252, 0.9);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(100, 116, 139, 0.3);
+  color: var(--color-vault-text);
+}
+[data-theme="light"] .input-cyber::placeholder,
+[data-theme="light"] .select-cyber::placeholder {
+  color: #64748b;
 }
 [data-theme="light"] .cyber-grid::before {
-  opacity: 0.5;
+  opacity: 0.4;
+}
+[data-theme="light"] .glass,
+[data-theme="light"] .glass-light {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(100, 116, 139, 0.2);
+}
+/* ── Light mode: Selection ── */
+[data-theme="light"] ::selection {
+  background: rgba(67, 56, 202, 0.2);
+  color: #1e293b;
 }
