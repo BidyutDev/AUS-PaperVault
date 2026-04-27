@@ -258,15 +258,22 @@ export default function UploadForm() {
             className="select-cyber"
             value={department}
             onChange={(e) => {
-              setDepartment(e.target.value);
+              const val = e.target.value;
+              setDepartment(val);
               setSemester("");
               setSubject("");
+              const currentDept = departments.find((d) => d.fullName === val);
+              if (currentDept && currentDept.semesters) {
+                setSemesters(Object.keys(currentDept.semesters));
+              } else {
+                setSemesters([]);
+              }
             }}
             required
           >
             <option value="">Select Department</option>
             {departments.map((dept) => (
-              <option key={dept._id} value={dept.fullName} onClick={() => {setSemesters(Object.keys(dept.semesters))}}>
+              <option key={dept._id} value={dept.fullName}>
                 {dept.fullName}
               </option>
             ))}
