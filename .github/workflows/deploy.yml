@@ -22,9 +22,10 @@ jobs:
 
       - name: Deploy via SSH over Tailscale
         run: |
-          ssh -o "StrictHostKeyChecking no" ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 
-          tree
+          ssh -o "StrictHostKeyChecking no" ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
           cd /home/xenondotjs/AUS-PaperVault/
           git pull upstream main
           cd backend/
           npm i
+          EOF
+
