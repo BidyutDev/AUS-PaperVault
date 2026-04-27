@@ -25,6 +25,7 @@ export default function CatalogTab({
   const [editingSubject, setEditingSubject] = useState(null); // {deptId, semester, oldName}
   const [editingSubjectName, setEditingSubjectName] = useState("");
   const [newSemester, setNewSemester] = useState("");
+  const [deptName, setDeptName] = useState("")
 
   const [papersDept, setPapersDept] = useState(null);
   const [papersSemester, setPapersSemester] = useState(null);

@@ -14,6 +14,9 @@ export default function CatalogPapers({
   handleDeletePaper,
   canDelete = true,
 }) {
+  // Resolve the selected department object from the _id
+  const selectedDept = allDepartments.find(d => d._id === papersDept);
+
   return (
     <div className="glass-card" style={{ padding: "1.5rem" }}>
       <h3 style={{ fontSize: "1rem", color: "var(--color-vault-steel)", marginBottom: "1.5rem" }}>
@@ -34,7 +37,7 @@ export default function CatalogPapers({
           >
             <option value="">Select Department...</option>
             {allDepartments.map((dept) => (
-              <option key={dept.fullName} value={dept._id}>{dept.shortName} - {dept.name}</option>
+              <option key={dept._id} value={dept._id}>{dept.shortName} - {dept.name}</option>
             ))}
           </select>
         </div>
@@ -66,7 +69,7 @@ export default function CatalogPapers({
             style={{ width: "100%", padding: "0.5rem 0.75rem", backgroundColor: "rgba(22, 26, 34, 0.5)", border: "1px solid rgba(175, 179, 247, 0.2)", borderRadius: "6px", color: "#e6edf3", fontSize: "0.875rem", cursor: papersDept && papersSemester ? "pointer" : "not-allowed", opacity: papersDept && papersSemester ? 1 : 0.5 }}
           >
             <option value="">Select Subject...</option>
-            {papersDept && papersSemester && getSubjectsForSemester(allDepartments.find((d) => d.id === papersDept), papersSemester).map((subject) => (
+            {papersDept && papersSemester && selectedDept && getSubjectsForSemester(selectedDept, papersSemester).map((subject) => (
               <option key={subject} value={subject}>{subject}</option>
             ))}
           </select>
@@ -81,12 +84,16 @@ export default function CatalogPapers({
         ) : (
           (() => {
             const filteredPapers = allPapers.filter((paper) => {
-              const deptMatch = paper.department === papersDept;
-              const semMatch = paper.semester === papersSemester;
+              // Match department by fullName, shortName, or _id
+              const deptMatch = selectedDept ? (
+                paper.department === selectedDept.fullName ||
+                paper.department === selectedDept.shortName ||
+                paper.department === selectedDept._id
+              ) : false;
+              const semMatch = String(paper.semester) === String(papersSemester);
               const subjMatch = !papersSubject || paper.subject === papersSubject;
               return deptMatch && semMatch && subjMatch;
             });
-
             return filteredPapers.length === 0 ? (
               <p style={{ color: "var(--color-vault-steel)", textAlign: "center", padding: "2rem" }}>No question papers found for this selection</p>
             ) : (
