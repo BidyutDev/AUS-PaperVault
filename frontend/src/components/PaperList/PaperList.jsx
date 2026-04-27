@@ -305,8 +305,9 @@ export default function PaperList({
                       className="preview-iframe"
                     />
                   ) : (
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--color-vault-steel)" }}>
-                      Loading preview...
+                    <div className="preview-loading">
+                      <div className="preview-loading-spinner" />
+                      <span className="preview-loading-text">Loading preview...</span>
                     </div>
                   )}
                   <div className="admin-preview-overlay-label">

@@ -45,3 +45,31 @@
   text-transform: uppercase;
   margin-top: 0.15rem;
 }
+
+@media (max-width: 640px) {
+  .dept-page-header {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  .dept-page-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dept-page-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dept-page {
+    padding-bottom: 3rem;
+  }
+}
+
+[data-theme="light"] .dept-page-header {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(100, 116, 139, 0.15);
+  border-left-color: var(--color-vault-lavender);
+}

@@ -180,3 +180,42 @@
 [data-theme="light"] .footer-bottom {
   border-top-color: rgba(100, 116, 139, 0.08);
 }
+
+@media (max-width: 640px) {
+  .footer-inner {
+    padding: 2.5rem 0;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .footer-brand {
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+
+  .footer-desc {
+    margin-inline: auto;
+  }
+
+  .footer-links-group {
+    justify-content: center;
+    gap: 2.5rem;
+  }
+
+  .footer-links-col {
+    text-align: center;
+  }
+
+  .footer-links-col ul {
+    align-items: center;
+  }
+
+  .footer-bottom {
+    padding: 1rem 0;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+}

@@ -385,6 +385,15 @@
 @media (max-width: 500px) {
   .dept-grid {
     grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .dept-card {
+    padding: 1.25rem;
+  }
+
+  .dept-grid-section {
+    padding: 2.5rem 0;
   }
 }
 
