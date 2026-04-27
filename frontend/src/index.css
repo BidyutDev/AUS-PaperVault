@@ -489,17 +489,18 @@ input[type="password"]::-webkit-clear-button {
     0 0 16px rgba(67, 56, 202, 0.1);
 }
 [data-theme="light"] .btn-cyber {
-  color: var(--color-vault-lavender);
+  color: #312e81; /* Very dark indigo for high contrast text */
   border-color: rgba(67, 56, 202, 0.4);
-  background: rgba(67, 56, 202, 0.06);
+  background: rgba(67, 56, 202, 0.08);
 }
 [data-theme="light"] .btn-cyber:hover {
   background: rgba(67, 56, 202, 0.12);
   border-color: rgba(67, 56, 202, 0.6);
 }
 [data-theme="light"] .btn-cyber-solid {
-  background: var(--color-vault-lavender);
-  color: #ffffff;
+  background: #4338ca !important; /* Deep solid indigo */
+  color: #ffffff !important;
+  border: 1px solid #3730a3;
 }
 [data-theme="light"] .btn-cyber-solid:hover:not(:disabled) {
   background: #3730a3;

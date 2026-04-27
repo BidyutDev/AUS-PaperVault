@@ -61,7 +61,7 @@ export default function RecentActivity({ open, onClose }) {
         {/* ── Header ── */}
         <div className="ra-modal-header">
           <div className="ra-modal-title-row">
-            <Clock size={16} className="ra-modal-title-icon" />
+            <Clock size={20} className="ra-modal-title-icon" />
             <h2 className="ra-modal-title">Recent Activity</h2>
           </div>
           <div className="ra-modal-actions">
@@ -71,7 +71,7 @@ export default function RecentActivity({ open, onClose }) {
                 onClick={clearActivity}
                 title="Clear all recent activity"
               >
-                <Trash2 size={12} />
+                <Trash2 size={14} />
                 Clear All
               </button>
             )}
@@ -80,7 +80,7 @@ export default function RecentActivity({ open, onClose }) {
               onClick={onClose}
               title="Close"
             >
-              <X size={16} />
+              <X size={18} />
             </button>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function RecentActivity({ open, onClose }) {
         <div className="ra-modal-body">
           {activities.length === 0 ? (
             <div className="ra-empty">
-              <Inbox size={32} className="ra-empty-icon" />
+              <Inbox size={40} className="ra-empty-icon" />
               <p className="ra-empty-title">No recent activity</p>
               <p className="ra-empty-desc">
                 Browse a department or select a subject — your trail will appear
@@ -118,9 +118,9 @@ export default function RecentActivity({ open, onClose }) {
 
                       <div className="ra-item-icon">
                         {isDept ? (
-                          <Monitor size={16} />
+                          <Monitor size={20} />
                         ) : (
-                          <BookOpen size={16} />
+                          <BookOpen size={20} />
                         )}
                       </div>
 
@@ -142,7 +142,7 @@ export default function RecentActivity({ open, onClose }) {
                       <span className="ra-item-time">
                         {timeAgo(item.timestamp)}
                       </span>
-                      <ArrowRight size={14} className="ra-item-arrow" />
+                      <ArrowRight size={16} className="ra-item-arrow" />
                     </Link>
                   </li>
                 );

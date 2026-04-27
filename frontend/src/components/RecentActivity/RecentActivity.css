@@ -21,10 +21,11 @@
 .ra-modal {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 600px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
+  border-radius: 16px;
   background: linear-gradient(
     160deg,
     rgba(var(--color-vault-card-rgb), 0.96) 0%,
@@ -46,7 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.1rem 1.4rem;
+  padding: 1.25rem 1.75rem;
   border-bottom: 1px solid rgba(var(--color-vault-lavender-rgb), 0.1);
   flex-shrink: 0;
 }
@@ -54,7 +55,7 @@
 .ra-modal-title-row {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.65rem;
 }
 
 .ra-modal-title-icon {
@@ -64,7 +65,7 @@
 
 .ra-modal-title {
   font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -82,13 +83,14 @@
 .ra-clear-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.3rem 0.7rem;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
   background: transparent;
   border: 1px solid rgba(var(--color-vault-danger-rgb), 0.2);
   color: var(--color-vault-gray);
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -106,8 +108,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   background: transparent;
   border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.15);
   color: var(--color-vault-steel);
@@ -126,6 +129,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 0.5rem 0;
+  min-height: 120px;
   scrollbar-width: thin;
   scrollbar-color: rgba(var(--color-vault-lavender-rgb), 0.2) transparent;
 }
@@ -154,8 +158,8 @@
 .ra-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1.4rem;
+  gap: 0.9rem;
+  padding: 1rem 1.75rem;
   text-decoration: none;
   position: relative;
   transition: all 0.25s ease;
@@ -188,8 +192,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   flex-shrink: 0;
   border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.12);
   background: rgba(var(--color-vault-lavender-rgb), 0.05);
@@ -207,7 +212,7 @@
 .ra-item-info {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.15rem;
   overflow: hidden;
   min-width: 0;
   flex: 1;
@@ -215,7 +220,7 @@
 
 .ra-item-badge {
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-vault-gray);
@@ -224,7 +229,7 @@
 
 .ra-item-name {
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--color-vault-text);
   white-space: nowrap;
@@ -235,7 +240,7 @@
 
 .ra-item-detail {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   color: var(--color-vault-steel);
   line-height: 1.2;
 }
@@ -243,7 +248,7 @@
 /* Time */
 .ra-item-time {
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   color: var(--color-vault-gray);
   white-space: nowrap;
   flex-shrink: 0;
@@ -271,9 +276,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem 2rem;
+  padding: 3.5rem 2rem;
   text-align: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
 }
 
 .ra-empty-icon {
@@ -284,7 +289,7 @@
 
 .ra-empty-title {
   font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--color-vault-text);
   letter-spacing: 0.06em;
@@ -294,10 +299,10 @@
 
 .ra-empty-desc {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--color-vault-gray);
-  max-width: 280px;
-  line-height: 1.5;
+  max-width: 300px;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -306,14 +311,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.7rem 1.4rem;
+  padding: 0.85rem 1.75rem;
   border-top: 1px solid rgba(var(--color-vault-lavender-rgb), 0.08);
   flex-shrink: 0;
 }
 
 .ra-footer-hint {
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   color: var(--color-vault-gray);
   letter-spacing: 0.06em;
   opacity: 0.6;
