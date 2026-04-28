@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, FileText, Building2, ArrowRight, FolderOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Fuse from "fuse.js";
-import { getDepartments } from "../../data/departments";
-import { useAllPapers } from "../../hooks/useDepartments";
+import { useDepartments, useAllPapers } from "../../hooks/useDepartments";
 import "./SearchModal.css";
 
 export default function SearchModal({ isOpen, onClose }) {
@@ -14,11 +13,12 @@ export default function SearchModal({ isOpen, onClose }) {
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
   const navigate = useNavigate();
+  const { departments: deptList } = useDepartments();
   const allPapers = useAllPapers();
 
   // Build search indices
   const { fuseDepts, fusePapers } = useMemo(() => {
-    const departments = getDepartments();
+    const departments = deptList || [];
     const papers = allPapers;
 
     const fuseDepts = new Fuse(departments, {
@@ -32,7 +32,7 @@ export default function SearchModal({ isOpen, onClose }) {
     });
 
     return { fuseDepts, fusePapers };
-  }, [isOpen, allPapers]); // Rebuild when opening or when papers data changes
+  }, [isOpen, allPapers, deptList]); // Rebuild when opening, papers, or departments change
 
   // Search results
   const results = useMemo(() => {
@@ -190,7 +190,7 @@ export default function SearchModal({ isOpen, onClose }) {
                     <div className="search-group-label">Papers</div>
                     {results.papers.map((paper) => {
                       const currentIdx = idx++;
-                      const deptName = getDepartments().find((d) => d.id === paper.department)?.name || paper.department;
+                      const deptName = (deptList || []).find((d) => d.id === paper.department)?.name || paper.department;
                       return (
                         <div
                           key={`paper-${paper.id}`}
