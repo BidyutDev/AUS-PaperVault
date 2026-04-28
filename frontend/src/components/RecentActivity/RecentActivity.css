@@ -506,7 +506,4 @@
   scrollbar-color: rgba(100, 116, 139, 0.2) transparent;
 }
 
-/* Light theme drag handle */
-[data-theme="light"] .ra-modal-header::before {
-  background: rgba(100, 116, 139, 0.25);
-}
+
