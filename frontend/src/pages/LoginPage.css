@@ -175,7 +175,7 @@
     rgba(var(--color-vault-lavender-rgb), 0.2),
     rgba(174, 167, 233, 0.1)
   );
-  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.4);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 1);
   border-radius: 0.5rem;
   color: var(--color-vault-lavender);
   font-family: var(--font-mono);
@@ -247,4 +247,40 @@
   .login-button {
     width: 100%;
   }
+}
+
+/* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .login-button {
+  background: linear-gradient(
+    135deg,
+    rgba(67, 56, 202, 0.18),
+    rgba(99, 102, 241, 0.10)
+  );
+  border-color: rgba(67, 56, 202, 0.55);
+  color: #312e81;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(67, 56, 202, 0.12);
+}
+[data-theme="light"] .login-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    rgba(67, 56, 202, 0.28),
+    rgba(99, 102, 241, 0.18)
+  );
+  border-color: rgba(67, 56, 202, 0.7);
+  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.2);
+}
+
+[data-theme="light"] .login-footer {
+  border-top-color: rgba(100, 116, 139, 0.15);
+}
+[data-theme="light"] .login-info {
+  color: #475569;
+}
+[data-theme="light"] .signup-prompt {
+  color: #334155;
+}
+[data-theme="light"] .signup-link {
+  color: #3730a3;
+  font-weight: 700;
 }

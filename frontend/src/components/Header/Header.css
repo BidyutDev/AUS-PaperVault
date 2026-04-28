@@ -727,18 +727,58 @@
 
 /* ═══════ LIGHT THEME OVERRIDES ═══════ */
 [data-theme="light"] .header {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom-color: rgba(100, 116, 139, 0.15);
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(67, 56, 202, 0.10);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 4px 12px rgba(67, 56, 202, 0.04);
+}
+
+[data-theme="light"] .logo-main {
+  color: #0f172a;
+}
+
+[data-theme="light"] .logo-main .logo-accent {
+  color: #3730a3;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 2px rgba(67, 56, 202, 0.15);
+}
+
+[data-theme="light"] .logo-sub {
+  color: #475569;
+}
+
+[data-theme="light"] .logo-icon-box {
+  border-color: rgba(67, 56, 202, 0.20);
+  box-shadow: 0 1px 4px rgba(67, 56, 202, 0.08);
+}
+
+[data-theme="light"] .stat-value {
+  color: #3730a3;
+  font-weight: 800;
+}
+
+[data-theme="light"] .stat-label {
+  color: #475569;
+}
+
+[data-theme="light"] .stat-icon {
+  color: rgba(55, 48, 163, 0.6);
+}
+
+[data-theme="light"] .header-stats {
+  border-left-color: rgba(100, 116, 139, 0.18);
 }
 
 [data-theme="light"] .user-dropdown {
-  background: rgba(255, 255, 255, 0.98);
-  border-color: rgba(100, 116, 139, 0.2);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.99);
+  border-color: rgba(100, 116, 139, 0.18);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .user-label {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.50);
 }
 
 [data-theme="light"] .user-value {
@@ -773,11 +813,110 @@
 }
 
 [data-theme="light"] .nav-link {
-  color: #374151;
+  color: #334155;
+  font-weight: 700;
 }
 
 [data-theme="light"] .nav-link:hover,
 [data-theme="light"] .nav-link.active {
-  color: var(--color-vault-lavender);
+  color: #3730a3;
+  background: rgba(67, 56, 202, 0.08);
+  border-color: rgba(67, 56, 202, 0.18);
+}
+
+[data-theme="light"] .nav-link.active::after {
+  background: #4338ca;
+  box-shadow: 0 0 8px rgba(67, 56, 202, 0.4);
+}
+
+[data-theme="light"] .mobile-menu-btn {
   background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.20);
+  color: #3730a3;
+}
+
+[data-theme="light"] .mobile-menu-btn:hover {
+  background: rgba(67, 56, 202, 0.12);
+}
+
+[data-theme="light"] .mobile-menu {
+  border-top-color: rgba(100, 116, 139, 0.12);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+[data-theme="light"] .mobile-menu-divider {
+  border-top-color: rgba(100, 116, 139, 0.10);
+}
+
+[data-theme="light"] .mobile-action-btn,
+[data-theme="light"] .mobile-action-item {
+  color: #1e293b;
+}
+
+[data-theme="light"] .mobile-action-btn:hover,
+[data-theme="light"] .mobile-action-item:hover {
+  background: rgba(67, 56, 202, 0.06);
+}
+
+[data-theme="light"] .mobile-action-btn svg,
+[data-theme="light"] .mobile-action-item svg {
+  color: #3730a3;
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.20);
+  color: #3730a3;
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  background: rgba(67, 56, 202, 0.12);
+  border-color: rgba(67, 56, 202, 0.35);
+}
+
+[data-theme="light"] .user-menu-btn {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.20);
+  color: #3730a3;
+}
+
+[data-theme="light"] .user-menu-btn:hover {
+  background: rgba(67, 56, 202, 0.12);
+  border-color: rgba(67, 56, 202, 0.30);
+}
+
+[data-theme="light"] .login-btn {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.28);
+  color: #3730a3;
+  font-weight: 700;
+}
+
+[data-theme="light"] .login-btn:hover {
+  background: rgba(67, 56, 202, 0.14);
+  border-color: rgba(67, 56, 202, 0.45);
+  box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
+}
+
+[data-theme="light"] .signup-btn {
+  background: #4338ca;
+  border-color: #3730a3;
+  color: #ffffff;
+}
+
+[data-theme="light"] .signup-btn:hover {
+  background: #3730a3;
+  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.3);
+}
+
+[data-theme="light"] .search-trigger {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.18);
+  color: #475569;
+}
+
+[data-theme="light"] .search-trigger:hover {
+  background: rgba(67, 56, 202, 0.10);
+  border-color: rgba(67, 56, 202, 0.30);
+  color: #3730a3;
 }

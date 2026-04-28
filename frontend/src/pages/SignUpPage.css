@@ -256,6 +256,7 @@
 .terms-link {
   color: var(--color-vault-lavender);
   text-decoration: underline;
+  font-weight: 600;
   transition: opacity 0.25s ease;
 }
 
@@ -294,35 +295,39 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
+  gap: 0.75rem;
+  padding: 0.9rem 1.5rem;
   margin-top: 0.5rem;
   background: linear-gradient(
     135deg,
-    rgba(var(--color-vault-lavender-rgb), 0.3),
-    rgba(146, 188, 234, 0.2)
+    rgba(var(--color-vault-lavender-rgb), 0.2),
+    rgba(174, 167, 233, 0.1)
   );
-  border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.3);
+  border: 1px solid rgba(var(--color-vault-lavender-rgb), 1);
   border-radius: 0.5rem;
-  color: var(--color-vault-text);
-  font-size: 0.95rem;
-  font-weight: 700;
+  color: var(--color-vault-lavender);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
 }
 
 .signup-button:hover:not(:disabled) {
   background: linear-gradient(
     135deg,
-    rgba(var(--color-vault-lavender-rgb), 0.4),
-    rgba(146, 188, 234, 0.3)
+    rgba(var(--color-vault-lavender-rgb), 0.3),
+    rgba(174, 167, 233, 0.2)
   );
-  border-color: rgba(var(--color-vault-lavender-rgb), 0.5);
-  box-shadow: 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.2);
+  border-color: rgba(var(--color-vault-lavender-rgb), 0.6);
+  box-shadow: 0 0 20px rgba(var(--color-vault-lavender-rgb), 0.25);
+  transform: translateY(-2px);
 }
 
 .signup-button:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .signup-button:disabled {
@@ -356,7 +361,7 @@
 /* ───── Links ───── */
 .login-link {
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: rgba(var(--color-vault-lavender-rgb), 0.7);
   margin-top: 1rem;
 }
@@ -364,7 +369,7 @@
 .link {
   color: var(--color-vault-lavender);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   transition: opacity 0.25s ease;
 }
 
@@ -636,4 +641,41 @@
   to {
     transform: rotate(.5turn);
   }
+}
+
+/* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .signup-button {
+  background: linear-gradient(
+    135deg,
+    rgba(67, 56, 202, 0.18),
+    rgba(99, 102, 241, 0.10)
+  );
+  border-color: rgba(67, 56, 202, 0.55);
+  color: #312e81;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(67, 56, 202, 0.12);
+}
+[data-theme="light"] .signup-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    rgba(67, 56, 202, 0.28),
+    rgba(99, 102, 241, 0.18)
+  );
+  border-color: rgba(67, 56, 202, 0.7);
+  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.2);
+}
+
+[data-theme="light"] .checkbox-label {
+  color: #334155;
+}
+[data-theme="light"] .terms-link {
+  color: #3730a3;
+  font-weight: 700;
+}
+[data-theme="light"] .login-link {
+  color: #334155;
+}
+[data-theme="light"] .link {
+  color: #3730a3;
+  font-weight: 800;
 }

@@ -705,34 +705,76 @@
 }
 
 /* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .dept-grid-title {
+  color: #0f172a;
+}
+
+[data-theme="light"] .dept-grid-subtitle {
+  color: #475569;
+}
+
+[data-theme="light"] .dept-grid-label::before,
+[data-theme="light"] .dept-grid-label::after {
+  background: rgba(67, 56, 202, 0.25);
+}
+
 [data-theme="light"] .dept-search-bar {
-  background: rgba(255, 255, 255, 0.95);
+  background: #ffffff;
   border-color: rgba(100, 116, 139, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="light"] .dept-search-bar.focused {
   border-color: rgba(67, 56, 202, 0.4);
   box-shadow:
-    0 0 20px rgba(67, 56, 202, 0.08),
+    0 0 0 3px rgba(67, 56, 202, 0.08),
     0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
+[data-theme="light"] .dept-search-icon {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .dept-search-input::placeholder {
+  color: #94a3b8;
+}
+
 [data-theme="light"] .dept-search-dropdown {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.99);
   border-color: rgba(100, 116, 139, 0.15);
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
+[data-theme="light"] .dept-search-result:hover,
+[data-theme="light"] .dept-search-result.highlighted {
+  background: rgba(67, 56, 202, 0.05);
+}
+
+[data-theme="light"] .dept-search-result-name {
+  color: #475569;
+}
+
+[data-theme="light"] .dept-search-result:hover .dept-search-result-name,
+[data-theme="light"] .dept-search-result.highlighted .dept-search-result-name {
+  color: #1e293b;
+}
+
 [data-theme="light"] .dept-sort-btn {
-  background: rgba(255, 255, 255, 0.95);
+  background: #ffffff;
   border-color: rgba(100, 116, 139, 0.2);
-  color: #374151;
+  color: #475569;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .dept-sort-btn:hover {
+  border-color: rgba(67, 56, 202, 0.3);
+  color: #4338ca;
 }
 
 [data-theme="light"] .dept-sort-dropdown {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.99);
   border-color: rgba(100, 116, 139, 0.15);
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.1),
@@ -740,31 +782,90 @@
 }
 
 [data-theme="light"] .dept-sort-option {
-  color: #374151;
+  color: #475569;
+}
+
+[data-theme="light"] .dept-sort-option:hover {
+  background: rgba(67, 56, 202, 0.05);
+  color: #1e293b;
+}
+
+[data-theme="light"] .dept-sort-option.selected {
+  color: #4338ca;
+  background: rgba(67, 56, 202, 0.06);
 }
 
 [data-theme="light"] .dept-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.92);
   border-color: rgba(100, 116, 139, 0.12);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
 }
 
 [data-theme="light"] .dept-card:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: #ffffff;
   box-shadow:
     0 12px 28px -4px rgba(0, 0, 0, 0.1),
-    0 0 16px -4px rgba(67, 56, 202, 0.12);
+    0 0 16px -4px rgba(67, 56, 202, 0.1);
   border-color: rgba(67, 56, 202, 0.15);
+}
+
+[data-theme="light"] .dept-card::before {
+  background: linear-gradient(135deg, rgba(67, 56, 202, 0.5) 0%, transparent 60%);
 }
 
 [data-theme="light"] .dept-card-name {
   color: #1e293b;
 }
 
-[data-theme="light"] .dept-card-meta {
-  border-top-color: rgba(100, 116, 139, 0.1);
+[data-theme="light"] .dept-card-short {
+  background: #4338ca;
+  color: #ffffff;
 }
 
-[data-theme="light"] .dept-grid-subtitle {
-  color: #475569;
+[data-theme="light"] .dept-card-icon {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.12);
+}
+
+[data-theme="light"] .dept-card:hover .dept-card-icon {
+  background: rgba(67, 56, 202, 0.1);
+  border-color: rgba(67, 56, 202, 0.25);
+  box-shadow: 0 0 12px rgba(67, 56, 202, 0.08);
+}
+
+[data-theme="light"] .dept-card-papers {
+  color: #64748b;
+}
+
+[data-theme="light"] .dept-card-papers span {
+  color: #4338ca;
+}
+
+[data-theme="light"] .dept-card-meta {
+  border-top-color: rgba(100, 116, 139, 0.08);
+}
+
+[data-theme="light"] .dept-card-arrow {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .dept-card:hover .dept-card-arrow {
+  color: #4338ca;
+}
+
+[data-theme="light"] .dept-search-shortcut {
+  background: rgba(67, 56, 202, 0.05);
+  border-color: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+}
+
+[data-theme="light"] .dept-search-clear {
+  background: rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.12);
+  color: #64748b;
+}
+
+[data-theme="light"] .dept-search-clear:hover {
+  background: rgba(67, 56, 202, 0.12);
+  color: #4338ca;
 }

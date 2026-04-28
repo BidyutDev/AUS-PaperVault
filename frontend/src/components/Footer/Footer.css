@@ -157,24 +157,41 @@
 
 /* ═══════ LIGHT THEME OVERRIDES ═══════ */
 [data-theme="light"] .footer {
-  background: rgba(255, 255, 255, 0.95);
-  border-top-color: rgba(100, 116, 139, 0.12);
+  background: #ffffff;
+  border-top-color: rgba(100, 116, 139, 0.1);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="light"] .footer::before {
-  background: linear-gradient(90deg, transparent, rgba(67, 56, 202, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(67, 56, 202, 0.15), transparent);
+}
+
+[data-theme="light"] .footer-logo-text {
+  color: #0f172a;
 }
 
 [data-theme="light"] .footer-desc {
-  color: #475569;
+  color: #64748b;
+}
+
+[data-theme="light"] .footer-links-col h4 {
+  color: #334155;
 }
 
 [data-theme="light"] .footer-links-col a {
-  color: #475569;
+  color: #64748b;
+}
+
+[data-theme="light"] .footer-links-col a:hover {
+  color: #4338ca;
 }
 
 [data-theme="light"] .footer-copy {
-  color: #475569;
+  color: #64748b;
+}
+
+[data-theme="light"] .footer-motto {
+  color: #94a3b8;
 }
 
 [data-theme="light"] .footer-bottom {

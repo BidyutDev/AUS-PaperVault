@@ -50,14 +50,19 @@ const PerspectiveGrid = ({
       const width = canvas.width / (window.devicePixelRatio || 1);
       const height = canvas.height / (window.devicePixelRatio || 1);
       
+      // Detect current theme for color adaptation
+      const isLight = document.documentElement.getAttribute("data-theme") === "light";
+      
       ctx.lineWidth = 1;
       
       // Calculate row and column sizes
       const cellW = width / gridSize;
       const cellH = height / gridSize;
 
-      // 1. Draw Base Grid Lines (Very subtle)
-      ctx.strokeStyle = "rgba(175, 179, 247, 0.08)";
+      // 1. Draw Base Grid Lines — theme-adaptive
+      ctx.strokeStyle = isLight
+        ? "rgba(67, 56, 202, 0.07)"
+        : "rgba(175, 179, 247, 0.08)";
       ctx.beginPath();
       for (let i = 0; i <= gridSize; i++) {
         // Vertical lines
@@ -69,15 +74,21 @@ const PerspectiveGrid = ({
       }
       ctx.stroke();
 
-      // 2. Draw Fluid Glow (Reactive to Mouse)
+      // 2. Draw Fluid Glow (Reactive to Mouse) — theme-adaptive
       const glowScale = 300; // Radius of the glow
       const { x, y } = mouseRef.current;
 
       // Create a gradient that follows the mouse
       const gradient = ctx.createRadialGradient(x, y, 0, x, y, glowScale);
-      gradient.addColorStop(0, "rgba(175, 179, 247, 0.4)");
-      gradient.addColorStop(0.5, "rgba(97, 218, 251, 0.1)");
-      gradient.addColorStop(1, "transparent");
+      if (isLight) {
+        gradient.addColorStop(0, "rgba(67, 56, 202, 0.25)");
+        gradient.addColorStop(0.5, "rgba(99, 102, 241, 0.08)");
+        gradient.addColorStop(1, "transparent");
+      } else {
+        gradient.addColorStop(0, "rgba(175, 179, 247, 0.4)");
+        gradient.addColorStop(0.5, "rgba(97, 218, 251, 0.1)");
+        gradient.addColorStop(1, "transparent");
+      }
 
       ctx.strokeStyle = gradient;
       ctx.lineWidth = 2;

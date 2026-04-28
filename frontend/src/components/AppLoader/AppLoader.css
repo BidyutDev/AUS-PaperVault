@@ -269,3 +269,65 @@
     height: 2px;
   }
 }
+
+/* ═══════ LIGHT THEME OVERRIDES ═══════ */
+[data-theme="light"] .app-loader-overlay {
+  background: #f8fafc;
+}
+
+[data-theme="light"] .app-loader-title {
+  color: #1e293b;
+}
+
+[data-theme="light"] .app-loader-title span {
+  background: linear-gradient(135deg, #4338ca, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .app-loader-subtitle {
+  color: #64748b;
+}
+
+[data-theme="light"] .app-loader-logo-img {
+  filter: drop-shadow(0 0 18px rgba(67, 56, 202, 0.25));
+}
+
+[data-theme="light"] .app-loader-bar-track {
+  background: rgba(67, 56, 202, 0.08);
+}
+
+[data-theme="light"] .app-loader-bar-fill {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(67, 56, 202, 0.4) 20%,
+    #4338ca 50%,
+    rgba(37, 99, 235, 0.4) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px 2px rgba(67, 56, 202, 0.3);
+}
+
+[data-theme="light"] .app-loader-bar-fill-secondary {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(37, 99, 235, 0.2) 30%,
+    rgba(37, 99, 235, 0.5) 50%,
+    rgba(37, 99, 235, 0.2) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px 1px rgba(37, 99, 235, 0.2);
+}
+
+[data-theme="light"] .app-loader-status {
+  color: #4338ca;
+  text-shadow: none;
+}
+
+[data-theme="light"] .app-loader-corner::before,
+[data-theme="light"] .app-loader-corner::after {
+  background: #4338ca;
+}

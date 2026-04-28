@@ -39,34 +39,34 @@
 }
 [data-theme="light"] {
   --color-vault-dark: #cbd5e1;        /* Darkened for softer inputs */
-  --color-vault-darker: #e2e8f0;      /* Softer slate-200 background to reduce glare */
-  --color-vault-card: #f8fafc;        /* Soft slate-50 for cards instead of pure white */
+  --color-vault-darker: #f1f5f9;      /* slate-100: gentle off-white page background */
+  --color-vault-card: #ffffff;        /* Pure white for crisp cards */
   --color-vault-gray: #1e293b;        /* Deep slate-800 for high contrast */
   --color-vault-steel: #334155;       /* slate-700 */
-  --color-vault-blue: #1d4ed8;        
-  --color-vault-lavender: #312e81;    /* Deep indigo-900 for readable opaque accents */
+  --color-vault-blue: #2563eb;        /* Slightly brighter blue for visibility */
+  --color-vault-lavender: #4338ca;    /* indigo-700: vibrant yet readable accent */
   --color-vault-neon: #3730a3;        
   --color-vault-dark-rgb: 203, 213, 225;
-  --color-vault-darker-rgb: 226, 232, 240;
-  --color-vault-card-rgb: 248, 250, 252;
-  --color-vault-card-alt-rgb: 226, 232, 240;
-  --color-vault-overlay-rgb: 226, 232, 240;
-  --color-vault-lavender-rgb: 49, 46, 129;
+  --color-vault-darker-rgb: 241, 245, 249;
+  --color-vault-card-rgb: 255, 255, 255;
+  --color-vault-card-alt-rgb: 241, 245, 249;
+  --color-vault-overlay-rgb: 248, 250, 252;
+  --color-vault-lavender-rgb: 67, 56, 202;
   --color-vault-danger-rgb: 185, 28, 28;
   --color-vault-warning-rgb: 180, 83, 9;
   --color-vault-success-rgb: 21, 128, 61;
   --color-vault-white-rgb: 15, 23, 42; 
   --color-vault-black-rgb: 0, 0, 0;    
-  --color-vault-glow: rgba(49, 46, 129, 0.15);
-  --color-vault-border: rgba(51, 65, 85, 0.4); /* Stronger borders for structure */
-  --color-vault-glass: rgba(248, 250, 252, 0.92);
-  --color-vault-glass-light: rgba(248, 250, 252, 0.7);
+  --color-vault-glow: rgba(67, 56, 202, 0.12);
+  --color-vault-border: rgba(51, 65, 85, 0.18); /* Visible but not heavy borders */
+  --color-vault-glass: rgba(255, 255, 255, 0.88);
+  --color-vault-glass-light: rgba(255, 255, 255, 0.6);
   --color-vault-success: #15803d; 
   --color-vault-online: #0f766e;
   --color-vault-danger: #b91c1c;
   --color-vault-warning: #b45309; 
-  --color-vault-text: #020617; /* Near black (slate-950) for maximum readability */
-  --color-vault-light: #020617; 
+  --color-vault-text: #0f172a; /* slate-900 for max readability */
+  --color-vault-light: #0f172a; 
 }
 /* ───── Base Reset ───── */
 *, *::before, *::after {
@@ -480,22 +480,23 @@ input[type="password"]::-webkit-clear-button {
 }
 [data-theme="light"] .neon-border {
   box-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.1),
-    0 0 8px rgba(67, 56, 202, 0.12);
+    0 1px 4px rgba(0, 0, 0, 0.08),
+    0 0 8px rgba(67, 56, 202, 0.1);
 }
 [data-theme="light"] .neon-glow {
   box-shadow:
-    0 2px 10px rgba(0, 0, 0, 0.1),
-    0 0 16px rgba(67, 56, 202, 0.1);
+    0 2px 10px rgba(0, 0, 0, 0.08),
+    0 0 16px rgba(67, 56, 202, 0.08);
 }
 [data-theme="light"] .btn-cyber {
-  color: #312e81; /* Very dark indigo for high contrast text */
-  border-color: rgba(67, 56, 202, 0.4);
-  background: rgba(67, 56, 202, 0.08);
+  color: #3730a3; /* indigo-800 for high contrast */
+  border-color: rgba(67, 56, 202, 0.35);
+  background: rgba(67, 56, 202, 0.06);
 }
 [data-theme="light"] .btn-cyber:hover {
   background: rgba(67, 56, 202, 0.12);
-  border-color: rgba(67, 56, 202, 0.6);
+  border-color: rgba(67, 56, 202, 0.55);
+  box-shadow: 0 2px 12px rgba(67, 56, 202, 0.15);
 }
 [data-theme="light"] .btn-cyber-solid {
   background: #4338ca !important; /* Deep solid indigo */
@@ -503,39 +504,59 @@ input[type="password"]::-webkit-clear-button {
   border: 1px solid #3730a3;
 }
 [data-theme="light"] .btn-cyber-solid:hover:not(:disabled) {
-  background: #3730a3;
-  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.35);
+  background: #3730a3 !important;
+  box-shadow: 0 4px 20px rgba(67, 56, 202, 0.35);
 }
 [data-theme="light"] .glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(100, 116, 139, 0.2);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(100, 116, 139, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02);
 }
 [data-theme="light"] .glass-card:hover {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1), 0 0 12px rgba(67, 56, 202, 0.08);
-  border-color: rgba(67, 56, 202, 0.3);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1), 0 0 12px rgba(67, 56, 202, 0.06);
+  border-color: rgba(67, 56, 202, 0.25);
 }
 [data-theme="light"] .input-cyber,
 [data-theme="light"] .select-cyber {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(100, 116, 139, 0.3);
+  background: #ffffff;
+  border-color: rgba(100, 116, 139, 0.25);
   color: var(--color-vault-text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .input-cyber:focus,
+[data-theme="light"] .select-cyber:focus {
+  border-color: var(--color-vault-lavender);
+  box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
 }
 [data-theme="light"] .input-cyber::placeholder,
 [data-theme="light"] .select-cyber::placeholder {
-  color: #64748b;
+  color: #94a3b8;
 }
 [data-theme="light"] .cyber-grid::before {
-  opacity: 0.4;
+  background-image:
+    linear-gradient(rgba(67, 56, 202, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67, 56, 202, 0.06) 1px, transparent 1px);
+  opacity: 1;
 }
 [data-theme="light"] .glass,
 [data-theme="light"] .glass-light {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(100, 116, 139, 0.2);
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(100, 116, 139, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+/* ── Light mode: Scrollbar ── */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.8);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.3);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(67, 56, 202, 0.5);
 }
 /* ── Light mode: Selection ── */
 [data-theme="light"] ::selection {
-  background: rgba(67, 56, 202, 0.2);
+  background: rgba(67, 56, 202, 0.18);
   color: #1e293b;
 }
 
