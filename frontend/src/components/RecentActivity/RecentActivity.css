@@ -28,11 +28,9 @@
   border-radius: 16px;
   background: linear-gradient(
     160deg,
-    rgba(var(--color-vault-card-rgb), 0.96) 0%,
-    rgba(var(--color-vault-dark-rgb), 0.98) 100%
+    rgba(var(--color-vault-card-rgb), 1) 0%,
+    rgba(var(--color-vault-dark-rgb), 1) 100%
   );
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(var(--color-vault-lavender-rgb), 0.18);
   box-shadow:
     0 0 40px rgba(var(--color-vault-lavender-rgb), 0.08),
@@ -353,78 +351,47 @@
 /* ── Responsive: Mobile ── */
 @media (max-width: 640px) {
   .ra-overlay {
-    padding: 0;
-    align-items: flex-end;
+    padding: 1rem;
+    align-items: center;
   }
 
   .ra-modal {
     max-width: 100%;
-    max-height: 70vh;
-    max-height: 70dvh;
-    border-bottom: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    animation: raMobileSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Visual drag handle for bottom-sheet feel */
-  .ra-modal-header::before {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 36px;
-    height: 4px;
-    border-radius: 2px;
-    background: rgba(var(--color-vault-lavender-rgb), 0.2);
+    max-height: 75vh;
+    max-height: 75dvh;
+    border-radius: 14px;
+    animation: raSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .ra-modal-header {
-    position: relative;
-    padding: 1.25rem 1rem 0.85rem;
+    padding: 1rem 1.25rem;
   }
 
   .ra-item {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.25rem;
   }
 
   .ra-modal-body {
-    max-height: calc(70dvh - 110px); /* Header + footer heights accounted for */
+    max-height: calc(75dvh - 120px);
   }
 
   .ra-modal-footer {
-    padding: 0.6rem 1rem;
-    padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    padding: 0.75rem 1.25rem;
   }
 }
 
 /* ── Responsive: Very small screens ── */
 @media (max-width: 380px) {
   .ra-modal {
-    max-height: 65dvh;
+    max-height: 70dvh;
   }
 
   .ra-modal-title {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 
   .ra-item-name {
-    font-size: 0.7rem;
-  }
-}
-
-@keyframes raMobileSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    font-size: 0.75rem;
   }
 }
 
@@ -437,8 +404,8 @@
 [data-theme="light"] .ra-modal {
   background: linear-gradient(
     160deg,
-    rgba(255, 255, 255, 0.99) 0%,
-    rgba(248, 250, 252, 0.98) 100%
+    rgba(255, 255, 255, 1) 0%,
+    rgba(248, 250, 252, 1) 100%
   );
   border-color: rgba(100, 116, 139, 0.2);
   box-shadow:
