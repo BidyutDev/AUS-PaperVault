@@ -223,6 +223,7 @@ export default function PaperList({
                   </div>
                   <div className="paper-card-uploader">
                     <User size={12} />
+                    {console.log(paper)}
                     <span>Uploaded by:</span> <span className="uploader-name">{paper.isAnonymous ? "Anonymous" : (paper.uploaderName || "Vault Admin")}</span>
                   </div>
                 </div>

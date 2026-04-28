@@ -82,7 +82,7 @@ export default function DeleteAccountPage() {
             </div>
             <h1 className="delete-acc-title">Delete Account</h1>
             <p className="delete-acc-subtitle">
-              Warning: This action is permanent and cannot be undone. All your uploaded papers and bookmarks will be removed or anonymized.
+              Warning: This action is permanent and cannot be undone. All your uploaded papers and bookmarks will be anonymized.
             </p>
           </div>
 
