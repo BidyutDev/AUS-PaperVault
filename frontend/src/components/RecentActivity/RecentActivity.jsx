@@ -155,7 +155,7 @@ export default function RecentActivity({ open, onClose }) {
         {/* ── Footer ── */}
         <div className="ra-modal-footer">
           <span className="ra-footer-hint">
-            Activity is stored locally on this device.
+            Your recent activities till now.
           </span>
         </div>
       </div>
