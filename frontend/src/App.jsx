@@ -4,7 +4,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import { useEffect, Suspense, lazy } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { AnimatePresence } from "framer-motion";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import "overlayscrollbars/overlayscrollbars.css";
@@ -16,6 +16,9 @@ import Footer from "./components/Footer/Footer";
 import FloatingActions from "./components/FloatingActions/FloatingActions";
 import NotificationsPopup from "./components/NotificationsPopup/NotificationsPopup";
 import Loader from "./components/Loader/Loader";
+import AppLoader from "./components/AppLoader/AppLoader";
+import { apiFetch } from "./api/api";
+import { getDepartments } from "./data/departments";
 
 // Eager loaded for instant LCP
 import HomePage from "./pages/HomePage";
@@ -75,6 +78,27 @@ function AppLayout() {
   const isAdminPage = location.pathname.startsWith("/admin");
 
   const { user, isLoading } = useAuth();
+  const [isDataLoading, setIsDataLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadResources = async () => {
+      try {
+        await Promise.all([
+          getDepartments(),
+          apiFetch("/files/list", "GET")
+        ]);
+      } catch (e) {
+        console.error("Failed to fetch initial resources:", e);
+      } finally {
+        if (mounted) setIsDataLoading(false);
+      }
+    };
+    loadResources();
+    return () => { mounted = false; };
+  }, []);
+
+  const showLoader = isLoading || isDataLoading;
 
   
     useEffect(() => {
@@ -114,6 +138,7 @@ function AppLayout() {
 
   return (
     <>
+      <AppLoader visible={showLoader} />
       <ScrollToTop />
       {!isAdminPage && <FloatingActions />}
       <NotificationsPopup />
