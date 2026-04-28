@@ -9,6 +9,7 @@ import {
 } from "../utils/generateToken.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import EmailVerification from "../models/emailVerification.model.js";
+import File from "../models/file.model.js";
 
 const userRouter = Router();
 
@@ -270,6 +271,12 @@ userRouter.post("/delete", authMiddleware, async (req, res) => {
         const isValid = await user.comparePassword(password);
         if (!isValid) {
             return sendError(res, "Invalid password", STATUS_CODES.FORBIDDEN);
+        }
+
+        const file = await File.findOne({ uploadedBy: user._id });
+        if (file) {
+            file.isAnonymous = true;
+            await file.save();
         }
         const userDelete = await User.deleteOne({ _id: user._id });
 
