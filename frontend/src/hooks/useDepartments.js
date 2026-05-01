@@ -172,3 +172,45 @@ export function useAllPapers() {
   const papers = useApprovedPapers();
   return papers;
 }
+
+/**
+ * Custom hook to get ALL papers with reactive updates and loading state.
+ * @returns {Object} { papers: Array, loading: boolean }
+ */
+export function useAllPapersWithLoading() {
+  const [papers, setPapers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPapers = async () => {
+      setLoading(true);
+      try {
+        const res = await apiFetch("/files/list", "GET");
+        if (res.success && res.papers) {
+          setPapers(res.papers);
+        } else {
+          setPapers([]);
+        }
+      } catch (err) {
+        console.error("Error fetching approved papers:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPapers();
+
+    const handleStorageChange = () => fetchPapers();
+    const handlePapersUpdate = () => fetchPapers();
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("papersUpdated", handlePapersUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("papersUpdated", handlePapersUpdate);
+    };
+  }, []);
+
+  return { papers, loading };
+}

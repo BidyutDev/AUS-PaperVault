@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useDepartment } from "../hooks/useDepartments";
 import { getSubjectsForSemester } from "../data/departments";
@@ -8,7 +8,7 @@ import SubjectSelector from "../components/SubjectSelector/SubjectSelector";
 import YearSelector from "../components/YearSelector/YearSelector";
 import PaperList from "../components/PaperList/PaperList";
 import Loader from "../components/Loader/Loader";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRecentActivity } from "../hooks/useRecentActivity";
 import "./DepartmentPage.css";
 
@@ -23,6 +23,34 @@ export default function DepartmentPage() {
   const [selectedSemester, setSelectedSemester] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
+
+  const subjectSelectorRef = useRef(null);
+  const yearSelectorRef = useRef(null);
+
+  const scrollToRef = (ref) => {
+    // Wait for layout changes and slideUp animations to settle
+    setTimeout(() => {
+      if (ref.current) {
+        const viewport = document.querySelector('[data-overlayscrollbars-viewport]');
+        const headerOffset = 100; // Account for sticky header + padding
+        const elementPosition = ref.current.getBoundingClientRect().top;
+
+        if (viewport) {
+          const offsetPosition = elementPosition + viewport.scrollTop - headerOffset;
+          viewport.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        } else {
+          const offsetPosition = elementPosition + window.scrollY - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }
+    }, 300);
+  };
 
   const department = useDepartment(deptId);
   const { addActivity } = useRecentActivity();
@@ -145,12 +173,23 @@ export default function DepartmentPage() {
             setSelectedSemester(sem);
             setSelectedSubject(null); // reset subject when semester changes
             setSelectedYear(null); // reset year when semester changes
+            if (sem) {
+              scrollToRef(subjectSelectorRef);
+            }
           }}
         />
 
         {/* Step 2: Subject Selection (after semester is selected) */}
-        {selectedSemester && (
-          <div className="animate-slideUp">
+        <AnimatePresence>
+          {selectedSemester && (
+            <motion.div
+              key="subject-selector"
+              ref={subjectSelectorRef}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
             <SubjectSelector
               subjects={semesterSubjects}
               departmentId={department.id}
@@ -170,15 +209,25 @@ export default function DepartmentPage() {
                     semester: selectedSemester,
                     color: department.color,
                   });
+                  scrollToRef(yearSelectorRef);
                 }
               }}
             />
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Step 3: Year Selection (after subject is selected) */}
-        {selectedSemester && selectedSubject && (
-          <div className="animate-slideUp">
+        <AnimatePresence>
+          {selectedSemester && selectedSubject && (
+            <motion.div
+              key="year-selector"
+              ref={yearSelectorRef}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
             <YearSelector
               departmentId={department.id}
               semester={selectedSemester}
@@ -186,20 +235,29 @@ export default function DepartmentPage() {
               selectedYear={selectedYear}
               onSelect={setSelectedYear}
             />
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Step 4: Paper List with Year filter (after subject is selected) */}
-        {selectedSemester && selectedSubject && (
-          <div className="animate-slideUp">
+        <AnimatePresence>
+          {selectedSemester && selectedSubject && (
+            <motion.div
+              key="paper-list"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
             <PaperList
               departmentId={department.id}
               subject={selectedSubject}
               semester={selectedSemester}
               selectedYear={selectedYear}
             />
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

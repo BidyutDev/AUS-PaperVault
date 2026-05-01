@@ -4,9 +4,10 @@ import { FileText, Download, FolderOpen, Eye, Bookmark, BookmarkCheck, User } fr
 import { motion, AnimatePresence } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import { getDepartments, YEARS } from "../../data/departments";
-import { useAllPapers, useDepartments } from "../../hooks/useDepartments";
+import { useAllPapersWithLoading, useDepartments } from "../../hooks/useDepartments";
 import { useBookmarks } from "../../hooks/useBookmarks";
 import { useDownloads } from "../../hooks/useDownloads";
+import Loader from "../Loader/Loader";
 import fallbackPdf from "../AdminPanel/tabs/FEEDBACK.pdf";
 import "./PaperList.css";
 
@@ -20,7 +21,7 @@ export default function PaperList({
   const [internalYear, setInternalYear] = useState(null);
   const [previewPaper, setPreviewPaper] = useState(null);
   const [previewBlobUrl, setPreviewBlobUrl] = useState(null);
-  const allPapers = useAllPapers();
+  const { papers: allPapers, loading: papersLoading } = useAllPapersWithLoading();
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const { getDownloadCount, incrementDownload } = useDownloads();
 
@@ -171,7 +172,11 @@ export default function PaperList({
         )}
       </div>
 
-      {filtered.length === 0 ? (
+      {papersLoading && !propPapers ? (
+        <div style={{ display: "flex", justifyContent: "center", padding: "4rem 0" }}>
+          <Loader text="Loading question papers..." />
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="paper-empty">
           <div className="paper-empty-icon">
             <FolderOpen />

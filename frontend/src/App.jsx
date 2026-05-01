@@ -43,7 +43,12 @@ function PageSkeleton() {
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const viewport = document.querySelector('[data-overlayscrollbars-viewport]');
+    if (viewport) {
+      viewport.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, [pathname]);
   return null;
 }
