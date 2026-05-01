@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { Link, useNavigate } from "react-router-dom";
 import { useAllPapers, useDepartments } from "../../hooks/useDepartments";
+import Loader from "../Loader/Loader";
 import "./DepartmentGrid.css";
 
 export default function DepartmentGrid() {
@@ -253,7 +254,12 @@ export default function DepartmentGrid() {
         </div>
 
         {/* ═══════ DEPARTMENT GRID ═══════ */}
-        <div className="dept-grid">
+        {loading ? (
+          <div style={{ display: "flex", justifyContent: "center", padding: "4rem 0" }}>
+            <Loader text="Loading departments..." />
+          </div>
+        ) : (
+          <div className="dept-grid">
           {filteredDepartments.map((dept, index) => {
             const Icon = dept.icon;
             const paperCount = allPapers.filter(
@@ -312,9 +318,10 @@ export default function DepartmentGrid() {
             );
           })}
         </div>
+        )}
 
         {/* No results in grid */}
-        {filteredDepartments.length === 0 && searchQuery && (
+        {!loading && filteredDepartments.length === 0 && searchQuery && (
           <div className="dept-grid-no-results">
             <Search size={28} />
             <p>No departments found for &quot;{searchQuery}&quot;</p>
