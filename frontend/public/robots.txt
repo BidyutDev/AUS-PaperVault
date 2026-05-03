@@ -1,0 +1,65 @@
+# AUS PaperVault - Production robots.txt
+# Controls which pages search engines can and cannot crawl
+
+# Default rules for all bots
+User-agent: *
+
+# Disallow admin and staff-only pages
+Disallow: /admin
+Disallow: /admin/
+
+# Disallow user-specific protected pages
+Disallow: /bookmarks
+Disallow: /delete-account
+Disallow: /profile
+
+# Disallow authentication pages to prevent indexing duplicate content
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+
+# Disallow upload page (user-specific action)
+Disallow: /upload
+
+# Disallow search/query parameters to prevent crawl spam
+Disallow: /*?*
+Disallow: /*&*
+
+# Crawl-delay and Request-rate for responsible crawling
+Crawl-delay: 1
+Request-rate: 30/60
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /bookmarks
+Disallow: /delete-account
+Disallow: /profile
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /upload
+Disallow: /*?*
+Crawl-delay: 0
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /bookmarks
+Disallow: /delete-account
+Disallow: /profile
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /upload
+Disallow: /*?*
+Crawl-delay: 1
+
+# Block bad/aggressive bots
+User-agent: MJ12bot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+Disallow: /
+
