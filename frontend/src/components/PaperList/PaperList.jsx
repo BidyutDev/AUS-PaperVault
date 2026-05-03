@@ -220,9 +220,9 @@ export default function PaperList({
                       Sem: <span>{paper.semester}</span>
                     </span>
                     <span className="paper-card-tag">{paper.fileName}</span>
-                    {getDownloadCount(paper.id) > 0 && (
+                    {(paper.downloadCount > 0 || getDownloadCount(paper.id) > 0) && (
                       <span className="paper-card-tag" style={{ color: "var(--color-vault-lavender)" }}>
-                        ↓ {getDownloadCount(paper.id)}
+                        ↓ {Math.max(paper.downloadCount || 0, getDownloadCount(paper.id))}
                       </span>
                     )}
                   </div>

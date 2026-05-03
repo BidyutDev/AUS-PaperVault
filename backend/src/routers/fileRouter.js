@@ -124,6 +124,32 @@ fileRouter.post("/action/:status/:id", authMiddleware, async (req, res) => {
     }
 });
 
+fileRouter.post("/download/:id", async (req, res) => {
+    try {
+        const { id: fileId } = req.params;
+        const file = await File.findById(fileId);
+
+        if (!file) {
+            return sendError(res, "File not found", STATUS_CODES.NOT_FOUND);
+        }
+
+        file.downloadCount += 1;
+        await file.save();
+
+        sendSuccess(res, "Download count incremented", STATUS_CODES.SUCCESS, {
+            downloadCount: file.downloadCount,
+        });
+    } catch (err) {
+        console.error("Increment download error:", err);
+        sendError(
+            res,
+            "Error in server",
+            STATUS_CODES.SERVER_ERROR,
+            err.message
+        );
+    }
+});
+
 fileRouter.get("/pending", authMiddleware, async (req, res) => {
     try {
         // I have to add something here more but not adding right now coz i have to check it with the frontend
@@ -169,6 +195,7 @@ fileRouter.get("/list", async (req, res) => {
             isAnonymous: f.isAnonymous,
             uploaderName: f.isAnonymous ? "Anonymous" : 
                 (f.uploadedBy ? (f.uploadedBy.username || `${f.uploadedBy.firstName} ${f.uploadedBy.lastName}`) : "Admin"),
+            downloadCount: f.downloadCount || 0,
             createdAt: f.createdAt,
         }));
 

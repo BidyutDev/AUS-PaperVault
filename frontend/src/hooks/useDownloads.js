@@ -29,12 +29,18 @@ export function useDownloads() {
   }, []);
 
   const incrementDownload = useCallback((paperId) => {
+    // Optimistic local update
     setDownloads((prev) => {
       const next = { ...prev, [paperId]: (prev[paperId] || 0) + 1 };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       window.dispatchEvent(new Event("downloadsUpdated"));
       return next;
     });
+
+    // Notify backend
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/files/download/${paperId}`, {
+      method: "POST",
+    }).catch(err => console.error("Failed to increment download count on server:", err));
   }, []);
 
   const getDownloadCount = useCallback(
