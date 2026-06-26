@@ -91,7 +91,7 @@ const developers = [
       linkedin: 'https://www.linkedin.com/in/bidyut-priyam-kumar/',
       email: 'mailto:bidyutdev2006@gmail.com',
       website: '#',
-      instagram: 'https://www.instagram.com/bidyutpriyamkumar/',
+      instagram: 'https://www.instagram.com/xenondotjs/',
     },
   },
   {
